@@ -1,0 +1,194 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Therapy-inspired calming design system */
+
+@layer base {
+  :root {
+    /* Soft sage greens and warm neutrals - calming therapy palette */
+    --background: 60 30% 98%;
+    --foreground: 200 15% 20%;
+
+    --card: 60 20% 99%;
+    --card-foreground: 200 15% 20%;
+
+    --popover: 60 20% 99%;
+    --popover-foreground: 200 15% 20%;
+
+    /* Sage green primary - calming, growth-oriented */
+    --primary: 152 35% 45%;
+    --primary-foreground: 60 30% 98%;
+
+    /* Warm sand secondary */
+    --secondary: 35 30% 94%;
+    --secondary-foreground: 200 15% 25%;
+
+    /* Soft lavender muted */
+    --muted: 250 20% 96%;
+    --muted-foreground: 200 10% 45%;
+
+    /* Warm peach accent */
+    --accent: 25 70% 92%;
+    --accent-foreground: 25 50% 35%;
+
+    /* Soft coral for warnings/destructive */
+    --destructive: 0 60% 55%;
+    --destructive-foreground: 60 30% 98%;
+
+    /* Soft borders */
+    --border: 45 20% 90%;
+    --input: 45 20% 92%;
+    --ring: 152 35% 45%;
+
+    --radius: 1rem;
+
+    /* Custom therapy tokens */
+    --sage: 152 35% 45%;
+    --sage-light: 152 30% 92%;
+    --lavender: 250 35% 75%;
+    --lavender-light: 250 30% 95%;
+    --peach: 25 70% 85%;
+    --peach-light: 25 60% 95%;
+    --cream: 45 40% 96%;
+    --warm-gray: 35 10% 55%;
+
+    /* Gradients */
+    --gradient-calm: linear-gradient(135deg, hsl(152, 35%, 92%) 0%, hsl(250, 30%, 95%) 50%, hsl(25, 60%, 95%) 100%);
+    --gradient-sage: linear-gradient(135deg, hsl(152, 35%, 50%) 0%, hsl(152, 40%, 40%) 100%);
+    --gradient-warm: linear-gradient(135deg, hsl(25, 70%, 92%) 0%, hsl(35, 50%, 94%) 100%);
+
+    /* Shadows */
+    --shadow-soft: 0 4px 20px -4px hsl(200 15% 20% / 0.08);
+    --shadow-card: 0 8px 30px -8px hsl(200 15% 20% / 0.1);
+    --shadow-elevated: 0 20px 50px -10px hsl(200 15% 20% / 0.15);
+
+    --sidebar-background: 60 25% 97%;
+    --sidebar-foreground: 200 15% 25%;
+    --sidebar-primary: 152 35% 45%;
+    --sidebar-primary-foreground: 60 30% 98%;
+    --sidebar-accent: 152 30% 92%;
+    --sidebar-accent-foreground: 152 35% 30%;
+    --sidebar-border: 45 20% 90%;
+    --sidebar-ring: 152 35% 45%;
+  }
+
+  .dark {
+    --background: 200 20% 10%;
+    --foreground: 60 20% 95%;
+
+    --card: 200 18% 12%;
+    --card-foreground: 60 20% 95%;
+
+    --popover: 200 18% 12%;
+    --popover-foreground: 60 20% 95%;
+
+    --primary: 152 40% 55%;
+    --primary-foreground: 200 20% 10%;
+
+    --secondary: 200 15% 18%;
+    --secondary-foreground: 60 20% 90%;
+
+    --muted: 200 15% 18%;
+    --muted-foreground: 60 10% 60%;
+
+    --accent: 25 50% 25%;
+    --accent-foreground: 25 70% 85%;
+
+    --destructive: 0 50% 40%;
+    --destructive-foreground: 60 20% 95%;
+
+    --border: 200 15% 20%;
+    --input: 200 15% 20%;
+    --ring: 152 40% 55%;
+
+    --sage: 152 40% 55%;
+    --sage-light: 152 30% 20%;
+    --lavender: 250 30% 50%;
+    --lavender-light: 250 20% 20%;
+    --peach: 25 50% 50%;
+    --peach-light: 25 40% 20%;
+    --cream: 45 20% 15%;
+    --warm-gray: 35 10% 60%;
+
+    --sidebar-background: 200 20% 8%;
+    --sidebar-foreground: 60 20% 90%;
+    --sidebar-primary: 152 40% 55%;
+    --sidebar-primary-foreground: 200 20% 10%;
+    --sidebar-accent: 152 25% 18%;
+    --sidebar-accent-foreground: 152 40% 75%;
+    --sidebar-border: 200 15% 20%;
+    --sidebar-ring: 152 40% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-card/80 backdrop-blur-md border border-border/50;
+    box-shadow: var(--shadow-card);
+  }
+
+  .gradient-calm {
+    background: var(--gradient-calm);
+  }
+
+  .gradient-sage {
+    background: var(--gradient-sage);
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@layer utilities {
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-pulse-soft {
+    animation: pulse-soft 3s ease-in-out infinite;
+  }
+
+  .animate-fade-up {
+    animation: fade-up 0.5s ease-out forwards;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  @keyframes pulse-soft {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
