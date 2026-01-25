@@ -24,6 +24,7 @@ export async function signIn(
     localStorage.setItem("access_token", access_token);
     localStorage.setItem("refresh_token", refresh_token);
     localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem("deviceId", payload.deviceId);
 
     return { user, token };
   } catch (error: any) {

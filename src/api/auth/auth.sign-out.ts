@@ -1,3 +1,4 @@
+import { clearLocalStorage } from "@/common/utils";
 import apiClient from "../api.client";
 
 export async function signOut() {
@@ -6,8 +7,6 @@ export async function signOut() {
   } catch (error: any) {
     console.warn("API Logout failed:", error);
   } finally {
-    localStorage.removeItem("access_token");
-    localStorage.removeItem("refresh_token");
-    localStorage.removeItem("user");
+    clearLocalStorage();
   }
 }
