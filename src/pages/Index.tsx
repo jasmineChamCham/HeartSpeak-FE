@@ -122,8 +122,11 @@ export default function Index() {
       {/* Header */}
       <header className="border-b border-border/50 bg-card/50 backdrop-blur-sm">
         <div className="container flex items-center justify-between py-4">
-          <div className="flex items-center gap-2">
-            <Heart className="h-6 w-6 text-primary" />
+          <div 
+            className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity"
+            onClick={() => navigate("/")}
+          >
+            <img src="/logo-without-background.png" alt="Logo" className="h-8 w-10" />
             <span className="font-display text-xl font-semibold">HeartSpeak</span>
           </div>
           <Button variant="ghost" size="sm" onClick={signOut}>
