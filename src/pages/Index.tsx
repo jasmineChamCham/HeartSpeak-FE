@@ -9,16 +9,23 @@ import { ChatCoach } from "@/components/ChatCoach";
 import { AuthForm } from "@/components/AuthForm";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 type Step = "upload" | "analyzing" | "results";
 
 export default function Index() {
   const { user, isLoading: authLoading, signOut } = useAuth();
+  const navigate = useNavigate();
   const [files, setFiles] = React.useState<File[]>([]);
   const [context, setContext] = React.useState("");
   const [step, setStep] = React.useState<Step>("upload");
   const [analysisData, setAnalysisData] = React.useState<any>(null);
   const [isAnalyzing, setIsAnalyzing] = React.useState(false);
+
+  const handleAuthSuccess = () => {
+    // Redirect to onboarding for new users
+    navigate("/onboarding");
+  };
 
   const handleAnalyze = async () => {
     if (files.length === 0) {
@@ -94,18 +101,18 @@ export default function Index() {
           className="mb-8 text-center"
         >
           <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-sage-light px-4 py-2">
-            <Heart className="h-5 w-5 text-primary" />
-            <span className="font-display text-lg font-medium text-primary">Relationship Coach</span>
+            <img src="/logo-without-background.png" alt="Logo" className="h-5 w-5" />
+            <span className="font-display text-lg font-medium text-primary">HeartSpeak</span>
           </div>
           <h1 className="font-display text-4xl font-bold text-foreground md:text-5xl">
             Understand Your
             <span className="block text-primary">Conversations Better</span>
           </h1>
           <p className="mt-4 max-w-md text-muted-foreground">
-            AI-powered analysis to help you communicate with clarity and compassion
+            AI-powered analysis to help you understand people and communicate with clarity and compassion
           </p>
         </motion.div>
-        <AuthForm />
+        <AuthForm onSuccess={handleAuthSuccess} />
       </div>
     );
   }
@@ -117,7 +124,7 @@ export default function Index() {
         <div className="container flex items-center justify-between py-4">
           <div className="flex items-center gap-2">
             <Heart className="h-6 w-6 text-primary" />
-            <span className="font-display text-xl font-semibold">Relationship Coach</span>
+            <span className="font-display text-xl font-semibold">HeartSpeak</span>
           </div>
           <Button variant="ghost" size="sm" onClick={signOut}>
             <LogOut className="mr-2 h-4 w-4" />

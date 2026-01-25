@@ -8,6 +8,7 @@ import { AuthProvider } from "@/hooks/useAuth";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Forbidden from "./pages/Forbidden";
+import Onboarding from "./pages/Onboarding";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +22,7 @@ const App = () => (
           <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
             <Routes>
               <Route path="/" element={<Index />} />
+              <Route path="/onboarding" element={<Onboarding />} />
               <Route path="/forbidden" element={<Forbidden />} />
               <Route path="*" element={<NotFound />} />
             </Routes>

@@ -1,5 +1,6 @@
 import * as React from "react";
-import { getAuthData, signOut as apiSignOut, onAuthStateChange } from "@/api/auth/authService";
+import { getAuthData, onAuthStateChange } from "@/api/auth/auth.sign-in";
+import { signOut as apiSignOut } from "@/api/auth/auth.sign-out";
 import { LoginUserDto, Token } from "@/types/auth";
 
 interface AuthContextType {
