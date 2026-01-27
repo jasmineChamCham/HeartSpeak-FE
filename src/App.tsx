@@ -9,6 +9,9 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Forbidden from "./pages/Forbidden";
 import Onboarding from "./pages/Onboarding";
+import LogIn from "./pages/LogIn";
+import Register from "./pages/Register";
+import AnalysisSession from "./pages/AnalysisSession";
 
 const queryClient = new QueryClient();
 
@@ -22,7 +25,10 @@ const App = () => (
           <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
             <Routes>
               <Route path="/" element={<Index />} />
+              <Route path="/login" element={<LogIn />} />
+              <Route path="/register" element={<Register />} />
               <Route path="/onboarding" element={<Onboarding />} />
+              <Route path="/analysis-session" element={<AnalysisSession />} />
               <Route path="/forbidden" element={<Forbidden />} />
               <Route path="*" element={<NotFound />} />
             </Routes>

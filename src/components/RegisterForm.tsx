@@ -5,12 +5,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { signIn } from "@/api/auth/auth.sign-in";
-import { ErrorMessages } from "@/common/error_messages";
 import { signUp } from "@/api/auth/auth.sign-up";
+import { ErrorMessages } from "@/common/error_messages";
 import { toast } from "sonner";
+import { Link } from "react-router-dom";
 
-interface AuthFormProps {
+interface RegisterFormProps {
   onSuccess?: () => void;
 }
 
@@ -23,8 +23,7 @@ const shakeAnimation = {
   idle: { x: 0 },
 };
 
-export function AuthForm({ onSuccess }: AuthFormProps) {
-  const [isLogin, setIsLogin] = React.useState(true);
+export function RegisterForm({ onSuccess }: RegisterFormProps) {
   const [isLoading, setIsLoading] = React.useState(false);
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -95,8 +94,6 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
       if (avatarPreview) {
         URL.revokeObjectURL(avatarPreview);
       }
-      // URL.createObjectURL(file) creates memory in the browser's memory (JavaScript heap),
-      // so we need to revoke it when we're done with it.
       const previewUrl = URL.createObjectURL(file);
       setAvatarPreview(previewUrl);
       clearError();
@@ -110,32 +107,27 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
     setHasError(false);
 
     try {
-      if (isLogin) {
-        await signIn({ email, password, deviceId });
-        toast.success("Welcome back!");
-      } else {
-        await signUp({
-          user: {
-            displayName,
-            email,
-            password,
-          },
-          deviceId,
-          ...(avatarFile && { avatar: avatarFile }),
-        });
-        toast.success("Account created successfully! Welcome to HeartSpeak!");
-      }
+      await signUp({
+        user: {
+          displayName,
+          email,
+          password,
+        },
+        deviceId,
+        ...(avatarFile && { avatar: avatarFile }),
+      });
+      toast.success("Account created successfully! Welcome to HeartSpeak!");
       onSuccess?.();
     } catch (err: any) {
-      let errorMessage: string = isLogin ? ErrorMessages.LOGIN : ErrorMessages.SIGNUP;
-      
+      let errorMessage: string = ErrorMessages.SIGNUP;
+
       if (err?.response?.data?.message) {
         errorMessage = err?.response?.data?.message;
       }
-      
+
       setError(errorMessage);
       setHasError(true);
-      
+
       // Reset shake animation after a short delay
       setTimeout(() => setHasError(false), 600);
     } finally {
@@ -143,11 +135,11 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
     }
   };
 
-  const inputErrorClass = error && isLogin
+  const inputErrorClass = error
     ? "border-red-500 bg-red-50/50 focus-visible:ring-red-500 dark:bg-red-950/20"
     : "";
 
-  const iconErrorClass = error && isLogin ? "text-red-500" : "text-muted-foreground";
+  const iconErrorClass = error ? "text-red-500" : "text-muted-foreground";
 
   return (
     <motion.div
@@ -158,108 +150,102 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
       <Card className="glass-card border-0 shadow-elevated">
         <CardHeader className="text-center">
           <CardTitle className="font-display text-2xl">
-            {isLogin ? "Welcome Back" : "Create Account"}
+            Create Account
           </CardTitle>
           <CardDescription>
-            {isLogin
-              ? "Sign in to continue your journey"
-              : "Start improving your communication today"}
+            Start improving your communication today
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <motion.div
-              key={hasError && isLogin ? 'error' : 'idle'}
+              key={hasError ? 'error' : 'idle'}
               variants={shakeAnimation}
-              animate={hasError && isLogin ? "shake" : "idle"}
+              animate={hasError ? "shake" : "idle"}
               className="space-y-4"
             >
-              {!isLogin && (
-                <>
-                  {/* Avatar Upload */}
-                  <div className="flex items-center gap-4">
-                    {/* Avatar Preview */}
-                    <div className="relative">
-                      <div 
-                        className="w-20 h-20 rounded-full overflow-hidden bg-muted border-2 border-border flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity"
-                        onClick={() => setShowAvatarPopup(true)}
-                      >
-                        {avatarPreview ? (
-                          <img
-                            src={avatarPreview}
-                            alt="Avatar preview"
-                            className="w-full h-full object-cover"
-                          />
-                        ) : (
-                          <User className="w-10 h-10 text-muted-foreground" />
-                        )}
-                      </div>
-                      {avatarPreview && (
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setAvatarFile(null);
-                            setAvatarPreview(null);
-                            if (fileInputRef.current) {
-                              fileInputRef.current.value = "";
-                            }
-                          }}
-                          className="absolute -top-1 -right-1 w-6 h-6 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center transition-colors z-10"
-                          aria-label="Remove avatar"
-                        >
-                          ×
-                        </button>
-                      )}
-                    </div>
-
-                    {/* Upload Button */}
-                    <div className="flex-1">
-                      <input
-                        ref={fileInputRef}
-                        id="avatar"
-                        type="file"
-                        accept="image/*"
-                        onChange={handleAvatarChange}
-                        className="hidden"
+              {/* Avatar Upload */}
+              <div className="flex items-center gap-4">
+                {/* Avatar Preview */}
+                <div className="relative">
+                  <div
+                    className="w-20 h-20 rounded-full overflow-hidden bg-muted border-2 border-border flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity"
+                    onClick={() => setShowAvatarPopup(true)}
+                  >
+                    {avatarPreview ? (
+                      <img
+                        src={avatarPreview}
+                        alt="Avatar preview"
+                        className="w-full h-full object-cover"
                       />
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={() => fileInputRef.current?.click()}
-                        className="w-full"
-                      >
-                        <Image className="mr-2 h-4 w-4" />
-                        {avatarFile ? "Change Photo" : "Upload Photo"}
-                      </Button>
-                      <p className="text-xs text-muted-foreground mt-1">
-                        Max 5MB, JPG, PNG, or GIF
-                      </p>
-                    </div>
+                    ) : (
+                      <User className="w-10 h-10 text-muted-foreground" />
+                    )}
                   </div>
+                  {avatarPreview && (
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setAvatarFile(null);
+                        setAvatarPreview(null);
+                        if (fileInputRef.current) {
+                          fileInputRef.current.value = "";
+                        }
+                      }}
+                      className="absolute -top-1 -right-1 w-6 h-6 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center transition-colors z-10"
+                      aria-label="Remove avatar"
+                    >
+                      ×
+                    </button>
+                  )}
+                </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="displayName">Display Name</Label>
-                    <div className="relative">
-                      <User className={`absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 ${iconErrorClass}`} />
-                      <Input
-                        id="displayName"
-                        value={displayName}
-                        onChange={(e) => {
-                          setDisplayName(e.target.value);
-                          clearError();
-                        }}
-                        placeholder="Your name"
-                        className={`pl-10 transition-colors ${inputErrorClass}`}
-                        required={!isLogin}
-                      />
-                    </div>
-                  </div>
-                </>
-              )}
+                {/* Upload Button */}
+                <div className="flex-1">
+                  <input
+                    ref={fileInputRef}
+                    id="avatar"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleAvatarChange}
+                    className="hidden"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="w-full"
+                  >
+                    <Image className="mr-2 h-4 w-4" />
+                    {avatarFile ? "Change Photo" : "Upload Photo"}
+                  </Button>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Max 5MB, JPG, PNG, or GIF
+                  </p>
+                </div>
+              </div>
 
               <div className="space-y-2">
-                <Label htmlFor="email" className={error && isLogin ? "text-red-600" : ""}>
+                <Label htmlFor="displayName">Display Name</Label>
+                <div className="relative">
+                  <User className={`absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 ${iconErrorClass}`} />
+                  <Input
+                    id="displayName"
+                    value={displayName}
+                    onChange={(e) => {
+                      setDisplayName(e.target.value);
+                      clearError();
+                    }}
+                    placeholder="Your name"
+                    className={`pl-10 transition-colors ${inputErrorClass}`}
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="email" className={error ? "text-red-600" : ""}>
                   Email
                 </Label>
                 <div className="relative">
@@ -280,7 +266,7 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password" className={error && isLogin ? "text-red-600" : ""}>
+                <Label htmlFor="password" className={error ? "text-red-600" : ""}>
                   Password
                 </Label>
                 <div className="relative">
@@ -322,36 +308,25 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  {isLogin ? "Signing in..." : "Creating account..."}
+                  Creating account...
                 </>
               ) : (
-                <>{isLogin ? "Sign In" : "Create Account"}</>
+                <>Create Account</>
               )}
             </Button>
           </form>
 
           <div className="mt-6 text-center">
-            <button
-              type="button"
-              onClick={() => {
-                setIsLogin(!isLogin);
-                setError(null);
-                setAvatarFile(null);
-                setAvatarPreview(null);
-                if (fileInputRef.current) {
-                  fileInputRef.current.value = "";
-                }
-              }}
+            <Link
+              to="/login"
               className="text-sm text-muted-foreground hover:text-primary transition-colors"
             >
-              {isLogin
-                ? "Don't have an account? Sign up"
-                : "Already have an account? Sign in"}
-            </button>
+              Already have an account? Log in
+            </Link>
           </div>
 
           {/* Avatar Popup Modal */}
-          {showAvatarPopup && !isLogin && (
+          {showAvatarPopup && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}

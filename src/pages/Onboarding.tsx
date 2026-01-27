@@ -12,6 +12,7 @@ import { MBTI, ZodiacSign, LoveLanguage } from "@/common/enums";
 import { updateUser } from "@/api/user/user.api";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
+import { MAIN_PAGE } from "@/common/constant";
 
 export default function Onboarding() {
   const navigate = useNavigate();
@@ -35,10 +36,10 @@ export default function Onboarding() {
       try {
         setLocalUser(JSON.parse(userJson));
       } catch (e) {
-        navigate("/");
+        navigate(MAIN_PAGE);
       }
     } else {
-      navigate("/");
+      navigate(MAIN_PAGE);
     }
   }, [navigate]);
 
@@ -99,7 +100,7 @@ export default function Onboarding() {
       }
 
       toast.success("Profile completed! Let's get started!");
-      navigate("/");
+      navigate(MAIN_PAGE);
     } catch (error) {
       console.error("Failed to complete onboarding:", error);
       toast.error("Failed to save your preferences. Please try again.");
@@ -149,7 +150,7 @@ export default function Onboarding() {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => navigate("/")}
+              onClick={() => navigate(MAIN_PAGE)}
             >
               Skip All
             </Button>

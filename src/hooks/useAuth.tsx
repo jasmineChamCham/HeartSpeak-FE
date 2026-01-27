@@ -1,5 +1,5 @@
 import * as React from "react";
-import { getAuthData, onAuthStateChange } from "@/api/auth/auth.sign-in";
+import { getAuthData, onAuthStateChange, signIn } from "@/api/auth/auth.sign-in";
 import { signOut as apiSignOut } from "@/api/auth/auth.sign-out";
 import { LoginUserDto, Token } from "@/types/auth";
 
@@ -7,6 +7,7 @@ interface AuthContextType {
   user: LoginUserDto | null;
   token: Token | null;
   isLoading: boolean;
+  login: (payload: { email: string; password: string; deviceId: string }) => Promise<{ user: LoginUserDto; token: Token }>;
   signOut: () => Promise<void>;
 }
 
@@ -34,6 +35,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => subscription.unsubscribe();
   }, []);
 
+  const login = async (payload: { email: string; password: string; deviceId: string }) => {
+    const { user: newUser, token: newToken } = await signIn(payload);
+    setToken(newToken);
+    setUser(newUser);
+    setIsLoading(false);
+    return { user: newUser, token: newToken };
+  };
+
   const signOut = async () => {
     await apiSignOut();
     setToken(null);
@@ -41,7 +50,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, isLoading, signOut }}>
+    <AuthContext.Provider value={{ user, token, isLoading, login, signOut }}>
       {children}
     </AuthContext.Provider>
   );
