@@ -4,6 +4,7 @@ import { LogInForm } from "@/components/LogInForm";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
+import { AuthLayout } from "@/components/layouts/AuthLayout";
 import { MAIN_PAGE } from "@/common/constant";
 
 export default function LogIn() {
@@ -34,25 +35,11 @@ export default function LogIn() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gradient-calm p-4">
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="mb-8 text-center"
-      >
-        <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-sage-light px-4 py-2">
-          <img src="/logo-without-background.png" alt="Logo" className="h-5 w-5" />
-          <span className="font-display text-lg font-medium text-primary">HeartSpeak</span>
-        </div>
-        <h1 className="font-display text-4xl font-bold text-foreground md:text-5xl">
-          Understand Your
-          <span className="block text-primary">Conversations Better</span>
-        </h1>
-        <p className="mt-4 max-w-md text-muted-foreground">
-          AI-powered analysis to help you understand people and communicate with clarity and compassion
-        </p>
-      </motion.div>
+    <AuthLayout
+      title="Login to your account"
+      subtitle="Enter your email below to login to your account"
+    >
       <LogInForm onSuccess={handleLogInSuccess} />
-    </div>
+    </AuthLayout>
   );
 }
