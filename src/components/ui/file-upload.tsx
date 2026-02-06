@@ -34,6 +34,7 @@ const ImagePreview = ({ file }: { file: File }) => {
 
 const VideoPreview = ({ file }: { file: File }) => {
   const [previewUrl, setPreviewUrl] = React.useState<string | null>(null);
+  const videoRef = React.useRef<HTMLVideoElement>(null);
 
   React.useEffect(() => {
     const url = URL.createObjectURL(file);
@@ -42,17 +43,23 @@ const VideoPreview = ({ file }: { file: File }) => {
     return () => URL.revokeObjectURL(url);
   }, [file]);
 
+  const handleLoadedMetadata = () => {
+    if (videoRef.current) {
+      videoRef.current.currentTime = 0.5; // Seek to 0.5s to get a frame
+    }
+  };
+
   if (!previewUrl) return null;
 
   return (
     <video
+      ref={videoRef}
       src={previewUrl}
       className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
       controls={false}
-      autoPlay
       muted
-      loop
       playsInline
+      onLoadedMetadata={handleLoadedMetadata}
     />
   );
 };

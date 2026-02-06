@@ -1,6 +1,6 @@
 import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Heart, Sparkles, MessageCircle, ArrowRight, LogOut, Loader2 } from "lucide-react";
+import { Sparkles, MessageCircle, ArrowRight, LogOut, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { FileUpload } from "@/components/ui/file-upload";
@@ -102,7 +102,7 @@ export default function AnalysisSession() {
       {/* Header */}
       <header className="border-b border-border/50 bg-card/50 backdrop-blur-sm">
         <div className="container flex items-center justify-between py-4">
-          <div 
+          <div
             className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity"
             onClick={() => navigate("/")}
           >
