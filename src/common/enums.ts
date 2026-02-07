@@ -72,3 +72,10 @@ export enum RoleType {
   ADMIN = "ADMIN",
   SUPERADMIN = "SUPERADMIN",
 }
+
+export enum WebSocketEvent {
+  START_CHAT = "start_chat",
+  JOINED_CONVERSATION = "joined_conversation",
+  CHAT_ANALYSIS_RESPONSE = "chat_analysis_response",
+  ANALYSIS_SESSION_COMPLETE = "analysis_session_complete",
+}

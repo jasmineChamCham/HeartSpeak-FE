@@ -7,8 +7,11 @@ import { FileUpload } from "@/components/ui/file-upload";
 import { AnalysisResults } from "@/components/AnalysisResults";
 import { ChatCoach } from "@/components/ChatCoach";
 import { useAuth } from "@/hooks/useAuth";
+import { useWebSocket } from "@/hooks/useWebSocket";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { createAnalysisSession } from "@/api/analysis-session/analysis-session.api";
+import { uploadMultipleToCloudinary } from "@/lib/cloudinary";
 
 type Step = "upload" | "analyzing" | "results";
 
@@ -16,10 +19,37 @@ export default function AnalysisSession() {
   const { user, isLoading: authLoading, signOut } = useAuth();
   const navigate = useNavigate();
   const [files, setFiles] = React.useState<File[]>([]);
+  const [uploadedUrls, setUploadedUrls] = React.useState<string[]>([]);
   const [context, setContext] = React.useState("");
   const [step, setStep] = React.useState<Step>("upload");
   const [analysisData, setAnalysisData] = React.useState<any>(null);
-  const [isAnalyzing, setIsAnalyzing] = React.useState(false);
+  const [isUploading, setIsUploading] = React.useState(false);
+  const [uploadProgress, setUploadProgress] = React.useState(0);
+  const [sessionId, setSessionId] = React.useState<string | null>(null);
+
+  // WebSocket connection for real-time analysis updates
+  const { isConnected: socketConnected, error: socketError } = useWebSocket({
+    sessionId,
+    onAnalysisResponse: (data) => {
+      console.log("Analysis complete, updating UI:", data);
+      setAnalysisData(data);
+      setStep("results");
+      toast.success("Analysis complete!");
+    },
+    onJoinedConversation: (data) => {
+      console.log("Successfully joined conversation:", data);
+      toast.info("Connected to analysis stream");
+    },
+    onSessionComplete: (data) => {
+      console.log("Received analysis session complete:", data);
+      // Update with the actual analysis result
+      if (data.analysisResult) {
+        setAnalysisData(data.analysisResult);
+        setStep("results");
+        toast.success("Analysis complete!");
+      }
+    },
+  });
 
   // Redirect unauthenticated users to login
   React.useEffect(() => {
@@ -28,60 +58,65 @@ export default function AnalysisSession() {
     }
   }, [user, authLoading, navigate]);
 
+  // Handle socket errors
+  React.useEffect(() => {
+    if (socketError) {
+      console.error("WebSocket error:", socketError);
+      toast.error(`Connection error: ${socketError}`);
+    }
+  }, [socketError]);
+
   const handleAnalyze = async () => {
     if (files.length === 0) {
       toast.error("Please upload at least one screenshot");
       return;
     }
 
-    setIsAnalyzing(true);
+    setIsUploading(true);
     setStep("analyzing");
 
     try {
-      // Convert files to base64 data URLs for the AI
-      const imageUrls = await Promise.all(
-        files.map(async (file) => {
-          return new Promise<string>((resolve) => {
-            const reader = new FileReader();
-            reader.onloadend = () => resolve(reader.result as string);
-            reader.readAsDataURL(file);
-          });
-        })
-      );
+      // Upload files to Cloudinary first
+      toast.info("Uploading files to cloud storage...");
+      const urls = await uploadMultipleToCloudinary(files, (progress) => {
+        setUploadProgress(progress);
+      });
 
-      const response = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/analyze-chat`,
+      setUploadedUrls(urls);
+      setIsUploading(false);
+      setUploadProgress(100);
+
+      // Send URLs to backend
+      toast.info("Creating analysis session...");
+      const result = await createAnalysisSession(
         {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
-          },
-          body: JSON.stringify({ imageUrls, contextMessage: context }),
-        }
+          contextMessage: context || undefined,
+        },
+        urls
       );
 
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || "Analysis failed");
-      }
-
-      const data = await response.json();
-      setAnalysisData(data);
-      setStep("results");
+      // Store the session ID and keep analyzing state
+      // The actual analysis will happen asynchronously via SQS
+      // WebSocket will notify us when complete
+      console.log("Analysis session created:", result);
+      setSessionId(result.id);
+      toast.success("Analysis started! Connecting to real-time updates...");
     } catch (error) {
       console.error("Analysis error:", error);
-      toast.error(error instanceof Error ? error.message : "Analysis failed");
+      toast.error(error instanceof Error ? error.message : "Failed to create analysis session");
       setStep("upload");
     } finally {
-      setIsAnalyzing(false);
+      setIsUploading(false);
     }
   };
 
   const resetAnalysis = () => {
     setFiles([]);
+    setUploadedUrls([]);
     setContext("");
     setAnalysisData(null);
+    setUploadProgress(0);
+    setSessionId(null);
     setStep("upload");
   };
 
@@ -133,7 +168,14 @@ export default function AnalysisSession() {
                 </p>
               </div>
 
-              <FileUpload files={files} onFilesChange={setFiles} />
+              <FileUpload
+                files={files}
+                onFilesChange={setFiles}
+                uploadedUrls={uploadedUrls}
+                onUploadedUrlsChange={setUploadedUrls}
+                isUploading={isUploading}
+                uploadProgress={uploadProgress}
+              />
 
               <div className="space-y-2">
                 <label className="text-sm font-medium">

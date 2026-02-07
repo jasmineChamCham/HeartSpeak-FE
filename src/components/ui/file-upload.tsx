@@ -6,6 +6,10 @@ import { motion, AnimatePresence } from "framer-motion";
 interface FileUploadProps {
   files: File[];
   onFilesChange: (files: File[]) => void;
+  uploadedUrls: string[];
+  onUploadedUrlsChange: (urls: string[]) => void;
+  isUploading?: boolean;
+  uploadProgress?: number;
   maxFiles?: number;
   accept?: string;
   className?: string;
@@ -67,6 +71,10 @@ const VideoPreview = ({ file }: { file: File }) => {
 export function FileUpload({
   files,
   onFilesChange,
+  uploadedUrls,
+  onUploadedUrlsChange,
+  isUploading = false,
+  uploadProgress = 0,
   maxFiles = 10,
   accept = "image/*,video/*",
   className,
@@ -153,6 +161,19 @@ export function FileUpload({
             <p className="text-xs text-muted-foreground">
               {files.length}/{maxFiles} files uploaded
             </p>
+            {isUploading && (
+              <div className="space-y-1">
+                <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-primary transition-all duration-300"
+                    style={{ width: `${uploadProgress}%` }}
+                  />
+                </div>
+                <p className="text-xs text-primary font-medium">
+                  Preparing ... {Math.round(uploadProgress)}%
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>
