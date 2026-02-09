@@ -9,6 +9,7 @@ import { signUp } from "@/api/auth/auth.sign-up";
 import { ErrorMessages } from "@/common/error_messages";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
+import { uploadToCloudinary } from "@/lib/cloudinary";
 
 interface RegisterFormProps {
   onSuccess?: () => void;
@@ -107,16 +108,38 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
     setHasError(false);
 
     try {
+      let avatarUrl: string | undefined;
+
+      // Upload avatar to Cloudinary first if present
+      if (avatarFile) {
+        try {
+          avatarUrl = await uploadToCloudinary(
+            avatarFile,
+            (progress) => {
+              console.log(progress);  // Progress here is the uploading progress
+            },
+            "media/users"
+          );
+        } catch (uploadError: any) {
+          setError("Failed to upload avatar. Please try again.");
+          setHasError(true);
+          setTimeout(() => setHasError(false), 600);
+          setIsLoading(false);
+          return;
+        }
+      }
+
+      // Create user account with avatarUrl
       await signUp({
         user: {
           displayName,
           email,
           password,
+          ...(avatarUrl && { avatarUrl }),
         },
         deviceId,
-        ...(avatarFile && { avatar: avatarFile }),
       });
-      toast.success("Account created successfully! Welcome to HeartSpeak!");
+      toast.success("Welcome to HeartSpeak!");
       onSuccess?.();
     } catch (err: any) {
       let errorMessage: string = ErrorMessages.SIGNUP;

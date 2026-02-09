@@ -8,35 +8,26 @@ export interface SignUpPayload {
     displayName: string;
     email: string;
     password: string;
+    avatarUrl?: string;
     mbti?: MBTI;
     zodiacSign?: ZodiacSign;
     loveLanguages?: LoveLanguage[];
   };
   deviceId: string;
-  avatar?: File;
 }
 
 export async function signUp(
   payload: SignUpPayload,
 ): Promise<{ user: LoginUserDto; token: Token }> {
-  // Create FormData for multipart/form-data upload
-  const formData = new FormData();
-
-  // Add user data as JSON string
-  formData.append("user", JSON.stringify(payload.user));
-  formData.append("deviceId", payload.deviceId);
-
-  // Add avatar file if present
-  if (payload.avatar) {
-    formData.append("avatar", payload.avatar);
-  }
-
   const response = await axios.post<AuthResponse>(
     `${API_URL}/local/sign-up`,
-    formData,
+    {
+      user: payload.user,
+      deviceId: payload.deviceId,
+    },
     {
       headers: {
-        "Content-Type": "multipart/form-data",
+        "Content-Type": "application/json",
       },
     },
   );

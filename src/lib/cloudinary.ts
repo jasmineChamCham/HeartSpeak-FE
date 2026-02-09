@@ -2,11 +2,13 @@
  * Upload a file to Cloudinary using unsigned upload
  * @param file - The file to upload
  * @param onProgress - Optional progress callback (0-100)
+ * @param folder - Optional folder path in Cloudinary (default: "media/sessions")
  * @returns Promise with Cloudinary URL
  */
 export async function uploadToCloudinary(
   file: File,
   onProgress?: (progress: number) => void,
+  folder: string = "media/sessions",
 ): Promise<string> {
   const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
   const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
@@ -20,7 +22,7 @@ export async function uploadToCloudinary(
   const formData = new FormData();
   formData.append("file", file);
   formData.append("upload_preset", uploadPreset);
-  formData.append("folder", "media/sessions");
+  formData.append("folder", folder);
 
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
