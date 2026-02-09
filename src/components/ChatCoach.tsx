@@ -92,7 +92,6 @@ export function ChatCoach({ sessionId, analysisContext, className }: ChatCoachPr
     try {
       // 1. Upload files first if any
       if (files.length > 0) {
-        toast.info("Uploading images...");
         mediaUrls = await uploadMultipleToCloudinary(files);
       }
 

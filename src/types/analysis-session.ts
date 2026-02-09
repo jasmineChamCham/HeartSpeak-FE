@@ -21,3 +21,20 @@ export interface AnalysisSession {
   result?: AnalysisResult;
   messages?: ChatMessage[];
 }
+
+export interface GetMyAnalysisSessionsQuery {
+  page?: number;
+  perPage?: number;
+  search?: string;
+  status?: AnalysisStatus;
+  order?: string;
+}
+
+export interface PaginatedAnalysisSessions {
+  meta: {
+    page: number;
+    perPage: number;
+    total: number;
+  };
+  data: AnalysisSession[];
+}

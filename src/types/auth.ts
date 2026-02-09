@@ -4,6 +4,7 @@ export interface LoginUserDto {
   id: string;
   displayName?: string;
   email: string;
+  avatarUrl?: string;
   role: RoleType;
   mbti?: MBTI;
   zodiacSign?: ZodiacSign;

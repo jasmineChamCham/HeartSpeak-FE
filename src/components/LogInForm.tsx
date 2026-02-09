@@ -65,7 +65,6 @@ export function LogInForm({ onSuccess }: LogInFormProps) {
 
     try {
       await login({ email, password, deviceId });
-      toast.success("Welcome back!");
       onSuccess?.();
     } catch (err: any) {
       let errorMessage: string = ErrorMessages.LOGIN;
