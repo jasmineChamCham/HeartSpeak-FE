@@ -37,14 +37,17 @@ export default function AnalysisSession() {
   const [uploadProgress, setUploadProgress] = React.useState(0);
   const [sessionId, setSessionId] = React.useState<string | null>(null);
 
-  // WebSocket connection for real-time analysis updates
   const { isConnected: socketConnected, error: socketError } = useWebSocket({
     sessionId,
     onAnalysisResponse: (data) => {
-      console.log("Analysis complete, updating UI:", data);
-      setAnalysisData(data);
-      setStep("results");
-      toast.success("Analysis complete!");
+      if (step !== "results") {
+        console.log("Analysis complete, updating UI:", data);
+        setAnalysisData(data);
+        setStep("results");
+        toast.success("Analysis complete!");
+      } else {
+        console.log("Ignoring analysis response - results already displayed");
+      }
     },
     onJoinedConversation: (data) => {
       console.log("Successfully joined conversation:", data);

@@ -11,6 +11,7 @@ import { sendChatMessage } from "@/api/chat-message/chat-message.api";
 import { useWebSocket } from "@/hooks/useWebSocket";
 import { ChatAnalysisProgressPayload } from "@/types/websocket.types";
 import { MessageRole } from "@/common/enums";
+import { MarkdownRenderer } from "./MarkdownRenderer";
 
 interface Message {
   role: MessageRole;
@@ -58,10 +59,7 @@ export function ChatCoach({ sessionId, analysisContext, className }: ChatCoachPr
         // If the last message is NOT an assistant message (e.g. user just sent one), start a new one.
         return [...prev, { role: MessageRole.ASSISTANT, content: data.chunk }];
       });
-      setIsLoading(false); // Stop loading once we start receiving data? 
-      // Or should we keep loading until done? 
-      // The backend streams chunks. 
-      // For better UX, we can set isLoading to false as soon as we get the first chunk.
+      setIsLoading(false);
     }
   });
 
@@ -135,7 +133,7 @@ export function ChatCoach({ sessionId, analysisContext, className }: ChatCoachPr
   };
 
   return (
-    <div className={cn("flex flex-col", className)}>
+    <div className={cn("flex flex-col min-h-0", className)}>
       <ScrollArea ref={scrollRef} className="flex-1 p-4">
         <AnimatePresence mode="popLayout">
           <div className="space-y-4">
@@ -178,9 +176,13 @@ export function ChatCoach({ sessionId, analysisContext, className }: ChatCoachPr
                       ))}
                     </div>
                   )}
-                  <p className="whitespace-pre-wrap text-sm leading-relaxed">
-                    {message.content.replace(/```json\n?|```/g, '').trim()}
-                  </p>
+                  {message.role === MessageRole.ASSISTANT ? (
+                    <MarkdownRenderer content={message.content.replace(/```json\n?|```/g, '').trim()} />
+                  ) : (
+                    <p className="whitespace-pre-wrap text-sm leading-relaxed">
+                      {message.content.trim()}
+                    </p>
+                  )}
                 </div>
 
                 {message.role === "user" && (
