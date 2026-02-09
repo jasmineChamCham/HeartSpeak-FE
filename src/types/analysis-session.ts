@@ -1,4 +1,4 @@
-import { AnalysisStatus } from "@/common/enums";
+import { AnalysisStatus, GeminiModel } from "@/common/enums";
 import { Upload } from "./upload";
 import { AnalysisResult } from "./analysis-result";
 import { ChatMessage } from "./chat-message";
@@ -6,6 +6,7 @@ import { ChatMessage } from "./chat-message";
 export interface CreateAnalysisSessionRequestBody {
   contextMessage?: string;
   mediaUrls?: string[];
+  model?: GeminiModel;
 }
 
 export interface AnalysisSession {

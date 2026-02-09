@@ -1,31 +1,41 @@
 import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Send, Bot, User, Loader2 } from "lucide-react";
+import { Send, Bot, User, Loader2, Paperclip, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { uploadMultipleToCloudinary } from "@/lib/cloudinary";
+import { sendChatMessage } from "@/api/chat-message/chat-message.api";
+import { useWebSocket } from "@/hooks/useWebSocket";
+import { ChatAnalysisProgressPayload } from "@/types/websocket.types";
+import { MessageRole } from "@/common/enums";
 
 interface Message {
-  role: "user" | "assistant";
+  role: MessageRole;
   content: string;
+  mediaUrls?: string[];
 }
 
-interface ChatCoachProps {
+export interface ChatCoachProps {
+  sessionId: string;
   analysisContext?: string;
   className?: string;
 }
 
-export function ChatCoach({ analysisContext, className }: ChatCoachProps) {
+export function ChatCoach({ sessionId, analysisContext, className }: ChatCoachProps) {
   const [messages, setMessages] = React.useState<Message[]>([
     {
-      role: "assistant",
+      role: MessageRole.ASSISTANT,
       content: "Hi! I'm your communication coach. Based on the analysis we just did, I'm here to help you understand your conversation better and provide guidance. What would you like to explore?",
     },
   ]);
   const [input, setInput] = React.useState("");
   const [isLoading, setIsLoading] = React.useState(false);
+  const [files, setFiles] = React.useState<File[]>([]);
+  const [selectedImages, setSelectedImages] = React.useState<string[]>([]);
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
   const scrollRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
@@ -34,97 +44,85 @@ export function ChatCoach({ analysisContext, className }: ChatCoachProps) {
     }
   }, [messages]);
 
-  const sendMessage = async () => {
-    if (!input.trim() || isLoading) return;
-
-    const userMessage: Message = { role: "user", content: input.trim() };
-    setMessages((prev) => [...prev, userMessage]);
-    setInput("");
-    setIsLoading(true);
-
-    let assistantContent = "";
-
-    const updateAssistant = (chunk: string) => {
-      assistantContent += chunk;
+  const { isConnected } = useWebSocket({
+    sessionId,
+    onAnalysisResponse: () => { },
+    onChatAnalysisProgress: (data: ChatAnalysisProgressPayload) => {
       setMessages((prev) => {
         const last = prev[prev.length - 1];
-        if (last?.role === "assistant" && prev.length > 1) {
+        if (last?.role === MessageRole.ASSISTANT && prev.length > 1) {
           return prev.map((m, i) =>
-            i === prev.length - 1 ? { ...m, content: assistantContent } : m
+            i === prev.length - 1 ? { ...m, content: m.content + data.chunk } : m
           );
         }
-        return [...prev, { role: "assistant", content: assistantContent }];
+        // If the last message is NOT an assistant message (e.g. user just sent one), start a new one.
+        return [...prev, { role: MessageRole.ASSISTANT, content: data.chunk }];
       });
-    };
+      setIsLoading(false); // Stop loading once we start receiving data? 
+      // Or should we keep loading until done? 
+      // The backend streams chunks. 
+      // For better UX, we can set isLoading to false as soon as we get the first chunk.
+    }
+  });
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const newFiles = Array.from(e.target.files);
+      setFiles((prev) => [...prev, ...newFiles]);
+
+      newFiles.forEach((file) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setSelectedImages((prev) => [...prev, reader.result as string]);
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+  };
+
+  const removeFile = (index: number) => {
+    setFiles((prev) => prev.filter((_, i) => i !== index));
+    setSelectedImages((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const sendMessage = async () => {
+    if ((!input.trim() && files.length === 0) || isLoading) return;
+
+    let mediaUrls: string[] = [];
+    setIsLoading(true);
 
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat-coach`,
+      // 1. Upload files first if any
+      if (files.length > 0) {
+        toast.info("Uploading images...");
+        mediaUrls = await uploadMultipleToCloudinary(files);
+      }
+
+      const userMessage: Message = {
+        role: MessageRole.USER,
+        content: input.trim(),
+        mediaUrls: mediaUrls.length > 0 ? mediaUrls : undefined
+      };
+
+      setMessages((prev) => [...prev, userMessage]);
+      setInput("");
+      setFiles([]);
+      setSelectedImages([]);
+
+      await sendChatMessage(
         {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
-          },
-          body: JSON.stringify({
-            messages: [...messages, userMessage],
-            analysisContext,
-          }),
-        }
+          sessionId,
+          role: "user",
+          content: userMessage.content,
+          mediaUrls: mediaUrls.length > 0 ? mediaUrls : undefined,
+          analysisContext,
+        },
       );
 
-      if (!response.ok) {
-        if (response.status === 429) {
-          toast.error("Rate limit exceeded. Please wait a moment and try again.");
-          return;
-        }
-        if (response.status === 402) {
-          toast.error("AI credits depleted. Please add more credits.");
-          return;
-        }
-        throw new Error("Failed to get response");
-      }
-
-      if (!response.body) throw new Error("No response body");
-
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder();
-      let buffer = "";
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-
-        buffer += decoder.decode(value, { stream: true });
-
-        let newlineIndex: number;
-        while ((newlineIndex = buffer.indexOf("\n")) !== -1) {
-          let line = buffer.slice(0, newlineIndex);
-          buffer = buffer.slice(newlineIndex + 1);
-
-          if (line.endsWith("\r")) line = line.slice(0, -1);
-          if (line.startsWith(":") || line.trim() === "") continue;
-          if (!line.startsWith("data: ")) continue;
-
-          const jsonStr = line.slice(6).trim();
-          if (jsonStr === "[DONE]") break;
-
-          try {
-            const parsed = JSON.parse(jsonStr);
-            const content = parsed.choices?.[0]?.delta?.content;
-            if (content) updateAssistant(content);
-          } catch {
-            buffer = line + "\n" + buffer;
-            break;
-          }
-        }
-      }
     } catch (error) {
       console.error("Chat error:", error);
       toast.error("Failed to send message. Please try again.");
-      // Remove the failed message attempt
-      setMessages((prev) => prev.slice(0, -1));
-    } finally {
+      setMessages((prev) => prev.filter(msg => msg !== messages[messages.length]));
       setIsLoading(false);
     }
   };
@@ -137,7 +135,7 @@ export function ChatCoach({ analysisContext, className }: ChatCoachProps) {
   };
 
   return (
-    <div className={cn("flex h-full flex-col", className)}>
+    <div className={cn("flex flex-col", className)}>
       <ScrollArea ref={scrollRef} className="flex-1 p-4">
         <AnimatePresence mode="popLayout">
           <div className="space-y-4">
@@ -157,7 +155,9 @@ export function ChatCoach({ analysisContext, className }: ChatCoachProps) {
                     <Bot className="h-4 w-4 text-primary" />
                   </div>
                 )}
-                
+
+
+
                 <div
                   className={cn(
                     "max-w-[80%] rounded-2xl px-4 py-3",
@@ -166,8 +166,20 @@ export function ChatCoach({ analysisContext, className }: ChatCoachProps) {
                       : "bg-muted text-foreground"
                   )}
                 >
+                  {message.mediaUrls && message.mediaUrls.length > 0 && (
+                    <div className="mb-2 flex flex-wrap gap-2">
+                      {message.mediaUrls.map((url, idx) => (
+                        <img
+                          key={idx}
+                          src={url}
+                          alt="Attached media"
+                          className="max-h-48 rounded-lg object-cover"
+                        />
+                      ))}
+                    </div>
+                  )}
                   <p className="whitespace-pre-wrap text-sm leading-relaxed">
-                    {message.content}
+                    {message.content.replace(/```json\n?|```/g, '').trim()}
                   </p>
                 </div>
 
@@ -178,7 +190,7 @@ export function ChatCoach({ analysisContext, className }: ChatCoachProps) {
                 )}
               </motion.div>
             ))}
-            
+
             {isLoading && messages[messages.length - 1]?.role === "user" && (
               <motion.div
                 initial={{ opacity: 0 }}
@@ -199,7 +211,39 @@ export function ChatCoach({ analysisContext, className }: ChatCoachProps) {
       </ScrollArea>
 
       <div className="border-t border-border bg-card/50 p-4">
+        {selectedImages.length > 0 && (
+          <div className="mb-2 flex gap-2 overflow-x-auto pb-2">
+            {selectedImages.map((src, idx) => (
+              <div key={idx} className="relative h-16 w-16 shrink-0">
+                <img src={src} alt="Preview" className="h-full w-full rounded-md object-cover" />
+                <button
+                  onClick={() => removeFile(idx)}
+                  className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-[10px] text-destructive-foreground hover:bg-destructive/90"
+                >
+                  <X className="h-3 w-3" />
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
         <div className="flex gap-2">
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileSelect}
+            className="hidden"
+            multiple
+            accept="image/*"
+          />
+          <Button
+            variant="outline"
+            size="icon"
+            className="h-11 w-11 shrink-0 rounded-xl"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={isLoading}
+          >
+            <Paperclip className="h-4 w-4" />
+          </Button>
           <Textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -210,7 +254,7 @@ export function ChatCoach({ analysisContext, className }: ChatCoachProps) {
           />
           <Button
             onClick={sendMessage}
-            disabled={!input.trim() || isLoading}
+            disabled={(!input.trim() && files.length === 0) || isLoading}
             size="icon"
             className="h-11 w-11 shrink-0 rounded-xl"
           >
@@ -221,6 +265,6 @@ export function ChatCoach({ analysisContext, className }: ChatCoachProps) {
           Press Enter to send, Shift+Enter for new line
         </p>
       </div>
-    </div>
+    </div >
   );
 }

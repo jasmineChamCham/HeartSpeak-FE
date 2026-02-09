@@ -9,3 +9,11 @@ export interface ChatMessage {
   createdAt: string;
   uploads?: Upload[];
 }
+
+export interface SendChatMessagePayload {
+  sessionId: string;
+  role: "user" | "assistant";
+  content: string;
+  mediaUrls?: string[];
+  analysisContext?: string;
+}

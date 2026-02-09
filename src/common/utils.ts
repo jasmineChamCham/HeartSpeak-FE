@@ -3,3 +3,10 @@ export function clearLocalStorage() {
   localStorage.removeItem("refresh_token");
   localStorage.removeItem("user");
 }
+
+export function extractAnalysisText(data: unknown): string {
+  if (typeof data === "string") {
+    return data;
+  }
+  return (data as any)?.summary || JSON.stringify(data);
+}

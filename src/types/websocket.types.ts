@@ -14,3 +14,8 @@ export interface AnalysisSessionCompletePayload {
   status: string;
   analysisResult: AnalysisResponse;
 }
+
+export interface ChatAnalysisProgressPayload {
+  messageId: string;
+  chunk: string;
+}

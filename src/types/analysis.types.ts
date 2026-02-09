@@ -3,8 +3,14 @@ export interface AnalysisResponse {
   sessionId: string;
   relationshipType: string;
   emotionAnalysis: {
-    user: string;
-    partner: string;
+    user: {
+      summary: string;
+      emotions: Record<string, number>;
+    };
+    partner: {
+      summary: string;
+      emotions: Record<string, number>;
+    };
     overallTone: string;
   };
   intentAnalysis: {

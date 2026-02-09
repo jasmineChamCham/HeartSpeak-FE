@@ -1,4 +1,5 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
 import {
   Heart,
   MessageCircle,
@@ -8,18 +9,17 @@ import {
   Sparkles,
   Target,
   Shield,
-  ArrowRight,
-  Users
+  Users,
+  ChevronDown,
+  ChevronUp
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { Button } from "@/components/ui/button";
+import { extractAnalysisText } from "@/common/utils";
+
 import { AnalysisResponse } from "@/types/analysis.types";
+import { EmotionBar } from "@/components/ui/emotion-bar";
 
 interface AnalysisResultsProps {
   data: AnalysisResponse;
@@ -39,6 +39,124 @@ const itemVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0 },
 };
+
+interface EmotionData {
+  summary: string;
+  emotions: Record<string, number>;
+}
+
+interface EmotionSectionProps {
+  title: string;
+  emotionData: EmotionData;
+}
+
+function EmotionSection({ title, emotionData }: EmotionSectionProps) {
+  const [showDetails, setShowDetails] = useState(false);
+
+  // Sort emotions by intensity (highest first)
+  const emotions = emotionData.emotions || {};
+  const sortedEmotions = Object.entries(emotions).sort(
+    ([, a], [, b]) => b - a
+  );
+
+  return (
+    <div className="space-y-3">
+      <div className="flex items-center justify-between">
+        <p className="text-sm font-medium text-muted-foreground">{title}</p>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setShowDetails(!showDetails)}
+          className="h-7 text-xs"
+        >
+          {showDetails ? (
+            <>
+              <ChevronUp className="h-3 w-3 mr-1" />
+              Hide Details
+            </>
+          ) : (
+            <>
+              <ChevronDown className="h-3 w-3 mr-1" />
+              Show Details
+            </>
+          )}
+        </Button>
+      </div>
+
+      <div className="space-y-2">
+        {sortedEmotions.length > 0 ? (
+          sortedEmotions.map(([emotion, intensity], index) => (
+            <EmotionBar
+              key={emotion}
+              emotion={emotion}
+              intensity={intensity}
+              index={index}
+            />
+          ))
+        ) : (
+          <p className="text-sm text-muted-foreground italic">No specific emotions detected.</p>
+        )}
+      </div>
+
+      <AnimatePresence>
+        {showDetails && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="overflow-hidden"
+          >
+            <div className="rounded-lg border border-border bg-card/50 p-3 mt-2">
+              <p className="text-sm leading-relaxed">
+                {extractAnalysisText(emotionData.summary)}
+              </p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+function EmotionalAnalysisCard({ emotionAnalysis }: { emotionAnalysis: AnalysisResponse["emotionAnalysis"] }) {
+  return (
+    <motion.div variants={itemVariants}>
+      <Card className="glass-card">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 font-display text-lg">
+            <Heart className="h-5 w-5 text-peach" />
+            Emotional Analysis
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          {emotionAnalysis.user && (
+            <EmotionSection
+              title="Your Emotions"
+              emotionData={emotionAnalysis.user}
+            />
+          )}
+
+          {emotionAnalysis.partner && (
+            <EmotionSection
+              title="Partner's Emotions"
+              emotionData={emotionAnalysis.partner}
+            />
+          )}
+
+          {emotionAnalysis.overallTone && (
+            <div className="rounded-lg bg-muted/50 p-3">
+              <p className="text-sm">
+                <span className="font-medium">Overall Tone: </span>
+                {extractAnalysisText(emotionAnalysis.overallTone)}
+              </p>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </motion.div>
+  );
+}
 
 const getRelationshipIcon = (type: string) => {
   switch (type?.toLowerCase()) {
@@ -91,7 +209,9 @@ export function AnalysisResults({ data }: AnalysisResultsProps) {
           <CardContent className="pt-4 space-y-4">
             {data.summary && (
               <div className="rounded-lg bg-muted/50 p-4">
-                <p className="text-sm leading-relaxed">{data.summary}</p>
+                <p className="text-sm leading-relaxed">
+                  {extractAnalysisText(data.summary)}
+                </p>
               </div>
             )}
           </CardContent>
@@ -100,44 +220,7 @@ export function AnalysisResults({ data }: AnalysisResultsProps) {
 
       {/* Emotion Analysis */}
       {data.emotionAnalysis && (
-        <motion.div variants={itemVariants}>
-          <Card className="glass-card">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 font-display text-lg">
-                <Heart className="h-5 w-5 text-peach" />
-                Emotional Analysis
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {data.emotionAnalysis.user && (
-                <div className="space-y-2">
-                  <p className="text-sm font-medium text-muted-foreground">Your Emotions</p>
-                  <div className="rounded-lg border border-border bg-card/50 p-3">
-                    <p className="text-sm leading-relaxed">{data.emotionAnalysis.user}</p>
-                  </div>
-                </div>
-              )}
-
-              {data.emotionAnalysis.partner && (
-                <div className="space-y-2">
-                  <p className="text-sm font-medium text-muted-foreground">Partner's Emotions</p>
-                  <div className="rounded-lg border border-border bg-card/50 p-3">
-                    <p className="text-sm leading-relaxed">{data.emotionAnalysis.partner}</p>
-                  </div>
-                </div>
-              )}
-
-              {data.emotionAnalysis.overallTone && (
-                <div className="rounded-lg bg-muted/50 p-3">
-                  <p className="text-sm">
-                    <span className="font-medium">Overall Tone: </span>
-                    {data.emotionAnalysis.overallTone}
-                  </p>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </motion.div>
+        <EmotionalAnalysisCard emotionAnalysis={data.emotionAnalysis} />
       )}
 
       {/* Intent Analysis */}
@@ -155,7 +238,9 @@ export function AnalysisResults({ data }: AnalysisResultsProps) {
                 <div className="space-y-2">
                   <p className="text-sm font-medium text-muted-foreground">Your Intent</p>
                   <div className="rounded-lg border border-border bg-card/50 p-3">
-                    <p className="text-sm leading-relaxed">{data.intentAnalysis.user}</p>
+                    <p className="text-sm leading-relaxed">
+                      {extractAnalysisText(data.intentAnalysis.user)}
+                    </p>
                   </div>
                 </div>
               )}
@@ -164,7 +249,9 @@ export function AnalysisResults({ data }: AnalysisResultsProps) {
                 <div className="space-y-2">
                   <p className="text-sm font-medium text-muted-foreground">Partner's Intent</p>
                   <div className="rounded-lg border border-border bg-card/50 p-3">
-                    <p className="text-sm leading-relaxed">{data.intentAnalysis.partner}</p>
+                    <p className="text-sm leading-relaxed">
+                      {extractAnalysisText(data.intentAnalysis.partner)}
+                    </p>
                   </div>
                 </div>
               )}
@@ -184,7 +271,9 @@ export function AnalysisResults({ data }: AnalysisResultsProps) {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm leading-relaxed">{data.relationshipInsights}</p>
+              <p className="text-sm leading-relaxed">
+                {extractAnalysisText(data.relationshipInsights)}
+              </p>
             </CardContent>
           </Card>
         </motion.div>
@@ -225,7 +314,9 @@ export function AnalysisResults({ data }: AnalysisResultsProps) {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm leading-relaxed">{data.communicationAdvice}</p>
+              <p className="text-sm leading-relaxed">
+                {extractAnalysisText(data.communicationAdvice)}
+              </p>
             </CardContent>
           </Card>
         </motion.div>
@@ -246,7 +337,7 @@ export function AnalysisResults({ data }: AnalysisResultsProps) {
                 {data.healthyResponses.map((response, i) => (
                   <li key={i} className="rounded-lg bg-primary/10 border border-primary/20 p-3">
                     <p className="text-sm font-medium text-primary italic">
-                      "{response}"
+                      "{extractAnalysisText(response)}"
                     </p>
                   </li>
                 ))}

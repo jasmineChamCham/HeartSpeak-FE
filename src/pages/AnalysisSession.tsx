@@ -13,6 +13,15 @@ import { useNavigate } from "react-router-dom";
 import { createAnalysisSession } from "@/api/analysis-session/analysis-session.api";
 import { uploadMultipleToCloudinary } from "@/lib/cloudinary";
 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { GeminiModel } from "@/common/enums";
+
 type Step = "upload" | "analyzing" | "results";
 
 export default function AnalysisSession() {
@@ -21,6 +30,7 @@ export default function AnalysisSession() {
   const [files, setFiles] = React.useState<File[]>([]);
   const [uploadedUrls, setUploadedUrls] = React.useState<string[]>([]);
   const [context, setContext] = React.useState("");
+  const [model, setModel] = React.useState<GeminiModel>(GeminiModel.GEMINI_3_PRO_PREVIEW);
   const [step, setStep] = React.useState<Step>("upload");
   const [analysisData, setAnalysisData] = React.useState<any>(null);
   const [isUploading, setIsUploading] = React.useState(false);
@@ -38,7 +48,6 @@ export default function AnalysisSession() {
     },
     onJoinedConversation: (data) => {
       console.log("Successfully joined conversation:", data);
-      toast.info("Connected to analysis stream");
     },
     onSessionComplete: (data) => {
       console.log("Received analysis session complete:", data);
@@ -76,8 +85,6 @@ export default function AnalysisSession() {
     setStep("analyzing");
 
     try {
-      // Upload files to Cloudinary first
-      toast.info("Uploading files to cloud storage...");
       const urls = await uploadMultipleToCloudinary(files, (progress) => {
         setUploadProgress(progress);
       });
@@ -86,21 +93,16 @@ export default function AnalysisSession() {
       setIsUploading(false);
       setUploadProgress(100);
 
-      // Send URLs to backend
-      toast.info("Creating analysis session...");
+      toast.info("Setting up an analysis session...");
       const result = await createAnalysisSession(
         {
           contextMessage: context || undefined,
+          model,
         },
         urls
       );
 
-      // Store the session ID and keep analyzing state
-      // The actual analysis will happen asynchronously via SQS
-      // WebSocket will notify us when complete
-      console.log("Analysis session created:", result);
       setSessionId(result.id);
-      toast.success("Analysis started! Connecting to real-time updates...");
     } catch (error) {
       console.error("Analysis error:", error);
       toast.error(error instanceof Error ? error.message : "Failed to create analysis session");
@@ -159,7 +161,7 @@ export default function AnalysisSession() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="mx-auto max-w-2xl space-y-6"
+              className="mx-auto max-w-2xl space-y-4"
             >
               <div className="text-center">
                 <h1 className="font-display text-3xl font-bold">Analyze Your Conversation</h1>
@@ -177,6 +179,7 @@ export default function AnalysisSession() {
                 uploadProgress={uploadProgress}
               />
 
+
               <div className="space-y-2">
                 <label className="text-sm font-medium">
                   Context (optional)
@@ -185,20 +188,34 @@ export default function AnalysisSession() {
                   value={context}
                   onChange={(e) => setContext(e.target.value)}
                   placeholder="e.g. 'This is a conversation with my partner' or 'We recently argued about X'"
-                  className="min-h-[100px] resize-none"
+                  className="min-h-[80px] resize-none"
                 />
               </div>
 
-              <Button
-                onClick={handleAnalyze}
-                disabled={files.length === 0}
-                size="lg"
-                className="w-full"
-              >
-                <Sparkles className="mr-2 h-5 w-5" />
-                Analyze Conversation
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
+              <div className="flex items-center justify-end gap-4">
+                <Select value={model} onValueChange={(value) => setModel(value as GeminiModel)}>
+                  <SelectTrigger className="w-[180px] h-11">
+                    <SelectValue placeholder="Select Model" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Object.values(GeminiModel).map((modelValue) => (
+                      <SelectItem key={modelValue} value={modelValue}>
+                        {modelValue.split("-").map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ")}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
+                <Button
+                  onClick={handleAnalyze}
+                  disabled={files.length === 0}
+                  size="lg"
+                >
+                  <Sparkles className="mr-2 h-5 w-5" />
+                  Analyze Conversation
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </div>
             </motion.div>
           )}
 
@@ -247,6 +264,7 @@ export default function AnalysisSession() {
                     <span className="font-display font-semibold">Chat with Your Coach</span>
                   </div>
                   <ChatCoach
+                    sessionId={sessionId}
                     analysisContext={JSON.stringify(analysisData)}
                     className="flex-1"
                   />

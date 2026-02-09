@@ -11,6 +11,7 @@ export async function createAnalysisSession(
   const response = await apiClient.post<AnalysisSession>("/analysis-sessions", {
     contextMessage: body.contextMessage,
     mediaUrls,
+    model: body.model,
   });
 
   return response.data;

@@ -4,6 +4,7 @@ import { WebSocketEvent } from "@/common/enums";
 import {
   AnalysisSessionCompletePayload,
   JoinedConversationPayload,
+  ChatAnalysisProgressPayload,
 } from "@/types/websocket.types";
 
 interface UseWebSocketOptions {
@@ -11,6 +12,7 @@ interface UseWebSocketOptions {
   onAnalysisResponse: (data: any) => void;
   onJoinedConversation?: (data: JoinedConversationPayload) => void;
   onSessionComplete?: (data: AnalysisSessionCompletePayload) => void;
+  onChatAnalysisProgress?: (data: ChatAnalysisProgressPayload) => void;
 }
 
 interface UseWebSocketReturn {
@@ -25,6 +27,7 @@ export function useWebSocket({
   onAnalysisResponse,
   onJoinedConversation,
   onSessionComplete,
+  onChatAnalysisProgress,
 }: UseWebSocketOptions): UseWebSocketReturn {
   const [isConnected, setIsConnected] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -35,18 +38,19 @@ export function useWebSocket({
   const onAnalysisResponseRef = useRef(onAnalysisResponse);
   const onJoinedConversationRef = useRef(onJoinedConversation);
   const onSessionCompleteRef = useRef(onSessionComplete);
+  const onChatAnalysisProgressRef = useRef(onChatAnalysisProgress);
 
   // Update all callback refs in a single effect
   useEffect(() => {
     onAnalysisResponseRef.current = onAnalysisResponse;
     onJoinedConversationRef.current = onJoinedConversation;
     onSessionCompleteRef.current = onSessionComplete;
+    onChatAnalysisProgressRef.current = onChatAnalysisProgress;
   });
 
   // Main WebSocket connection effect
   useEffect(() => {
     if (!sessionId) {
-      console.log("[WebSocket] No sessionId, skipping connection");
       hasConnectedRef.current = false;
       return;
     }
@@ -57,7 +61,6 @@ export function useWebSocket({
       return;
     }
 
-    console.log("[WebSocket] Attempting to connect to:", SOCKET_URL);
     hasConnectedRef.current = true;
 
     // Create socket connection
@@ -70,12 +73,10 @@ export function useWebSocket({
 
     // Connection event handlers
     socket.on("connect", () => {
-      console.log("[WebSocket] Connected successfully! Socket ID:", socket.id);
       setIsConnected(true);
       setError(null);
 
       // Join the conversation for this session
-      console.log("[WebSocket] Emitting START_CHAT with sessionId:", sessionId);
       socket.emit(WebSocketEvent.START_CHAT, { sessionId });
     });
 
@@ -86,14 +87,19 @@ export function useWebSocket({
     });
 
     socket.on(WebSocketEvent.CHAT_ANALYSIS_RESPONSE, (data) => {
-      console.log("Received analysis response:", JSON.stringify(data, null, 2));
       onAnalysisResponseRef.current(data);
     });
 
     socket.on(WebSocketEvent.ANALYSIS_SESSION_COMPLETE, (data) => {
-      console.log("Analysis session complete:", JSON.stringify(data, null, 2));
+      console.log("Analysis session complete");
       if (onSessionCompleteRef.current) {
         onSessionCompleteRef.current(data);
+      }
+    });
+
+    socket.on(WebSocketEvent.CHAT_ANALYSIS_PROGRESS, (data) => {
+      if (onChatAnalysisProgressRef.current) {
+        onChatAnalysisProgressRef.current(data);
       }
     });
 
