@@ -1,17 +1,10 @@
 import * as React from "react";
 import { motion } from "framer-motion";
-import { Camera, Loader2, Save, X, Edit, Mail, Calendar, Heart, Star, Sparkles, MessageCircle, Gift, HandHeart, Users } from "lucide-react";
+import { Camera, Loader2, Save, X, Edit, Mail, Calendar, Heart, Star, Sparkles, MessageCircle, Gift, HandHeart, Users, ArrowLeft } from "lucide-react";
 import { Header } from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
 import {
     Dialog,
     DialogContent,
@@ -299,6 +292,22 @@ export default function Profile() {
             />
 
             <main className="container py-8 flex-1 max-w-7xl mx-auto px-4">
+                {/* Back button */}
+                <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="mb-6"
+                >
+                    <Button
+                        onClick={() => navigate("/")}
+                        variant="ghost"
+                        size="sm"
+                        className="gap-2 hover:bg-white/60 transition-colors"
+                    >
+                        <ArrowLeft className="h-4 w-4" />
+                        Back to Analysis Sessions
+                    </Button>
+                </motion.div>
 
                 {/* Two Column Grid Layout */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -625,8 +634,8 @@ export default function Profile() {
                                     >
                                         <div
                                             className={`p-3 cursor-pointer rounded-lg border-2 transition-all hover:shadow-md ${isSelected
-                                                    ? "border-primary bg-sage-light/50 shadow-sm"
-                                                    : "border-border bg-white hover:border-primary/30"
+                                                ? "border-primary bg-sage-light/50 shadow-sm"
+                                                : "border-border bg-white hover:border-primary/30"
                                                 }`}
                                             onClick={() => {
                                                 setFormData((prev) => ({
@@ -679,8 +688,8 @@ export default function Profile() {
                                     >
                                         <div
                                             className={`p-3 cursor-pointer rounded-lg border-2 transition-all hover:shadow-md ${isSelected
-                                                    ? "border-primary bg-sage-light/50 shadow-sm"
-                                                    : "border-border bg-white hover:border-primary/30"
+                                                ? "border-primary bg-sage-light/50 shadow-sm"
+                                                : "border-border bg-white hover:border-primary/30"
                                                 }`}
                                             onClick={() => {
                                                 setFormData((prev) => ({
@@ -724,8 +733,8 @@ export default function Profile() {
                                     >
                                         <div
                                             className={`p-4 cursor-pointer transition-all hover:shadow-md h-full rounded-lg border-2 ${isSelected
-                                                    ? "border-primary bg-sage-light/50"
-                                                    : "border-border bg-white"
+                                                ? "border-primary bg-sage-light/50"
+                                                : "border-border bg-white"
                                                 }`}
                                             onClick={() => toggleLoveLanguage(option.value)}
                                         >
@@ -755,8 +764,8 @@ export default function Profile() {
                                     >
                                         <div
                                             className={`p-4 cursor-pointer transition-all hover:shadow-md h-full rounded-lg border-2 ${isSelected
-                                                    ? "border-primary bg-sage-light/50"
-                                                    : "border-border bg-white"
+                                                ? "border-primary bg-sage-light/50"
+                                                : "border-border bg-white"
                                                 }`}
                                             onClick={() => toggleLoveLanguage(option.value)}
                                         >
