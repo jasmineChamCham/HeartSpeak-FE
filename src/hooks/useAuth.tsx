@@ -9,6 +9,7 @@ interface AuthContextType {
   isLoading: boolean;
   login: (payload: { email: string; password: string; deviceId: string }) => Promise<{ user: LoginUserDto; token: Token }>;
   signOut: () => Promise<void>;
+  refreshUser: () => void;
 }
 
 const AuthContext = React.createContext<AuthContextType | undefined>(undefined);
@@ -49,8 +50,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(null);
   };
 
+  const refreshUser = () => {
+    const data = getAuthData();
+    setToken(data.token);
+    setUser(data.user);
+  };
+
   return (
-    <AuthContext.Provider value={{ user, token, isLoading, login, signOut }}>
+    <AuthContext.Provider value={{ user, token, isLoading, login, signOut, refreshUser }}>
       {children}
     </AuthContext.Provider>
   );

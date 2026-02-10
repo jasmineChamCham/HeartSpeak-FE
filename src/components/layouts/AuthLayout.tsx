@@ -9,28 +9,43 @@ interface AuthLayoutProps {
 export function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
     return (
         <div className="flex min-h-screen w-full">
-            {/* Left Side - Branding */}
-            <div className="hidden w-1/2 flex-col justify-between bg-primary p-10 text-primary-foreground lg:flex">
-                <div className="flex items-center gap-2">
-                    <img
-                        src="/logo-without-background.png"
-                        alt="Logo"
-                        className="h-8 w-8 brightness-0 invert filter"
-                    />
-                    <span className="font-display text-xl font-medium">HeartSpeak</span>
-                </div>
+            {/* Left Side - Video Background */}
+            <div className="hidden w-1/2 relative overflow-hidden lg:flex">
+                {/* Video Background */}
+                <video
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="absolute inset-0 w-full h-full object-cover"
+                >
+                    <source src="/landing-videos/landing-video-romantic.mp4" type="video/mp4" />
+                </video>
 
-                <div className="space-y-4">
-                    <h1 className="font-display text-4xl font-bold leading-tight">
-                        Understand Your Conversations Better
-                    </h1>
-                    <p className="text-lg text-primary-foreground/90">
-                        AI-powered analysis to help you understand people and communicate with clarity and compassion
-                    </p>
-                </div>
+                {/* Gradient Overlay for better text readability */}
+                <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/40 to-transparent" />
 
-                <div className="text-sm text-primary-foreground/70">
-                    &copy; {new Date().getFullYear()} HeartSpeak. All rights reserved.
+                {/* Content Overlay */}
+                <div className="relative z-10 flex flex-col justify-between p-10 text-white w-full">
+                    {/* Logo */}
+                    <div className="flex items-center gap-2">
+                        <img
+                            src="/logo-without-background.png"
+                            alt="Logo"
+                            className="h-8 w-8 brightness-0 invert filter drop-shadow-lg"
+                        />
+                        <span className="font-display text-xl font-medium drop-shadow-lg">HeartSpeak</span>
+                    </div>
+
+
+                    {/* Spacer */}
+                    <div></div>
+
+
+                    {/* Copyright */}
+                    <div className="text-sm text-white/70 drop-shadow-md">
+                        &copy; {new Date().getFullYear()} HeartSpeak. All rights reserved.
+                    </div>
                 </div>
             </div>
 

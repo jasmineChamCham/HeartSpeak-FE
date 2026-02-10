@@ -12,6 +12,7 @@ import Onboarding from "./pages/Onboarding";
 import LogIn from "./pages/LogIn";
 import Register from "./pages/Register";
 import AnalysisSession from "./pages/AnalysisSession";
+import Profile from "./pages/Profile";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +30,7 @@ const App = () => (
               <Route path="/register" element={<Register />} />
               <Route path="/onboarding" element={<Onboarding />} />
               <Route path="/analysis-session" element={<AnalysisSession />} />
+              <Route path="/profile" element={<Profile />} />
               <Route path="/forbidden" element={<Forbidden />} />
               <Route path="*" element={<NotFound />} />
             </Routes>

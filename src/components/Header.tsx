@@ -9,7 +9,7 @@ interface SessionHeaderProps {
     onSignOut: () => void;
 }
 
-export function SessionHeader({ user, onProfileClick, onSignOut }: SessionHeaderProps) {
+export function Header({ user, onProfileClick, onSignOut }: SessionHeaderProps) {
     return (
         <header className="border-b border-border/50 bg-card/50 backdrop-blur-sm sticky top-0 z-20">
             <div className="container flex items-center justify-between py-4">

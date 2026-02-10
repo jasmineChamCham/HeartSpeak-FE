@@ -7,7 +7,7 @@ import { FileUpload } from "@/components/ui/file-upload";
 import { AnalysisResults } from "@/components/AnalysisResults";
 import { ChatCoach } from "@/components/ChatCoach";
 import { AnalysisSessionsSidebar } from "@/components/AnalysisSessionsSidebar";
-import { SessionHeader } from "@/components/SessionHeader";
+import { Header } from "@/components/Header";
 import { useAuth } from "@/hooks/useAuth";
 import { useWebSocket } from "@/hooks/useWebSocket";
 import { toast } from "sonner";
@@ -209,7 +209,7 @@ export default function AnalysisSession() {
         transition={{ type: "spring", damping: 25, stiffness: 200 }}
       >
         {/* Header */}
-        <SessionHeader
+        <Header
           user={user}
           onProfileClick={() => navigate("/profile")}
           onSignOut={signOut}
