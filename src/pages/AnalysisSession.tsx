@@ -73,6 +73,9 @@ export default function AnalysisSession() {
         try {
           const updatedSession = await getAnalysisSession(data.sessionId);
           setCurrentSession(updatedSession);
+          if (addToSidebar) {
+            addToSidebar(updatedSession);
+          }
         } catch (error) {
           console.error("Failed to fetch session details:", error);
         }
@@ -220,7 +223,7 @@ export default function AnalysisSession() {
   }
 
   return (
-    <div className="flex min-h-screen gradient-calm">
+    <div className="flex h-screen overflow-hidden gradient-calm">
       {/* Sidebar */}
       <AnimatePresence mode="wait">
         {isSidebarOpen && (
@@ -275,7 +278,12 @@ export default function AnalysisSession() {
           onSignOut={signOut}
         />
 
-        <main className="container py-8 flex-1 overflow-hidden">
+        <main
+          className={cn(
+            "container py-8 flex-1",
+            step === "results" ? "overflow-hidden" : "overflow-y-auto"
+          )}
+        >
           <AnimatePresence mode="wait">
             {step === "upload" && (
               <motion.div

@@ -78,15 +78,25 @@ export function AnalysisSessionsSidebar({
         [page, searchQuery, statusFilter]
     );
 
-    const addNewSession = React.useCallback((newSession: AnalysisSession) => {
-        setSessions((prev) => [newSession, ...prev]);
+    const upsertSession = React.useCallback((session: AnalysisSession) => {
+        setSessions((prev) => {
+            const index = prev.findIndex((s) => s.id === session.id);
+            if (index !== -1) {
+                const newSessions = [...prev];
+                newSessions[index] = session;
+                // Move updated session to top
+                newSessions.splice(index, 1);
+                return [session, ...newSessions];
+            }
+            return [session, ...prev];
+        });
     }, []);
 
     React.useEffect(() => {
         if (onNewSession) {
-            onNewSession(addNewSession as any);
+            onNewSession(upsertSession as any);
         }
-    }, [addNewSession, onNewSession]);
+    }, [upsertSession, onNewSession]);
 
     // Load initial sessions
     React.useEffect(() => {
