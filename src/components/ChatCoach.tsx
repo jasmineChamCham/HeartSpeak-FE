@@ -12,6 +12,8 @@ import { useWebSocket } from "@/hooks/useWebSocket";
 import { ChatAnalysisProgressPayload } from "@/types/websocket.types";
 import { MessageRole } from "@/common/enums";
 import { MarkdownRenderer } from "./MarkdownRenderer";
+import { MediaThumbnail } from "./MediaThumbnail";
+import { MediaLightbox } from "./MediaLightbox";
 
 interface Message {
   role: MessageRole;
@@ -36,7 +38,8 @@ export function ChatCoach({ sessionId, analysisContext, className }: ChatCoachPr
   const [input, setInput] = React.useState("");
   const [isLoading, setIsLoading] = React.useState(false);
   const [files, setFiles] = React.useState<File[]>([]);
-  const [selectedImages, setSelectedImages] = React.useState<string[]>([]);
+  const [lightboxUrl, setLightboxUrl] = React.useState<string | null>(null);
+  const [isLightboxOpen, setIsLightboxOpen] = React.useState(false);
   const [page, setPage] = React.useState(0);
   const [hasMore, setHasMore] = React.useState(true);
   const [isFetchingHistory, setIsFetchingHistory] = React.useState(false);
@@ -200,20 +203,11 @@ export function ChatCoach({ sessionId, analysisContext, className }: ChatCoachPr
     if (e.target.files && e.target.files.length > 0) {
       const newFiles = Array.from(e.target.files);
       setFiles((prev) => [...prev, ...newFiles]);
-
-      newFiles.forEach((file) => {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          setSelectedImages((prev) => [...prev, reader.result as string]);
-        };
-        reader.readAsDataURL(file);
-      });
     }
   };
 
   const removeFile = (index: number) => {
     setFiles((prev) => prev.filter((_, i) => i !== index));
-    setSelectedImages((prev) => prev.filter((_, i) => i !== index));
   };
 
   const sendMessage = async () => {
@@ -237,7 +231,6 @@ export function ChatCoach({ sessionId, analysisContext, className }: ChatCoachPr
       setMessages((prev) => [...prev, userMessage]);
       setInput("");
       setFiles([]);
-      setSelectedImages([]);
 
       await sendChatMessage(
         {
@@ -319,12 +312,19 @@ export function ChatCoach({ sessionId, analysisContext, className }: ChatCoachPr
                   {message.mediaUrls && message.mediaUrls.length > 0 && (
                     <div className="mb-2 flex flex-wrap gap-2">
                       {message.mediaUrls.map((url, idx) => (
-                        <img
+                        <div
                           key={idx}
-                          src={url}
-                          alt="Attached media"
-                          className="max-h-48 rounded-lg object-cover"
-                        />
+                          className="cursor-zoom-in transition-transform hover:scale-[1.02] active:scale-[0.98]"
+                          onClick={() => {
+                            setLightboxUrl(url);
+                            setIsLightboxOpen(true);
+                          }}
+                        >
+                          <MediaThumbnail
+                            url={url}
+                            className="max-h-32 rounded-lg border border-border/50"
+                          />
+                        </div>
                       ))}
                     </div>
                   )}
@@ -365,14 +365,17 @@ export function ChatCoach({ sessionId, analysisContext, className }: ChatCoachPr
       </ScrollArea>
 
       <div className="border-t border-border bg-card/50 p-4">
-        {selectedImages.length > 0 && (
+        {files.length > 0 && (
           <div className="mb-2 flex gap-2 overflow-x-auto pb-2">
-            {selectedImages.map((src, idx) => (
+            {files.map((file, idx) => (
               <div key={idx} className="relative h-16 w-16 shrink-0">
-                <img src={src} alt="Preview" className="h-full w-full rounded-md object-cover" />
+                <MediaThumbnail
+                  file={file}
+                  className="h-full w-full rounded-md"
+                />
                 <button
                   onClick={() => removeFile(idx)}
-                  className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-[10px] text-destructive-foreground hover:bg-destructive/90"
+                  className="absolute -right-1 -top-1 z-10 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-[10px] text-destructive-foreground hover:bg-destructive/90"
                 >
                   <X className="h-3 w-3" />
                 </button>
@@ -419,6 +422,12 @@ export function ChatCoach({ sessionId, analysisContext, className }: ChatCoachPr
           Press Enter to send, Shift+Enter for new line
         </p>
       </div>
+
+      <MediaLightbox
+        url={lightboxUrl}
+        isOpen={isLightboxOpen}
+        onClose={() => setIsLightboxOpen(false)}
+      />
     </div >
   );
 }
