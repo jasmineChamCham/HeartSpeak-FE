@@ -20,8 +20,9 @@ export function EmotionBar({ emotion, intensity, index = 0 }: EmotionBarProps) {
     const percentage = Math.round(intensity * 100);
     const colorClass = emotionColors[index % emotionColors.length];
 
-    const emotionLabel =
-        emotion.charAt(0).toUpperCase() + emotion.slice(1).replace(/-/g, " ");
+    // Replace underscores/hyphens with spaces, add space before capital letters (camelCase), and capitalize first letter
+    const formatted = emotion.replace(/[-_]/g, " ").replace(/([a-z])([A-Z])/g, "$1 $2").trim();
+    const emotionLabel = formatted.charAt(0).toUpperCase() + formatted.slice(1);
 
     return (
         <div className="space-y-1.5">

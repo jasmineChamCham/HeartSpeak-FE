@@ -12,8 +12,11 @@ import { useAuth } from "@/hooks/useAuth";
 import { useWebSocket } from "@/hooks/useWebSocket";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
-import { createAnalysisSession, getMyAnalysisSessions } from "@/api/analysis-session/analysis-session.api";
+import { createAnalysisSession, getAnalysisSession } from "@/api/analysis-session/analysis-session.api";
+import { useQuery } from "@tanstack/react-query";
 import { uploadMultipleToCloudinary } from "@/lib/cloudinary";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
 import {
   Select,
@@ -22,7 +25,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { GeminiModel } from "@/common/enums";
+import { AnalysisStatus, GeminiModel, RelationshipType } from "@/common/enums";
 import type { AnalysisSession as AnalysisSessionType } from "@/types/analysis-session";
 
 type Step = "upload" | "analyzing" | "results";
@@ -40,6 +43,8 @@ export default function AnalysisSession() {
   const [uploadProgress, setUploadProgress] = React.useState(0);
   const [sessionId, setSessionId] = React.useState<string | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(true);
+  const [addToSidebar, setAddToSidebar] = React.useState<((session: AnalysisSessionType) => void) | null>(null);
+  const [currentSession, setCurrentSession] = React.useState<AnalysisSessionType | null>(null);
 
   const { isConnected: socketConnected, error: socketError } = useWebSocket({
     sessionId,
@@ -56,13 +61,21 @@ export default function AnalysisSession() {
     onJoinedConversation: (data) => {
       console.log("Successfully joined conversation:", data);
     },
-    onSessionComplete: (data) => {
+    onSessionComplete: async (data) => {
       console.log("Received analysis session complete:", data);
       // Update with the actual analysis result
       if (data.analysisResult) {
         setAnalysisData(data.analysisResult);
         setStep("results");
         toast.success("Analysis complete!");
+
+        // Fetch updated session to get relationship type
+        try {
+          const updatedSession = await getAnalysisSession(data.sessionId);
+          setCurrentSession(updatedSession);
+        } catch (error) {
+          console.error("Failed to fetch session details:", error);
+        }
       }
     },
   });
@@ -81,6 +94,32 @@ export default function AnalysisSession() {
       toast.error(`Connection error: ${socketError}`);
     }
   }, [socketError]);
+
+  const getRelationshipColor = (type?: string) => {
+    if (!type) return "bg-gray-500/10 text-gray-700 dark:text-gray-400 border-gray-500/20";
+    const normalizedType = type.toLowerCase();
+
+    switch (normalizedType) {
+      case RelationshipType.PARTNER:
+      case RelationshipType.ROMANTIC:
+        return "bg-pink-500/10 text-pink-700 dark:text-pink-400 border-pink-500/20";
+      case RelationshipType.FRIEND:
+        return "bg-blue-500/10 text-blue-700 dark:text-blue-400 border-blue-500/20";
+      case RelationshipType.FAMILY:
+        return "bg-purple-500/10 text-purple-700 dark:text-purple-400 border-purple-500/20";
+      case RelationshipType.COLLEAGUE:
+        return "bg-orange-500/10 text-orange-700 dark:text-orange-400 border-orange-500/20";
+      case RelationshipType.ACQUAINTANCE:
+        return "bg-teal-500/10 text-teal-700 dark:text-teal-400 border-teal-500/20";
+      default:
+        return "bg-gray-500/10 text-gray-700 dark:text-gray-400 border-gray-500/20";
+    }
+  };
+
+  const formatRelationshipType = (type?: string) => {
+    if (!type) return "Unknown";
+    return type.charAt(0).toUpperCase() + type.slice(1);
+  };
 
   const handleAnalyze = async () => {
     if (files.length === 0) {
@@ -110,6 +149,11 @@ export default function AnalysisSession() {
       );
 
       setSessionId(result.id);
+
+      if (addToSidebar) {
+        addToSidebar(result);
+      }
+      setCurrentSession(result);
     } catch (error) {
       console.error("Analysis error:", error);
       toast.error(error instanceof Error ? error.message : "Failed to create analysis session");
@@ -125,26 +169,41 @@ export default function AnalysisSession() {
     setContext("");
     setAnalysisData(null);
     setUploadProgress(0);
+    setUploadProgress(0);
     setSessionId(null);
+    setCurrentSession(null);
     setStep("upload");
   };
 
-  const handleSessionSelect = async (session: AnalysisSessionType) => {
-    try {
-      setSessionId(session.id);
+  const { data: fetchedSession, isLoading: isSessionLoading } = useQuery({
+    queryKey: ["analysisSession", sessionId],
+    queryFn: () => getAnalysisSession(sessionId!),
+    enabled: !!sessionId,
+  });
 
-      if (session.status === "completed" && session.result) {
-        setAnalysisData(session.result);
+  React.useEffect(() => {
+    if (fetchedSession) {
+      setCurrentSession(fetchedSession);
+      if (fetchedSession.status === AnalysisStatus.COMPLETED && fetchedSession.result) {
+        setAnalysisData(fetchedSession.result);
         setStep("results");
-      } else if (session.status === "processing" || session.status === "pending") {
+      } else if (fetchedSession.status === AnalysisStatus.PROCESSING || fetchedSession.status === AnalysisStatus.PENDING) {
         setStep("analyzing");
-        toast.info("Session is still processing...");
-      } else if (session.status === "failed") {
-        toast.error("This session failed to complete");
       }
-    } catch (error) {
-      console.error("Failed to load session:", error);
-      toast.error("Failed to load session");
+    }
+  }, [fetchedSession]);
+
+  const handleSessionSelect = (session: AnalysisSessionType) => {
+    setSessionId(session.id);
+    // Optimistically set the session to show immediate feedback
+    setCurrentSession(session);
+
+    // Check local state first for immediate UI feedback while fetching fresh data
+    if (session.status === AnalysisStatus.COMPLETED && session.result) {
+      setAnalysisData(session.result);
+      setStep("results");
+    } else if (session.status === AnalysisStatus.PROCESSING || session.status === AnalysisStatus.PENDING) {
+      setStep("analyzing");
     }
   };
 
@@ -175,6 +234,7 @@ export default function AnalysisSession() {
             <AnalysisSessionsSidebar
               onSessionSelect={handleSessionSelect}
               currentSessionId={sessionId}
+              onNewSession={(callback) => setAddToSidebar(() => callback)}
             />
           </motion.aside>
         )}
@@ -205,7 +265,7 @@ export default function AnalysisSession() {
       {/* Main Content */}
       <motion.div
         layout
-        className="flex-1 flex flex-col min-w-0"
+        className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden"
         transition={{ type: "spring", damping: 25, stiffness: 200 }}
       >
         {/* Header */}
@@ -215,7 +275,7 @@ export default function AnalysisSession() {
           onSignOut={signOut}
         />
 
-        <main className="container py-8 flex-1">
+        <main className="container py-8 flex-1 overflow-hidden">
           <AnimatePresence mode="wait">
             {step === "upload" && (
               <motion.div
@@ -307,11 +367,24 @@ export default function AnalysisSession() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
-                className="grid gap-8 lg:grid-cols-2"
+                className="grid gap-8 lg:grid-cols-2 h-full overflow-hidden"
               >
-                <div className="space-y-4">
+                <div className="space-y-4 overflow-y-auto pr-2">
                   <div className="flex items-center justify-between">
-                    <h2 className="font-display text-2xl font-bold">Analysis Results</h2>
+                    <div className="flex items-center gap-3">
+                      <h2 className="font-display text-2xl font-bold">Analysis Results</h2>
+                      {currentSession?.relationship?.relation && (
+                        <Badge
+                          variant="outline"
+                          className={cn(
+                            "text-xs font-medium",
+                            getRelationshipColor(currentSession.relationship.relation)
+                          )}
+                        >
+                          {formatRelationshipType(currentSession.relationship.relation)}
+                        </Badge>
+                      )}
+                    </div>
                     <Button variant="outline" onClick={resetAnalysis}>
                       New Analysis
                     </Button>
@@ -319,7 +392,7 @@ export default function AnalysisSession() {
                   <AnalysisResults data={analysisData} />
                 </div>
 
-                <div className="lg:sticky lg:top-8 lg:h-[calc(100vh-8rem)]">
+                <div className="h-full overflow-hidden">
                   <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-card">
                     <div className="flex items-center gap-2 border-b border-border bg-sage-light/50 px-4 py-3">
                       <MessageCircle className="h-5 w-5 text-primary" />

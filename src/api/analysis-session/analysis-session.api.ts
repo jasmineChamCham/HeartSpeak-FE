@@ -39,3 +39,12 @@ export async function getMyAnalysisSessions(
 
   return response.data;
 }
+
+export async function getAnalysisSession(
+  sessionId: string,
+): Promise<AnalysisSession> {
+  const response = await apiClient.get<AnalysisSession>(
+    `/analysis-sessions/${sessionId}`,
+  );
+  return response.data;
+}

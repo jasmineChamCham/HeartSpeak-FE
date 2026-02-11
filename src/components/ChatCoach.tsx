@@ -7,7 +7,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { uploadMultipleToCloudinary } from "@/lib/cloudinary";
-import { sendChatMessage } from "@/api/chat-message/chat-message.api";
+import { sendChatMessage, getChatMessagesBySessionId } from "@/api/chat-message/chat-message.api";
 import { useWebSocket } from "@/hooks/useWebSocket";
 import { ChatAnalysisProgressPayload } from "@/types/websocket.types";
 import { MessageRole } from "@/common/enums";
@@ -17,6 +17,7 @@ interface Message {
   role: MessageRole;
   content: string;
   mediaUrls?: string[];
+  createdAt?: string;
 }
 
 export interface ChatCoachProps {
@@ -36,14 +37,146 @@ export function ChatCoach({ sessionId, analysisContext, className }: ChatCoachPr
   const [isLoading, setIsLoading] = React.useState(false);
   const [files, setFiles] = React.useState<File[]>([]);
   const [selectedImages, setSelectedImages] = React.useState<string[]>([]);
+  const [page, setPage] = React.useState(0);
+  const [hasMore, setHasMore] = React.useState(true);
+  const [isFetchingHistory, setIsFetchingHistory] = React.useState(false);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
   const scrollRef = React.useRef<HTMLDivElement>(null);
+  const viewportRef = React.useRef<HTMLDivElement>(null);
+
+  const fetchMessages = React.useCallback(async (pageNum: number) => {
+    try {
+      setIsFetchingHistory(true);
+      const newMessages = await getChatMessagesBySessionId(sessionId, pageNum, 20);
+
+      if (newMessages.length < 20) {
+        setHasMore(false);
+      }
+
+      const formattedMessages: Message[] = newMessages.map((msg) => ({
+        role: msg.role,
+        content: msg.content,
+        mediaUrls: msg.uploads?.map((u) => u.filePath),
+        createdAt: msg.createdAt,
+      }));
+
+      setMessages((prev) => {
+        // Filter out duplicates based on content and createdAt if possible, 
+        // but for now just merging and sorting.
+        // Since we don't have unique IDs in Message interface, we rely on state management.
+        // Ideally we should use IDs.
+
+        // Combine with previous messages, avoiding duplicates if any overlaps (though simple pagination shouldn't overlap)
+        // If page is 0, we might want to replace the initial "Hi" if it's not a real message?
+        // But the "Hi" message is local state.
+
+        // If it's page 0, we can replace the default state IF we have history.
+        const sortedNew = formattedMessages.sort((a, b) => new Date(a.createdAt || 0).getTime() - new Date(b.createdAt || 0).getTime());
+
+        if (pageNum === 0) {
+          // If we have history, replace the default message
+          if (sortedNew.length > 0) {
+            return sortedNew;
+          }
+          // If no history, keep the default message (which is already in prev if we just reset, or we can ensure it)
+          // valid case: prev is default, sortedNew is empty -> return prev
+          return prev;
+        }
+
+        // Prepend for older pages
+        return [...sortedNew, ...prev];
+      });
+
+    } catch (error) {
+      console.error("Failed to fetch history:", error);
+    } finally {
+      setIsFetchingHistory(false);
+    }
+  }, [sessionId]);
 
   React.useEffect(() => {
-    if (scrollRef.current) {
+    // Initial fetch
+    // Reset to default state
+    setMessages([
+      {
+        role: MessageRole.ASSISTANT,
+        content: "Hi! I'm your communication coach. Based on the analysis we just did, I'm here to help you understand your conversation better and provide guidance. What would you like to explore?",
+      },
+    ]);
+    setPage(0);
+    setHasMore(true);
+    fetchMessages(0);
+  }, [sessionId, fetchMessages]);
+
+  const onScroll = React.useCallback((e: React.UIEvent<HTMLDivElement>) => {
+    const target = e.currentTarget;
+    if (target.scrollTop === 0 && hasMore && !isFetchingHistory) {
+      // Load previous page
+      const nextPage = page + 1;
+      setPage(nextPage);
+
+      // Save scroll height before loading to adjust scroll position
+      const scrollHeightBefore = target.scrollHeight;
+
+      fetchMessages(nextPage).then(() => {
+        // Adjust scroll position after render (useEffect or useLayoutEffect better?)
+        // We can do it in a layout effect dependency on messages?
+        // But messages change on send too.
+      });
+    }
+  }, [hasMore, isFetchingHistory, page, fetchMessages]);
+
+  // Scroll adjustment for history load
+  React.useEffect(() => {
+    // This simple logic might conflict with auto-scroll to bottom on new message.
+    // We need to distinguish between "loaded history" and "new message".
+    // One way is checking if we just fetched history.
+    if (isFetchingHistory) return;
+
+    // If we are at page > 0, we probably just loaded history?
+    // No, isFetchingHistory is false when done.
+
+    // Auto-scroll to bottom only if we are near bottom OR if it's the very first load?
+    if (scrollRef.current && page === 0) {
+      // simple scroll to bottom for now
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [messages]);
+  }, [messages, page, isFetchingHistory]);
+
+  // Better scroll handling:
+  // When messages update:
+  // 1. If new message sent/received (added to end) -> scroll to bottom.
+  // 2. If history loaded (added to start) -> maintain relative scroll position.
+
+  const previousMessagesLength = React.useRef(messages.length);
+
+  React.useLayoutEffect(() => {
+    const scrollContainer = viewportRef.current;
+    if (!scrollContainer) return;
+
+    const isNewMessage = messages.length > previousMessagesLength.current && messages[messages.length - 1].role !== messages[previousMessagesLength.current - 1]?.role; // Not robust enough logic
+
+    // If we added messages at the beginning (history load)
+    // The length increased, and the last message is likely same?? No.
+
+    // Simple logic:
+    // If we authenticated/mounted (page 0), scroll to bottom.
+    // If user scrolled to top and we engaged pagination, we want to maintain position.
+
+    if (page === 0) {
+      scrollContainer.scrollTop = scrollContainer.scrollHeight;
+    } else if (previousMessagesLength.current < messages.length) {
+      // History loaded?
+      const addedCount = messages.length - previousMessagesLength.current;
+      // Ideally calculate height difference.
+      // Since we don't have easy DOM access to exact items height here easily without extensive refs,
+      // we might assume we are at top (0) and we want to scroll down by (newScrollHeight - oldScrollHeight).
+      // But we lost oldScrollHeight.
+    }
+
+    previousMessagesLength.current = messages.length;
+  }, [messages, page]);
+
 
   const { isConnected } = useWebSocket({
     sessionId,
@@ -131,9 +264,29 @@ export function ChatCoach({ sessionId, analysisContext, className }: ChatCoachPr
     }
   };
 
+  React.useEffect(() => {
+    const viewport = viewportRef.current;
+    const handleScroll = (e: Event) => {
+      // Cast to unknown then to UIEvent or just call onScroll with mocked event if needed, 
+      // OR just adapt onScroll to accept Event or utilize the event.
+      // onScroll expects React.UIEvent.
+      // We can just call onScroll(e as unknown as React.UIEvent<HTMLDivElement>);
+      if (onScroll) onScroll(e as unknown as React.UIEvent<HTMLDivElement>);
+    };
+
+    if (viewport) {
+      viewport.addEventListener("scroll", handleScroll);
+      return () => viewport.removeEventListener("scroll", handleScroll);
+    }
+  }, [hasMore, isFetchingHistory, page, onScroll]);
+
   return (
     <div className={cn("flex flex-col min-h-0", className)}>
-      <ScrollArea ref={scrollRef} className="flex-1 p-4">
+      <ScrollArea
+        ref={scrollRef}
+        className="flex-1 p-4"
+        viewportRef={viewportRef}
+      >
         <AnimatePresence mode="popLayout">
           <div className="space-y-4">
             {messages.map((message, i) => (

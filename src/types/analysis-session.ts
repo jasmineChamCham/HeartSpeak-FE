@@ -2,6 +2,7 @@ import { AnalysisStatus, GeminiModel } from "@/common/enums";
 import { Upload } from "./upload";
 import { AnalysisResult } from "./analysis-result";
 import { ChatMessage } from "./chat-message";
+import { Relationship } from "./relationship";
 
 export interface CreateAnalysisSessionRequestBody {
   contextMessage?: string;
@@ -20,6 +21,7 @@ export interface AnalysisSession {
   uploads?: Upload[];
   result?: AnalysisResult;
   messages?: ChatMessage[];
+  relationship?: Relationship;
 }
 
 export interface GetMyAnalysisSessionsQuery {

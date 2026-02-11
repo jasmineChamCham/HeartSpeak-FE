@@ -30,12 +30,14 @@ interface AnalysisSessionsSidebarProps {
     onSessionSelect: (session: AnalysisSession) => void;
     currentSessionId?: string | null;
     isCollapsed?: boolean;
+    onNewSession?: (session: AnalysisSession) => void;
 }
 
 export function AnalysisSessionsSidebar({
     onSessionSelect,
     currentSessionId,
     isCollapsed = false,
+    onNewSession,
 }: AnalysisSessionsSidebarProps) {
     const [sessions, setSessions] = React.useState<AnalysisSession[]>([]);
     const [isLoading, setIsLoading] = React.useState(true);
@@ -75,6 +77,16 @@ export function AnalysisSessionsSidebar({
         },
         [page, searchQuery, statusFilter]
     );
+
+    const addNewSession = React.useCallback((newSession: AnalysisSession) => {
+        setSessions((prev) => [newSession, ...prev]);
+    }, []);
+
+    React.useEffect(() => {
+        if (onNewSession) {
+            onNewSession(addNewSession as any);
+        }
+    }, [addNewSession, onNewSession]);
 
     // Load initial sessions
     React.useEffect(() => {
@@ -242,20 +254,6 @@ export function AnalysisSessionsSidebar({
                                                 {session.contextMessage}
                                             </p>
                                         )}
-
-                                        {/* Metadata */}
-                                        <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                                            {session.uploads && session.uploads.length > 0 && (
-                                                <span className="flex items-center gap-1">
-                                                    📷 {session.uploads.length}
-                                                </span>
-                                            )}
-                                            {session.messages && session.messages.length > 0 && (
-                                                <span className="flex items-center gap-1">
-                                                    💬 {session.messages.length}
-                                                </span>
-                                            )}
-                                        </div>
 
                                         {/* Arrow indicator for current session */}
                                         {currentSessionId === session.id && (
