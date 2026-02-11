@@ -91,14 +91,14 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content, cla
     };
 
     const formatInline = (text: string): React.ReactNode[] => {
-        // Regex to split by bold (**text**) and italic (*text*)
-        // Note: This is a basic implementation and might not handle nested styles perfectly
-        const parts = text.split(/(\*\*.*?\*\*|\*.*?\*)/g);
+        // Regex to split by bold (**text**), italic (*text*), single quotes ('text'), and double quotes ("text")
+        // Heuristic for single quotes to avoid apostrophes in contractions.
+        const parts = text.split(/(\*\*.*?\*\*|\*.*?\*|(?<![a-zA-Z])'.+?'(?![a-zA-Z])|".+?")/g);
 
         return parts.map((part, i) => {
-            if (part.startsWith('**') && part.endsWith('**')) {
+            if (part && part.startsWith('**') && part.endsWith('**')) {
                 return <strong key={i} className="font-bold text-foreground">{part.slice(2, -2)}</strong>;
-            } else if (part.startsWith('*') && part.endsWith('*')) {
+            } else if (part && part.startsWith('*') && part.endsWith('*')) {
                 return <em key={i} className="italic text-muted-foreground">{part.slice(1, -1)}</em>;
             }
             return part;

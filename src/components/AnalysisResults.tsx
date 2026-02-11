@@ -20,6 +20,7 @@ import { extractAnalysisText } from "@/common/utils";
 
 import { AnalysisResponse } from "@/types/analysis.types";
 import { EmotionBar } from "@/components/ui/emotion-bar";
+import { MarkdownRenderer } from "./MarkdownRenderer";
 
 interface AnalysisResultsProps {
   data: AnalysisResponse;
@@ -108,9 +109,9 @@ function EmotionSection({ title, emotionData }: EmotionSectionProps) {
             className="overflow-hidden"
           >
             <div className="rounded-lg border border-border bg-card/50 p-3 mt-2">
-              <p className="text-sm leading-relaxed">
-                {extractAnalysisText(emotionData.summary)}
-              </p>
+              <div className="text-sm leading-relaxed">
+                <MarkdownRenderer content={extractAnalysisText(emotionData.summary)} />
+              </div>
             </div>
           </motion.div>
         )}
@@ -146,10 +147,10 @@ function EmotionalAnalysisCard({ emotionAnalysis }: { emotionAnalysis: AnalysisR
 
           {emotionAnalysis.overallTone && (
             <div className="rounded-lg bg-muted/50 p-3">
-              <p className="text-sm">
+              <div className="text-sm">
                 <span className="font-medium">Overall Tone: </span>
-                {extractAnalysisText(emotionAnalysis.overallTone)}
-              </p>
+                <MarkdownRenderer content={extractAnalysisText(emotionAnalysis.overallTone)} className="inline-block" />
+              </div>
             </div>
           )}
         </CardContent>
@@ -209,9 +210,9 @@ export function AnalysisResults({ data }: AnalysisResultsProps) {
           <CardContent className="pt-4 space-y-4">
             {data.summary && (
               <div className="rounded-lg bg-muted/50 p-4">
-                <p className="text-sm leading-relaxed">
-                  {extractAnalysisText(data.summary)}
-                </p>
+                <div className="text-sm leading-relaxed">
+                  <MarkdownRenderer content={extractAnalysisText(data.summary)} />
+                </div>
               </div>
             )}
           </CardContent>
@@ -238,9 +239,9 @@ export function AnalysisResults({ data }: AnalysisResultsProps) {
                 <div className="space-y-2">
                   <p className="text-sm font-medium text-muted-foreground">Your Intent</p>
                   <div className="rounded-lg border border-border bg-card/50 p-3">
-                    <p className="text-sm leading-relaxed">
-                      {extractAnalysisText(data.intentAnalysis.user)}
-                    </p>
+                    <div className="text-sm leading-relaxed">
+                      <MarkdownRenderer content={extractAnalysisText(data.intentAnalysis.user)} />
+                    </div>
                   </div>
                 </div>
               )}
@@ -249,9 +250,9 @@ export function AnalysisResults({ data }: AnalysisResultsProps) {
                 <div className="space-y-2">
                   <p className="text-sm font-medium text-muted-foreground">Partner's Intent</p>
                   <div className="rounded-lg border border-border bg-card/50 p-3">
-                    <p className="text-sm leading-relaxed">
-                      {extractAnalysisText(data.intentAnalysis.partner)}
-                    </p>
+                    <div className="text-sm leading-relaxed">
+                      <MarkdownRenderer content={extractAnalysisText(data.intentAnalysis.partner)} />
+                    </div>
                   </div>
                 </div>
               )}
@@ -271,9 +272,9 @@ export function AnalysisResults({ data }: AnalysisResultsProps) {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm leading-relaxed">
-                {extractAnalysisText(data.relationshipInsights)}
-              </p>
+              <div className="text-sm leading-relaxed">
+                <MarkdownRenderer content={extractAnalysisText(data.relationshipInsights)} />
+              </div>
             </CardContent>
           </Card>
         </motion.div>
@@ -294,7 +295,9 @@ export function AnalysisResults({ data }: AnalysisResultsProps) {
                 {data.redFlags.map((flag, i) => (
                   <li key={i} className="flex items-start gap-2 text-sm">
                     <Shield className="h-4 w-4 text-destructive shrink-0 mt-0.5" />
-                    <span>{flag}</span>
+                    <div>
+                      <MarkdownRenderer content={flag} />
+                    </div>
                   </li>
                 ))}
               </ul>
@@ -314,9 +317,9 @@ export function AnalysisResults({ data }: AnalysisResultsProps) {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm leading-relaxed">
-                {extractAnalysisText(data.communicationAdvice)}
-              </p>
+              <div className="text-sm leading-relaxed">
+                <MarkdownRenderer content={extractAnalysisText(data.communicationAdvice)} />
+              </div>
             </CardContent>
           </Card>
         </motion.div>
@@ -336,9 +339,9 @@ export function AnalysisResults({ data }: AnalysisResultsProps) {
               <ul className="space-y-3">
                 {data.healthyResponses.map((response, i) => (
                   <li key={i} className="rounded-lg bg-primary/10 border border-primary/20 p-3">
-                    <p className="text-sm font-medium text-primary italic">
-                      "{extractAnalysisText(response)}"
-                    </p>
+                    <div className="text-sm font-medium text-primary italic">
+                      <MarkdownRenderer content={`"${extractAnalysisText(response)}"`} />
+                    </div>
                   </li>
                 ))}
               </ul>

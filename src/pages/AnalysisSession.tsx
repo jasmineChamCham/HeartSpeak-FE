@@ -43,7 +43,10 @@ export default function AnalysisSession() {
   const [uploadProgress, setUploadProgress] = React.useState(0);
   const [sessionId, setSessionId] = React.useState<string | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(true);
-  const [addToSidebar, setAddToSidebar] = React.useState<((session: AnalysisSessionType) => void) | null>(null);
+  const [sidebarActions, setSidebarActions] = React.useState<{
+    upsertSession: (session: AnalysisSessionType) => void;
+    refreshSessions: () => void;
+  } | null>(null);
   const [currentSession, setCurrentSession] = React.useState<AnalysisSessionType | null>(null);
 
   const { isConnected: socketConnected, error: socketError } = useWebSocket({
@@ -73,8 +76,9 @@ export default function AnalysisSession() {
         try {
           const updatedSession = await getAnalysisSession(data.sessionId);
           setCurrentSession(updatedSession);
-          if (addToSidebar) {
-            addToSidebar(updatedSession);
+          if (sidebarActions) {
+            sidebarActions.upsertSession(updatedSession);
+            sidebarActions.refreshSessions();
           }
         } catch (error) {
           console.error("Failed to fetch session details:", error);
@@ -153,8 +157,9 @@ export default function AnalysisSession() {
 
       setSessionId(result.id);
 
-      if (addToSidebar) {
-        addToSidebar(result);
+      if (sidebarActions) {
+        sidebarActions.upsertSession(result);
+        sidebarActions.refreshSessions();
       }
       setCurrentSession(result);
     } catch (error) {
@@ -237,7 +242,7 @@ export default function AnalysisSession() {
             <AnalysisSessionsSidebar
               onSessionSelect={handleSessionSelect}
               currentSessionId={sessionId}
-              onNewSession={(callback) => setAddToSidebar(() => callback)}
+              onNewSession={(actions) => setSidebarActions(actions)}
             />
           </motion.aside>
         )}

@@ -1,3 +1,5 @@
+import { compressMedia } from "./compression";
+
 /**
  * Upload a file to Cloudinary using unsigned upload
  * @param file - The file to upload
@@ -16,6 +18,23 @@ export async function uploadToCloudinary(
   if (!cloudName || !uploadPreset) {
     throw new Error(
       "Cloudinary configuration missing. Please set VITE_CLOUDINARY_CLOUD_NAME and VITE_CLOUDINARY_UPLOAD_PRESET in .env",
+    );
+  }
+
+  // Optimize media before upload
+  try {
+    const originalSize = file.size;
+    file = await compressMedia(file);
+    const compressedSize = file.size;
+    if (compressedSize < originalSize) {
+      console.log(
+        `Media compressed: ${(originalSize / 1024 / 1024).toFixed(2)}MB -> ${(compressedSize / 1024 / 1024).toFixed(2)}MB`,
+      );
+    }
+  } catch (error) {
+    console.warn(
+      "Media compression failed, proceeding with original file:",
+      error,
     );
   }
 

@@ -30,7 +30,10 @@ interface AnalysisSessionsSidebarProps {
     onSessionSelect: (session: AnalysisSession) => void;
     currentSessionId?: string | null;
     isCollapsed?: boolean;
-    onNewSession?: (session: AnalysisSession) => void;
+    onNewSession?: (actions: {
+        upsertSession: (session: AnalysisSession) => void;
+        refreshSessions: () => void;
+    }) => void;
 }
 
 export function AnalysisSessionsSidebar({
@@ -94,9 +97,12 @@ export function AnalysisSessionsSidebar({
 
     React.useEffect(() => {
         if (onNewSession) {
-            onNewSession(upsertSession as any);
+            onNewSession({
+                upsertSession: upsertSession as any,
+                refreshSessions: () => loadSessions(true)
+            });
         }
-    }, [upsertSession, onNewSession]);
+    }, [upsertSession, loadSessions, onNewSession]);
 
     // Load initial sessions
     React.useEffect(() => {
