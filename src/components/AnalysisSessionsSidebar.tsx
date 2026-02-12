@@ -48,29 +48,46 @@ export function AnalysisSessionsSidebar({
     const [statusFilter, setStatusFilter] = React.useState<AnalysisStatus | "all">("all");
     const [page, setPage] = React.useState(0);
     const [hasMore, setHasMore] = React.useState(true);
+    const observerTarget = React.useRef<HTMLDivElement>(null);
+    const ITEMS_PER_PAGE = 20;
 
     const loadSessions = React.useCallback(
-        async (reset = false) => {
+        async (pageToLoad: number, isReset: boolean = false) => {
             try {
                 setIsLoading(true);
-                const currentPage = reset ? 0 : page;
 
                 const result = await getMyAnalysisSessions({
-                    page: currentPage,
-                    perPage: 20,
+                    page: pageToLoad,
+                    perPage: ITEMS_PER_PAGE,
                     search: searchQuery || undefined,
-                    status: statusFilter !== "all" ? statusFilter : undefined,
                     order: "createdAt:desc",
                 });
 
-                if (reset) {
-                    setSessions(result.data);
-                    setPage(0);
+                const newSessions = result.data;
+                const total = result.meta.total;
+
+                if (isReset) {
+                    setSessions(newSessions);
                 } else {
-                    setSessions((prev) => [...prev, ...result.data]);
+                    setSessions((prev) => {
+                        const existingIds = new Set(prev.map(s => s.id));
+                        const uniqueNewSessions = newSessions.filter(s => !existingIds.has(s.id));
+                        return [...prev, ...uniqueNewSessions];
+                    });
                 }
 
-                setHasMore(result.data.length === 20);
+                setPage(pageToLoad);
+
+                // Logic for hasMore with 0-based pagination
+                // If we received fewer items than requested, we are done.
+                if (newSessions.length < ITEMS_PER_PAGE) {
+                    setHasMore(false);
+                } else {
+                    // If we got a full page, check if there are more items in total
+                    // (pageToLoad + 1) * ITEMS_PER_PAGE is the count of items we would have if all pages up to this one were full
+                    setHasMore(total > (pageToLoad + 1) * ITEMS_PER_PAGE);
+                }
+
             } catch (error) {
                 console.error("Failed to load sessions:", error);
                 toast.error("Failed to load analysis sessions");
@@ -78,8 +95,37 @@ export function AnalysisSessionsSidebar({
                 setIsLoading(false);
             }
         },
-        [page, searchQuery, statusFilter]
+        [searchQuery]
     );
+
+    // Initial load & Filter change
+    React.useEffect(() => {
+        loadSessions(0, true);
+    }, [loadSessions]);
+
+    // Intersection Observer
+    React.useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (entries[0].isIntersecting && hasMore && !isLoading) {
+                    loadSessions(page + 1, false);
+                }
+            },
+            { threshold: 0.1 }
+        );
+
+        const currentTarget = observerTarget.current;
+        if (currentTarget) {
+            observer.observe(currentTarget);
+        }
+
+        return () => {
+            if (currentTarget) {
+                observer.unobserve(currentTarget);
+            }
+        };
+    }, [hasMore, isLoading, loadSessions, page]);
+
 
     const upsertSession = React.useCallback((session: AnalysisSession) => {
         setSessions((prev) => {
@@ -99,16 +145,10 @@ export function AnalysisSessionsSidebar({
         if (onNewSession) {
             onNewSession({
                 upsertSession: upsertSession as any,
-                refreshSessions: () => loadSessions(true)
+                refreshSessions: () => loadSessions(0, true)
             });
         }
     }, [upsertSession, loadSessions, onNewSession]);
-
-    // Load initial sessions
-    React.useEffect(() => {
-        loadSessions(true);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [searchQuery, statusFilter]);
 
     const getStatusIcon = (status: AnalysisStatus) => {
         switch (status) {
@@ -281,27 +321,12 @@ export function AnalysisSessionsSidebar({
                         </AnimatePresence>
                     )}
 
-                    {/* Load More Button */}
-                    {hasMore && sessions.length > 0 && (
-                        <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => {
-                                setPage((p) => p + 1);
-                                loadSessions(false);
-                            }}
-                            disabled={isLoading}
-                            className="w-full mt-2"
-                        >
-                            {isLoading ? (
-                                <>
-                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                    Loading...
-                                </>
-                            ) : (
-                                "Load More"
-                            )}
-                        </Button>
+                    {/* Loading Indicator for Infinite Scroll */}
+                    <div ref={observerTarget} className="h-4 w-full" />
+                    {isLoading && sessions.length > 0 && (
+                        <div className="flex items-center justify-center p-4">
+                            <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                        </div>
                     )}
                 </div>
             </ScrollArea>
