@@ -34,6 +34,7 @@ interface AnalysisSessionsSidebarProps {
         upsertSession: (session: AnalysisSession) => void;
         refreshSessions: () => void;
     }) => void;
+    onClose?: () => void;
 }
 
 export function AnalysisSessionsSidebar({
@@ -41,6 +42,7 @@ export function AnalysisSessionsSidebar({
     currentSessionId,
     isCollapsed = false,
     onNewSession,
+    onClose,
 }: AnalysisSessionsSidebarProps) {
     const [sessions, setSessions] = React.useState<AnalysisSession[]>([]);
     const [isLoading, setIsLoading] = React.useState(true);
@@ -225,9 +227,16 @@ export function AnalysisSessionsSidebar({
         <div className="flex h-full w-80 flex-col border-r border-border/50 bg-card/30 backdrop-blur-sm">
             {/* Header */}
             <div className="border-b border-border/50 p-4">
-                <div className="flex items-center gap-2 mb-4">
-                    <img src="/logo-without-background.png" alt="HeartSpeak" className="h-8 w-10" />
-                    <span className="font-display text-lg font-semibold">HeartSpeak</span>
+                <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-2">
+                        <img src="/logo-without-background.png" alt="HeartSpeak" className="h-8 w-10" />
+                        <span className="font-display text-lg font-semibold">HeartSpeak</span>
+                    </div>
+                    {onClose && (
+                        <Button variant="ghost" size="icon" className="lg:hidden" onClick={onClose}>
+                            <XCircle className="h-6 w-6" />
+                        </Button>
+                    )}
                 </div>
 
                 {/* Search */}
@@ -278,7 +287,10 @@ export function AnalysisSessionsSidebar({
                                     transition={{ delay: index * 0.03 }}
                                 >
                                     <button
-                                        onClick={() => onSessionSelect(session)}
+                                        onClick={() => {
+                                            onSessionSelect(session);
+                                            if (onClose) onClose();
+                                        }}
                                         className={cn(
                                             "group relative w-full rounded-lg border p-3 mb-2 text-left transition-all hover:shadow-md",
                                             currentSessionId === session.id

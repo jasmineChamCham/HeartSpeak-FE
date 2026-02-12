@@ -405,7 +405,6 @@ export function ChatCoach({ sessionId, analysisContext, className }: ChatCoachPr
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Ask me anything about your conversation..."
             className="min-h-[44px] max-h-32 resize-none rounded-xl border-border bg-background"
             rows={1}
           />

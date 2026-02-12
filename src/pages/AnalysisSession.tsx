@@ -42,7 +42,7 @@ export default function AnalysisSession() {
   const [isUploading, setIsUploading] = React.useState(false);
   const [uploadProgress, setUploadProgress] = React.useState(0);
   const [sessionId, setSessionId] = React.useState<string | null>(null);
-  const [isSidebarOpen, setIsSidebarOpen] = React.useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = React.useState(() => window.innerWidth >= 1024);
   const [sidebarActions, setSidebarActions] = React.useState<{
     upsertSession: (session: AnalysisSessionType) => void;
     refreshSessions: () => void;
@@ -243,6 +243,11 @@ export default function AnalysisSession() {
               onSessionSelect={handleSessionSelect}
               currentSessionId={sessionId}
               onNewSession={(actions) => setSidebarActions(actions)}
+              onClose={() => {
+                if (window.innerWidth < 1024) {
+                  setIsSidebarOpen(false);
+                }
+              }}
             />
           </motion.aside>
         )}
@@ -286,7 +291,7 @@ export default function AnalysisSession() {
         <main
           className={cn(
             "container py-8 flex-1",
-            step === "results" ? "overflow-hidden" : "overflow-y-auto"
+            step === "results" ? "overflow-y-auto lg:overflow-hidden" : "overflow-y-auto"
           )}
         >
           <AnimatePresence mode="wait">
@@ -380,7 +385,7 @@ export default function AnalysisSession() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
-                className="grid gap-8 lg:grid-cols-2 h-full overflow-hidden"
+                className="grid gap-8 lg:grid-cols-2 lg:h-full lg:overflow-hidden"
               >
                 <div className="space-y-4 overflow-y-auto pr-2">
                   <div className="flex items-center justify-between">
@@ -405,7 +410,7 @@ export default function AnalysisSession() {
                   <AnalysisResults data={analysisData} />
                 </div>
 
-                <div className="h-full overflow-hidden">
+                <div className="h-[600px] lg:h-full overflow-hidden">
                   <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-card">
                     <div className="flex items-center gap-2 border-b border-border bg-sage-light/50 px-4 py-3">
                       <MessageCircle className="h-5 w-5 text-primary" />
