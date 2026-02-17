@@ -16,7 +16,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content, cla
 
         lines.forEach((line, index) => {
             // Handle Headers
-            if (line.startsWith('### ')) {
+            if (line.startsWith('#### ')) {
                 if (inList) {
                     elements.push(
                         <ul key={`list-${index}`} className="list-disc pl-5 mb-4 space-y-1">
@@ -27,7 +27,22 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content, cla
                     inList = false;
                 }
                 elements.push(
-                    <h3 key={index} className="text-lg font-semibold mt-4 mb-2 text-primary">
+                    <h4 key={index} className="text-base font-bold mt-4 mb-2 text-foreground/90 flex items-center gap-2">
+                        {formatInline(line.replace('#### ', ''))}
+                    </h4>
+                );
+            } else if (line.startsWith('### ')) {
+                if (inList) {
+                    elements.push(
+                        <ul key={`list-${index}`} className="list-disc pl-5 mb-4 space-y-1">
+                            {currentList}
+                        </ul>
+                    );
+                    currentList = [];
+                    inList = false;
+                }
+                elements.push(
+                    <h3 key={index} className="text-lg font-semibold mt-3 mb-3 text-primary">
                         {formatInline(line.replace('### ', ''))}
                     </h3>
                 );
