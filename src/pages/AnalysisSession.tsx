@@ -201,6 +201,33 @@ export default function AnalysisSession() {
     }
   }, [fetchedSession]);
 
+  React.useEffect(() => {
+    const handlePaste = (e: ClipboardEvent) => {
+      if (step !== "upload") return;
+
+      const items = e.clipboardData?.items;
+      if (!items) return;
+
+      const newFiles: File[] = [];
+
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].type.startsWith("image/")) {
+          const file = items[i].getAsFile();
+          if (file) {
+            newFiles.push(file);
+          }
+        }
+      }
+
+      if (newFiles.length > 0) {
+        setFiles((prev) => [...prev, ...newFiles]);
+      }
+    };
+
+    window.addEventListener("paste", handlePaste);
+    return () => window.removeEventListener("paste", handlePaste);
+  }, [step]);
+
   const handleSessionSelect = (session: AnalysisSessionType) => {
     setSessionId(session.id);
     // Optimistically set the session to show immediate feedback
