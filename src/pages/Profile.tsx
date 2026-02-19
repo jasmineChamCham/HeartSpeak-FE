@@ -203,10 +203,10 @@ export default function Profile() {
                 updateData.displayName = formData.displayName;
             }
             if (formData.mbti !== profile.mbti) {
-                updateData.mbti = formData.mbti as MBTI;
+                updateData.mbti = formData.mbti ? (formData.mbti as MBTI) : null;
             }
             if (formData.zodiacSign !== profile.zodiacSign) {
-                updateData.zodiacSign = formData.zodiacSign as ZodiacSign;
+                updateData.zodiacSign = formData.zodiacSign ? (formData.zodiacSign as ZodiacSign) : null;
             }
             if (JSON.stringify(formData.loveLanguages) !== JSON.stringify(profile.loveLanguages)) {
                 updateData.loveLanguages = formData.loveLanguages as LoveLanguage[];
@@ -402,7 +402,7 @@ export default function Profile() {
                                         </div>
                                     ) : (
                                         <h2 className="text-2xl font-bold">
-                                            {profile.displayName || "Not set"}
+                                            {profile.displayName || "None"}
                                         </h2>
                                     )}
                                 </div>
@@ -500,7 +500,7 @@ export default function Profile() {
                                             )}
                                         </div>
                                     ) : (
-                                        <p className="text-muted-foreground text-sm">Not set</p>
+                                        <p className="text-muted-foreground text-sm">None</p>
                                     )}
                                 </div>
 
@@ -544,7 +544,7 @@ export default function Profile() {
                                             </div>
                                         </div>
                                     ) : (
-                                        <p className="text-muted-foreground text-sm">Not set</p>
+                                        <p className="text-muted-foreground text-sm">None</p>
                                     )}
                                 </div>
 
@@ -600,7 +600,7 @@ export default function Profile() {
                                                     );
                                                 })
                                             ) : (
-                                                <p className="text-muted-foreground text-sm">Not set</p>
+                                                <p className="text-muted-foreground text-sm">None</p>
                                             )}
                                         </div>
                                     )}
