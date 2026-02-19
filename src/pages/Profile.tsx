@@ -287,7 +287,6 @@ export default function Profile() {
         <div className="flex min-h-screen flex-col gradient-calm">
             <Header
                 user={authUser}
-                onProfileClick={() => navigate("/profile")}
                 onSignOut={signOut}
             />
 

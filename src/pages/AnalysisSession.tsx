@@ -363,7 +363,6 @@ export default function AnalysisSession() {
         {/* Header */}
         <Header
           user={user}
-          onProfileClick={() => navigate("/profile")}
           onSignOut={signOut}
         />
 

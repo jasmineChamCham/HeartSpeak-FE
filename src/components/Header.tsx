@@ -1,20 +1,19 @@
-import * as React from "react";
+import { Link } from "react-router-dom";
 import { LogOut, UserCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { LoginUserDto } from "@/types/auth";
 
 interface SessionHeaderProps {
     user: LoginUserDto;
-    onProfileClick: () => void;
     onSignOut: () => void;
 }
 
-export function Header({ user, onProfileClick, onSignOut }: SessionHeaderProps) {
+export function Header({ user, onSignOut }: SessionHeaderProps) {
     return (
         <header className="border-b border-border/50 bg-card/50 backdrop-blur-sm sticky top-0 z-20">
             <div className="container flex items-center justify-between py-4">
-                <button
-                    onClick={onProfileClick}
+                <Link
+                    to="/profile"
                     className="flex items-center gap-3 rounded-lg px-3 py-2 hover:bg-background/50 transition-colors group"
                 >
                     <div className="relative">
@@ -50,7 +49,7 @@ export function Header({ user, onProfileClick, onSignOut }: SessionHeaderProps) 
                         </div>
                         <div className="text-xs text-muted-foreground">View Settings</div>
                     </div>
-                </button>
+                </Link>
                 <Button variant="ghost" size="sm" onClick={onSignOut}>
                     <LogOut className="mr-2 h-4 w-4" />
                     Sign Out
