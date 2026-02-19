@@ -40,3 +40,9 @@ export interface PaginatedAnalysisSessions {
   };
   data: AnalysisSession[];
 }
+
+export interface RefineCommentDto {
+  text: string;
+  quote: string;
+  section?: string;
+}

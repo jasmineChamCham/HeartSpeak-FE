@@ -5,6 +5,7 @@ import {
   AnalysisSession,
   GetMyAnalysisSessionsQuery,
   PaginatedAnalysisSessions,
+  RefineCommentDto,
 } from "@/types/analysis-session";
 
 export async function createAnalysisSession(
@@ -47,4 +48,13 @@ export async function getAnalysisSession(
     `/analysis-sessions/${sessionId}`,
   );
   return response.data;
+}
+
+export async function refineAnalysisSession(
+  sessionId: string,
+  comments: RefineCommentDto[],
+): Promise<void> {
+  await apiClient.post(`/analysis-sessions/${sessionId}/refine`, {
+    comments,
+  });
 }

@@ -8,6 +8,7 @@ import {
     Clock,
     XCircle,
     ChevronRight,
+    Plus,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -35,6 +36,7 @@ interface AnalysisSessionsSidebarProps {
         refreshSessions: () => void;
     }) => void;
     onClose?: () => void;
+    onNewAnalysisClick?: () => void;
 }
 
 export function AnalysisSessionsSidebar({
@@ -43,6 +45,7 @@ export function AnalysisSessionsSidebar({
     isCollapsed = false,
     onNewSession,
     onClose,
+    onNewAnalysisClick,
 }: AnalysisSessionsSidebarProps) {
     const [sessions, setSessions] = React.useState<AnalysisSession[]>([]);
     const [isLoading, setIsLoading] = React.useState(true);
@@ -240,7 +243,7 @@ export function AnalysisSessionsSidebar({
                 </div>
 
                 {/* Search */}
-                <div className="relative">
+                <div className="relative mb-2">
                     <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                     <Input
                         placeholder="Search sessions..."
@@ -249,6 +252,16 @@ export function AnalysisSessionsSidebar({
                         className="pl-9 h-9 bg-background/50"
                     />
                 </div>
+
+                <Button
+                    className="w-full justify-center gap-2 bg-[#58c4b5] text-white hover:bg-[#40b9a8] shadow-sm hover:shadow-md hover:scale-[1.02] transition-all duration-300 font-medium"
+                    onClick={() => {
+                        if (onNewAnalysisClick) onNewAnalysisClick();
+                        if (onClose) onClose();
+                    }}
+                >
+                    New Analysis
+                </Button>
             </div>
 
             {/* Sessions List */}

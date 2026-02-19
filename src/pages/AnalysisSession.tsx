@@ -7,12 +7,13 @@ import { FileUpload } from "@/components/ui/file-upload";
 import { AnalysisResults } from "@/components/AnalysisResults";
 import { ChatCoach } from "@/components/ChatCoach";
 import { AnalysisSessionsSidebar } from "@/components/AnalysisSessionsSidebar";
+import { AnalysisTextSelectionMenu } from "@/components/AnalysisTextSelectionMenu";
 import { Header } from "@/components/Header";
 import { useAuth } from "@/hooks/useAuth";
 import { useWebSocket } from "@/hooks/useWebSocket";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
-import { createAnalysisSession, getAnalysisSession } from "@/api/analysis-session/analysis-session.api";
+import { createAnalysisSession, getAnalysisSession, refineAnalysisSession } from "@/api/analysis-session/analysis-session.api";
 import { useQuery } from "@tanstack/react-query";
 import { uploadMultipleToCloudinary } from "@/lib/cloudinary";
 import { Badge } from "@/components/ui/badge";
@@ -25,6 +26,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+
 import { AnalysisStatus, GeminiModel, RelationshipType } from "@/common/enums";
 import type { AnalysisSession as AnalysisSessionType } from "@/types/analysis-session";
 
@@ -48,6 +50,7 @@ export default function AnalysisSession() {
     refreshSessions: () => void;
   } | null>(null);
   const [currentSession, setCurrentSession] = React.useState<AnalysisSessionType | null>(null);
+  const [pendingRefinements, setPendingRefinements] = React.useState<{ id: string; selection: string; comment: string }[]>([]);
 
   const { isConnected: socketConnected, error: socketError } = useWebSocket({
     sessionId,
@@ -183,6 +186,54 @@ export default function AnalysisSession() {
     setStep("upload");
   };
 
+  const handleRefine = async () => {
+    if (!sessionId || pendingRefinements.length === 0) {
+      toast.error("Please provide feedback or select text to refine.");
+      return;
+    }
+
+    try {
+      setStep("analyzing");
+
+      const comments = pendingRefinements.map((ref) => ({
+        text: ref.comment,
+        quote: ref.selection,
+        section: "Specific Selection",
+      }));
+
+      await refineAnalysisSession(sessionId, comments);
+      setPendingRefinements([]);
+      toast.info("Refining analysis based on your feedback...");
+    } catch (error) {
+      console.error("Refinement error:", error);
+      toast.error("Failed to submit refinement");
+      setStep("results");
+    }
+  };
+
+  const handleContextualRefine = (selection: string, comment: string) => {
+    if (!sessionId) return "";
+
+    // Generate simple ID (timestamp + random)
+    const id = `refine-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`;
+
+    setPendingRefinements(prev => [...prev, { id, selection, comment }]);
+    toast.success("Comment added! Click 'Refine Result' to apply changes.");
+    return id;
+  };
+
+  const handleEditRefinement = (id: string, newComment: string) => {
+    setPendingRefinements(prev => prev.map(ref =>
+      ref.id === id ? { ...ref, comment: newComment } : ref
+    ));
+    toast.success("Comment updated.");
+  };
+
+  const handleDeleteRefinement = (id: string) => {
+    setPendingRefinements(prev => prev.filter(ref => ref.id !== id));
+    toast.info("Comment removed.");
+  };
+
   const { data: fetchedSession, isLoading: isSessionLoading } = useQuery({
     queryKey: ["analysisSession", sessionId],
     queryFn: () => getAnalysisSession(sessionId!),
@@ -270,6 +321,7 @@ export default function AnalysisSession() {
               onSessionSelect={handleSessionSelect}
               currentSessionId={sessionId}
               onNewSession={(actions) => setSidebarActions(actions)}
+              onNewAnalysisClick={resetAnalysis}
               onClose={() => {
                 if (window.innerWidth < 1024) {
                   setIsSidebarOpen(false);
@@ -430,11 +482,24 @@ export default function AnalysisSession() {
                         </Badge>
                       )}
                     </div>
-                    <Button variant="outline" onClick={resetAnalysis}>
-                      New Analysis
+                    <Button
+                      variant={pendingRefinements.length > 0 ? "default" : "outline"}
+                      onClick={handleRefine}
+                      disabled={pendingRefinements.length === 0}
+                    >
+                      <Sparkles className="mr-2 h-4 w-4" />
+                      Refine Result {pendingRefinements.length > 0 && `(${pendingRefinements.length})`}
                     </Button>
                   </div>
-                  <AnalysisResults data={analysisData} />
+                  <AnalysisTextSelectionMenu
+                    onRefine={handleContextualRefine}
+                    onEdit={handleEditRefinement} // Pass handler
+                    onDelete={handleDeleteRefinement} // Pass handler
+                  >
+                    <AnalysisResults
+                      data={analysisData}
+                    />
+                  </AnalysisTextSelectionMenu>
                 </div>
 
                 <div className="h-[600px] lg:h-full overflow-hidden">
@@ -455,6 +520,6 @@ export default function AnalysisSession() {
           </AnimatePresence>
         </main>
       </motion.div>
-    </div>
+    </div >
   );
 }
