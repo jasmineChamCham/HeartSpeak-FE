@@ -12,6 +12,7 @@ export interface UpdateUserRequestBody {
   mbti?: MBTI;
   zodiacSign?: ZodiacSign;
   loveLanguages?: LoveLanguage[];
+  isAllowUserData?: boolean;
 }
 
 /**
@@ -26,6 +27,7 @@ export interface User {
   mbti?: MBTI;
   zodiacSign?: ZodiacSign;
   loveLanguages?: LoveLanguage[];
+  isAllowUserData?: boolean;
   createdAt: Date;
   updatedAt?: Date;
 }

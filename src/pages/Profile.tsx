@@ -1,8 +1,9 @@
 import * as React from "react";
 import { motion } from "framer-motion";
-import { Camera, Loader2, Save, X, Edit, Mail, Calendar, Heart, Star, Sparkles, MessageCircle, Gift, HandHeart, Users, ArrowLeft } from "lucide-react";
+import { Camera, Loader2, Save, X, Edit, Mail, Calendar, Heart, Star, Sparkles, MessageCircle, Gift, HandHeart, Users, ArrowLeft, BrainCog } from "lucide-react";
 import { Header } from "@/components/Header";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -127,6 +128,7 @@ export default function Profile() {
         mbti: "",
         zodiacSign: "",
         loveLanguages: [] as string[],
+        isAllowUserData: true,
     });
 
     // Redirect unauthenticated users
@@ -152,6 +154,7 @@ export default function Profile() {
                     mbti: data.mbti || "",
                     zodiacSign: data.zodiacSign || "",
                     loveLanguages: data.loveLanguages || [],
+                    isAllowUserData: data.isAllowUserData,
                 });
             } catch (error) {
                 console.error("Failed to fetch profile:", error);
@@ -214,6 +217,8 @@ export default function Profile() {
             if (avatarUrl !== profile.avatarUrl) {
                 updateData.avatarUrl = avatarUrl;
             }
+            // Always include isAllowUserData in payload so the toggle is always persisted
+            updateData.isAllowUserData = formData.isAllowUserData;
 
             // Only update if there are changes
             if (Object.keys(updateData).length === 0) {
@@ -256,6 +261,7 @@ export default function Profile() {
             mbti: profile.mbti || "",
             zodiacSign: profile.zodiacSign || "",
             loveLanguages: profile.loveLanguages || [],
+            isAllowUserData: profile.isAllowUserData,
         });
     };
 
@@ -432,7 +438,7 @@ export default function Profile() {
                     </motion.div>
 
                     {/* Right Column - About You Card */}
-                    <div className="lg:col-span-2">
+                    <div className="lg:col-span-2 space-y-6">
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -447,7 +453,7 @@ export default function Profile() {
                                 </h3>
                                 <p className="text-xs text-muted-foreground mt-1">Your personality and preferences</p>
                             </div>
-                            <div className="p-6 space-y-8 overflow-y-auto">
+                            <div className="p-6 space-y-4 overflow-y-auto">
                                 {/* MBTI */}
                                 <div>
                                     <Label className="text-sm font-medium text-muted-foreground mb-3 flex items-center gap-2">
@@ -607,6 +613,46 @@ export default function Profile() {
                                 </div>
                             </div>
                         </motion.div>
+
+                        {/* Analysis Settings Card */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.3 }}
+                            className="rounded-2xl border border-border bg-card shadow-card overflow-hidden"
+                        >
+                            <div className="bg-gradient-to-r from-primary/10 via-primary/5 to-transparent px-6 py-4 border-b border-border">
+                                <h3 className="text-lg font-semibold flex items-center gap-2">
+                                    <BrainCog className="h-5 w-5 text-primary" />
+                                    Analysis Settings
+                                </h3>
+                                <p className="text-xs text-muted-foreground mt-1">Control how AI uses your personal data</p>
+                            </div>
+                            <div className="p-6">
+                                <div className="flex items-start justify-between gap-4">
+                                    <div className="flex-1">
+                                        <p className="text-sm font-medium">Use my profile in analysis</p>
+                                        <p className="text-xs text-muted-foreground mt-1">
+                                            When enabled, the AI will consider your Zodiac sign, MBTI type, and love
+                                            languages when analyzing conversations and responding in chat.
+                                        </p>
+                                    </div>
+                                    <div className="flex flex-col items-center gap-1.5 flex-shrink-0">
+                                        <Switch
+                                            id="use-personal-data"
+                                            checked={formData.isAllowUserData}
+                                            onCheckedChange={(checked) =>
+                                                setFormData((prev) => ({ ...prev, isAllowUserData: checked }))
+                                            }
+                                            disabled={!isEditing}
+                                        />
+                                        <span className={`text-xs font-medium transition-colors ${formData.isAllowUserData ? "text-primary" : "text-muted-foreground"
+                                            }`}>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </motion.div>
                     </div>
                 </div>
 
@@ -677,7 +723,6 @@ export default function Profile() {
                         </DialogHeader>
                         <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 mt-4">
                             {Object.entries(zodiacOptions).map(([key, option]) => {
-                                const zodiacValue = key.charAt(0).toUpperCase() + key.slice(1);
                                 const isSelected = formData.zodiacSign?.toLowerCase() === key;
                                 return (
                                     <motion.div
@@ -693,7 +738,7 @@ export default function Profile() {
                                             onClick={() => {
                                                 setFormData((prev) => ({
                                                     ...prev,
-                                                    zodiacSign: isSelected ? "" : zodiacValue
+                                                    zodiacSign: isSelected ? "" : key
                                                 }));
                                             }}
                                         >
