@@ -7,19 +7,43 @@ interface AuthLayoutProps {
 }
 
 export function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
+    const videoRef = React.useRef<HTMLVideoElement>(null);
+
+    React.useEffect(() => {
+        const video = videoRef.current;
+        if (video) {
+            video.muted = true;
+            video.play().catch(() => {
+                // Autoplay was blocked, video will show poster instead
+            });
+        }
+    }, []);
+
     return (
         <div className="flex min-h-screen w-full">
             {/* Left Side - Video Background */}
             <div className="hidden w-1/2 relative overflow-hidden lg:flex">
                 {/* Video Background */}
                 <video
+                    ref={videoRef}
                     autoPlay
                     loop
                     muted
                     playsInline
+                    preload="auto"
+                    poster="https://res.cloudinary.com/dyw50hhip/video/upload/q_auto,f_auto,w_854,so_0/landing-page-videos/hbrgguokmoel1sutehph"
                     className="absolute inset-0 w-full h-full object-cover"
                 >
-                    <source src="/landing-videos/landing-video-romantic.mp4" type="video/mp4" />
+                    {/* HLS adaptive streaming — loads only what the connection can handle */}
+                    <source
+                        src="https://res.cloudinary.com/dyw50hhip/video/upload/q_auto:eco,w_854,vc_h264/landing-page-videos/hbrgguokmoel1sutehph.m3u8"
+                        type="application/x-mpegURL"
+                    />
+                    {/* Compressed MP4 fallback */}
+                    <source
+                        src="https://res.cloudinary.com/dyw50hhip/video/upload/q_auto:eco,w_854,vc_h264,f_mp4/landing-page-videos/hbrgguokmoel1sutehph.mp4"
+                        type="video/mp4"
+                    />
                 </video>
 
                 {/* Gradient Overlay for better text readability */}
