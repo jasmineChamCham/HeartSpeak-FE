@@ -257,6 +257,23 @@ export function ChatCoach({ sessionId, analysisContext, className }: ChatCoachPr
     }
   };
 
+  const handlePaste = (e: React.ClipboardEvent) => {
+    const items = e.clipboardData?.items;
+    if (!items) return;
+
+    const newFiles: File[] = [];
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].type.startsWith("image/")) {
+        const file = items[i].getAsFile();
+        if (file) newFiles.push(file);
+      }
+    }
+
+    if (newFiles.length > 0) {
+      setFiles((prev) => [...prev, ...newFiles]);
+    }
+  };
+
   React.useEffect(() => {
     const viewport = viewportRef.current;
     const handleScroll = (e: Event) => {
@@ -405,6 +422,7 @@ export function ChatCoach({ sessionId, analysisContext, className }: ChatCoachPr
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
+            onPaste={handlePaste}
             className="min-h-[44px] max-h-32 resize-none rounded-xl border-border bg-background"
             rows={1}
           />
