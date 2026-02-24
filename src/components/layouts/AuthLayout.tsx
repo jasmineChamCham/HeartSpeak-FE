@@ -36,12 +36,12 @@ export function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
                 >
                     {/* HLS adaptive streaming — loads only what the connection can handle */}
                     <source
-                        src="https://res.cloudinary.com/dyw50hhip/video/upload/q_auto:good,w_1280,vc_h264/landing-page-videos/hbrgguokmoel1sutehph.m3u8"
+                        src="https://res.cloudinary.com/dyw50hhip/video/upload/q_auto:best,w_1280,vc_h264/landing-page-videos/hbrgguokmoel1sutehph.m3u8"
                         type="application/x-mpegURL"
                     />
                     {/* Compressed MP4 fallback */}
                     <source
-                        src="https://res.cloudinary.com/dyw50hhip/video/upload/q_auto:good,w_1280,vc_h264,f_mp4/landing-page-videos/hbrgguokmoel1sutehph.mp4"
+                        src="https://res.cloudinary.com/dyw50hhip/video/upload/q_auto:best,w_1280,vc_h264,f_mp4/landing-page-videos/hbrgguokmoel1sutehph.mp4"
                         type="video/mp4"
                     />
                 </video>
