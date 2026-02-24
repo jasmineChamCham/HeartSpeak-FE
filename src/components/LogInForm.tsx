@@ -118,7 +118,7 @@ export function LogInForm({ onSuccess }: LogInFormProps) {
                   setEmail(e.target.value);
                   clearError();
                 }}
-                placeholder="m@example.com"
+                placeholder="yourname@gmail.com"
                 className={`pl-10 transition-colors ${inputErrorClass}`}
                 required
               />
