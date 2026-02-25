@@ -18,9 +18,7 @@ export default function Register() {
     }
   }, [user, isLoading, navigate]);
 
-  const handleRegisterSuccess = () => {
-    navigate("/onboarding");
-  };
+
 
   if (isLoading) {
     return (
@@ -39,7 +37,7 @@ export default function Register() {
       title="Create Account"
       subtitle="Start improving your communication today"
     >
-      <RegisterForm onSuccess={handleRegisterSuccess} />
+      <RegisterForm />
     </AuthLayout>
   );
 }

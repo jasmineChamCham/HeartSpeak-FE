@@ -13,6 +13,7 @@ import LogIn from "./pages/LogIn";
 import Register from "./pages/Register";
 import AnalysisSession from "./pages/AnalysisSession";
 import Profile from "./pages/Profile";
+import VerifyEmail from "./pages/VerifyEmail";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +33,7 @@ const App = () => (
               <Route path="/analysis-session" element={<AnalysisSession />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/forbidden" element={<Forbidden />} />
+              <Route path="/verify-email" element={<VerifyEmail />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>

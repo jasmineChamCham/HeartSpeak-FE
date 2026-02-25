@@ -1,7 +1,6 @@
 import axios from "axios";
 import { API_URL } from "@/api/api.constants";
-import { LoginUserDto, Token, AuthResponse } from "@/types/auth";
-import { LoveLanguage, MBTI, RoleType, ZodiacSign } from "@/common/enums";
+import { LoveLanguage, MBTI, ZodiacSign } from "@/common/enums";
 
 export interface SignUpPayload {
   user: {
@@ -16,10 +15,8 @@ export interface SignUpPayload {
   deviceId: string;
 }
 
-export async function signUp(
-  payload: SignUpPayload,
-): Promise<{ user: LoginUserDto; token: Token }> {
-  const response = await axios.post<AuthResponse>(
+export async function signUp(payload: SignUpPayload): Promise<boolean> {
+  const response = await axios.post<boolean>(
     `${API_URL}/local/sign-up`,
     {
       user: payload.user,
@@ -31,12 +28,7 @@ export async function signUp(
       },
     },
   );
-  const { user, access_token, refresh_token } = response.data;
-
-  // Save to localStorage (triggers auth state change)
-  localStorage.setItem("access_token", access_token);
-  localStorage.setItem("refresh_token", refresh_token);
-  localStorage.setItem("user", JSON.stringify(user));
-
-  return { user, token: { access_token, refresh_token } };
+  // Do NOT save tokens here — user must verify email first.
+  // After verifying, the /verify-email endpoint will return tokens.
+  return response.data;
 }

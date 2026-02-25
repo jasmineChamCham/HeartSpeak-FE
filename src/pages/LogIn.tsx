@@ -2,14 +2,29 @@ import * as React from "react";
 import { motion } from "framer-motion";
 import { LogInForm } from "@/components/LogInForm";
 import { useAuth } from "@/hooks/useAuth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import { AuthLayout } from "@/components/layouts/AuthLayout";
 import { MAIN_PAGE } from "@/common/constant";
+import { toast } from "sonner";
 
 export default function LogIn() {
   const { user, isLoading } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Show email verification notice if redirected from Register
+  React.useEffect(() => {
+    const state = location.state as { emailVerificationSent?: boolean; email?: string } | null;
+    if (state?.emailVerificationSent) {
+      const emailHint = state.email ? ` to ${state.email}` : "";
+      toast.info(`Verification email sent${emailHint}. Please check your inbox to finish signing up.`, {
+        duration: 8000,
+      });
+      // Clear the state so the toast doesn't re-show on refresh
+      window.history.replaceState({}, "");
+    }
+  }, [location.state]);
 
   // Redirect to analysis session if already authenticated
   React.useEffect(() => {

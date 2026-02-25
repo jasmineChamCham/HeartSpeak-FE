@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { signUp } from "@/api/auth/auth.sign-up";
 import { ErrorMessages } from "@/common/error_messages";
 import { toast } from "sonner";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { uploadToCloudinary } from "@/lib/cloudinary";
 
 interface RegisterFormProps {
@@ -25,6 +25,7 @@ const shakeAnimation = {
 };
 
 export function RegisterForm({ onSuccess }: RegisterFormProps) {
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = React.useState(false);
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -139,8 +140,9 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
         },
         deviceId,
       });
-      toast.success("Welcome to HeartSpeak!");
-      onSuccess?.();
+
+      // Do NOT log in — navigate to login page with a "check email" notice
+      navigate("/login", { state: { emailVerificationSent: true, email } });
     } catch (err: any) {
       let errorMessage: string = ErrorMessages.SIGNUP;
 
