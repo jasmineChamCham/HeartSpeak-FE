@@ -13,7 +13,11 @@ export default function VerifyEmail() {
     const [status, setStatus] = React.useState<Status>("loading");
     const [errorMessage, setErrorMessage] = React.useState<string>("");
 
+    const hasFetched = React.useRef(false);
+
     React.useEffect(() => {
+        if (hasFetched.current) return;
+
         const token = searchParams.get("token");
         const email = searchParams.get("email");
 
@@ -31,6 +35,7 @@ export default function VerifyEmail() {
             localStorage.setItem("deviceId", deviceId);
         }
 
+        hasFetched.current = true;
         verifyEmail({ token, email, deviceId })
             .then(() => {
                 // verifyEmail saved tokens to localStorage — sync auth state
