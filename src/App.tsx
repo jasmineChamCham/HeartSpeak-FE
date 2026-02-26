@@ -14,6 +14,7 @@ import Register from "./pages/Register";
 import AnalysisSession from "./pages/AnalysisSession";
 import Profile from "./pages/Profile";
 import VerifyEmail from "./pages/VerifyEmail";
+import AuthCallback from "./pages/AuthCallback";
 
 const queryClient = new QueryClient();
 
@@ -34,6 +35,7 @@ const App = () => (
               <Route path="/profile" element={<Profile />} />
               <Route path="/forbidden" element={<Forbidden />} />
               <Route path="/verify-email" element={<VerifyEmail />} />
+              <Route path="/auth/callback" element={<AuthCallback />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>

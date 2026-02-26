@@ -10,6 +10,7 @@ interface AuthContextType {
   login: (payload: { email: string; password: string; deviceId: string }) => Promise<{ user: LoginUserDto; token: Token }>;
   signOut: () => Promise<void>;
   refreshUser: () => void;
+  setAuthData: (user: LoginUserDto, accessToken: string, refreshToken: string) => void;
 }
 
 const AuthContext = React.createContext<AuthContextType | undefined>(undefined);
@@ -56,8 +57,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(data.user);
   };
 
+  const setAuthData = (newUser: LoginUserDto, accessToken: string, refreshToken: string) => {
+    localStorage.setItem("access_token", accessToken);
+    localStorage.setItem("refresh_token", refreshToken);
+
+    // Attempt to store full data mimicking getAuthData format if needed
+    const tokenObj: Token = {
+      access_token: accessToken,
+      refresh_token: refreshToken
+    };
+
+    // We update local state
+    setToken(tokenObj);
+    setUser(newUser);
+  };
+
   return (
-    <AuthContext.Provider value={{ user, token, isLoading, login, signOut, refreshUser }}>
+    <AuthContext.Provider value={{ user, token, isLoading, login, signOut, refreshUser, setAuthData }}>
       {children}
     </AuthContext.Provider>
   );
