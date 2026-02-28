@@ -1,36 +1,49 @@
-import React, { useEffect, useRef } from "react";
-import { motion } from "framer-motion";
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowUpRight, Heart, User, Home } from "lucide-react";
 
+const VIDEOS = [
+    "https://res.cloudinary.com/dyw50hhip/video/upload/q_auto:best,vc_h264/v1772262685/landing-page-videos/myfp7cwj5mtltqy4w4xz.mp4",
+    "https://res.cloudinary.com/dyw50hhip/video/upload/q_auto:best,vc_h264/v1772262683/landing-page-videos/xj1bgbpuxhoxsjnye5sj.mp4",
+    "https://res.cloudinary.com/dyw50hhip/video/upload/q_auto:best,vc_h264/v1772262698/landing-page-videos/rdoywyuon0mn1j1cztws.mp4",
+    "https://res.cloudinary.com/dyw50hhip/video/upload/q_auto:best,vc_h264/v1772262682/landing-page-videos/jr4goup38qqvvzrgjpqu.mp4",
+    // "https://res.cloudinary.com/dyw50hhip/video/upload/q_auto:best,vc_h264/v1772262711/landing-page-videos/vtwqfx86s2jf7whlz588.mov",
+    "https://res.cloudinary.com/dyw50hhip/video/upload/q_auto:best,vc_h264/v1772262824/landing-page-videos/kocdcwnq1imeyyldmbbt.mp4",
+    "https://res.cloudinary.com/dyw50hhip/video/upload/q_auto:best,vc_h264/v1772262685/landing-page-videos/f8kprbuwfg4gomt2wfr6.mp4"
+];
+
 export function HeroSection() {
-    const videoRef = useRef<HTMLVideoElement>(null);
+    const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
 
     useEffect(() => {
-        if (videoRef.current) {
-            videoRef.current.play().catch(() => { });
-        }
-    }, []);
+        const timer = setTimeout(() => {
+            setCurrentVideoIndex((prev) => (prev + 1) % VIDEOS.length);
+        }, 4000);
+
+        return () => clearTimeout(timer);
+    }, [currentVideoIndex]);
 
     return (
         <section className="relative flex min-h-screen flex-col justify-end overflow-hidden px-6 pb-12 pt-32 md:px-12 md:pb-16 text-left bg-black text-white">
             {/* Background Video */}
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 1.5, ease: "easeOut" }}
-                className="absolute inset-0 z-0 overflow-hidden bg-black object-cover"
-            >
-                <video
-                    ref={videoRef}
-                    muted
-                    playsInline
-                    loop
-                    preload="auto"
-                    src="https://res.cloudinary.com/dyw50hhip/video/upload/v1772183028/landing-page-videos/ujimytcbekumegsaihmt.mp4"
-                    className="absolute inset-0 w-full h-full object-cover object-center"
-                />
-            </motion.div>
+            <div className="absolute inset-0 z-0 overflow-hidden bg-black">
+                <AnimatePresence initial={false}>
+                    <motion.video
+                        key={currentVideoIndex}
+                        src={VIDEOS[currentVideoIndex]}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 1.5, ease: "easeInOut" }}
+                        className="absolute inset-0 w-full h-full object-cover object-center"
+                        autoPlay
+                        muted
+                        playsInline
+                        onEnded={() => setCurrentVideoIndex((prev) => (prev + 1) % VIDEOS.length)}
+                    />
+                </AnimatePresence>
+            </div>
 
             {/* Subtle Gradient Overlay for readability while keeping it light and moody */}
             <div className="absolute inset-0 z-0 bg-gradient-to-t from-black/80 via-black/20 to-black/30" />
