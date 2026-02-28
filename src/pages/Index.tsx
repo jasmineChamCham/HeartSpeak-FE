@@ -1,30 +1,62 @@
 import * as React from "react";
-import { Loader2 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { MAIN_PAGE } from "@/common/constant";
+import { ArrowUpRight } from "lucide-react";
+
+// Import landing sections
+import { HeroSection } from "@/components/landing/HeroSection";
+import { ProblemSection } from "@/components/landing/ProblemSection";
+import { ShiftSection } from "@/components/landing/ShiftSection";
+import { HowItWorksSection } from "@/components/landing/HowItWorksSection";
+import { UseCasesSection } from "@/components/landing/UseCasesSection";
+import { DifferentiationSection } from "@/components/landing/DifferentiationSection";
+import { TrustSection } from "@/components/landing/TrustSection";
+import { TestimonialSection } from "@/components/landing/TestimonialSection";
+import { FinalCtaSection } from "@/components/landing/FinalCtaSection";
+import { SiteFooter } from "@/components/landing/SiteFooter";
 
 export default function Index() {
   const { user, isLoading: authLoading } = useAuth();
-  const navigate = useNavigate();
 
-  // Redirect users based on authentication status
-  React.useEffect(() => {
-    if (!authLoading) {
-      if (user) {
-        // Authenticated users go to main page
-        navigate(MAIN_PAGE);
-      } else {
-        // Unauthenticated users go to login
-        navigate("/login");
-      }
-    }
-  }, [user, authLoading, navigate]);
-
-  // Show loading while checking auth or redirecting
   return (
-    <div className="flex min-h-screen items-center justify-center gradient-calm">
-      <Loader2 className="h-8 w-8 animate-spin text-primary" />
-    </div>
+    <div className="flex min-h-screen flex-col bg-background">
+      {/* Minimal Header */}
+      <header className="absolute top-0 z-50 flex w-full items-center justify-between px-6 py-6 md:px-12 font-light">
+        <div className="flex items-center">
+          <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+            <img src="/logo-without-background.png" alt="HeartSpeak Logo" className="h-8 w-auto object-contain" />
+            <span className="font-display text-xl font-semibold text-[#58c4b5] tracking-tight">HeartSpeak</span>
+          </Link>
+        </div>
+
+        <nav className="hidden md:flex items-center gap-10 text-sm text-white/90">
+          <a href="#about" className="hover:text-white transition-colors">About</a>
+          <a href="#service" className="hover:text-white transition-colors">Service</a>
+          <a href="#stories" className="hover:text-white transition-colors">Stories</a>
+          <a href="#contact" className="hover:text-white transition-colors">Contact</a>
+        </nav>
+
+        <div className="flex items-center gap-4">
+          <Link to="/contact" className="shimmer-button inline-flex items-center justify-center gap-2 rounded-full bg-[#4A6F57]/40 backdrop-blur-md px-6 py-2.5 text-sm font-medium text-white transition-all duration-300 hover:bg-[#4A6F57]/60 hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(74,111,87,0.4)] border border-[#4A6F57]/40 hover:border-[#4A6F57]/80">
+            Analyze your conversations<ArrowUpRight className="w-4 h-4 opacity-80" />
+          </Link>
+        </div>
+      </header>
+
+      <main className="flex-1">
+        <HeroSection />
+        <ProblemSection />
+        <ShiftSection />
+        <HowItWorksSection />
+        <UseCasesSection />
+        <DifferentiationSection />
+        <TrustSection />
+        <TestimonialSection />
+        <FinalCtaSection />
+      </main>
+
+      <SiteFooter />
+    </div >
   );
 }
