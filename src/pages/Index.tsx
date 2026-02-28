@@ -1,11 +1,10 @@
-import * as React from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { Link } from "react-router-dom";
-import { MAIN_PAGE } from "@/common/constant";
 import { ArrowUpRight } from "lucide-react";
 
 // Import landing sections
 import { HeroSection } from "@/components/landing/HeroSection";
+import { AboutSection } from "@/components/landing/AboutSection";
 import { ProblemSection } from "@/components/landing/ProblemSection";
 import { ShiftSection } from "@/components/landing/ShiftSection";
 import { HowItWorksSection } from "@/components/landing/HowItWorksSection";
@@ -46,6 +45,7 @@ export default function Index() {
 
       <main className="flex-1">
         <HeroSection />
+        <AboutSection />
         <ProblemSection />
         <ShiftSection />
         <HowItWorksSection />
