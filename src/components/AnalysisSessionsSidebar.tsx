@@ -233,7 +233,7 @@ export function AnalysisSessionsSidebar({
             <div className="border-b border-border/50 p-4">
                 <div className="flex items-center justify-between mb-4">
                     <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-                        <img src="/logo-primary-color-without-bg.png" alt="HeartSpeak Logo" className="h-8 w-auto object-contain" />
+                        <img src="/logo-primary-color-without-bg.png" alt="HeartSpeak Logo" className="h-8 w-auto object-contain mt-1.5" />
                         <span className="font-display text-xl font-semibold text-primary tracking-tight">HeartSpeak</span>
                     </Link>
                     {onClose && (

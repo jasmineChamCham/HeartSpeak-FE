@@ -136,7 +136,7 @@ export function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
                         <img
                             src="/logo-primary-color-without-bg.png"
                             alt="HeartSpeak Logo"
-                            className="h-8 w-auto object-contain drop-shadow-lg"
+                            className="h-8 w-auto object-contain drop-shadow-lg mt-1.5"
                         />
                         <span className="font-display text-xl font-semibold text-primary tracking-tight drop-shadow-lg">HeartSpeak</span>
                     </Link>
