@@ -154,7 +154,7 @@ export function AnalysisTextSelectionMenu({
 
             try {
                 const span = document.createElement('span');
-                span.className = 'bg-[#58c4b5]/20 border-b-2 border-[#58c4b5] cursor-pointer hover:bg-[#58c4b5]/30 transition-colors';
+                span.className = 'bg-primary/20 border-b-2 border-primary cursor-pointer hover:bg-primary/30 transition-colors';
                 span.dataset.highlightComment = "true";
                 span.dataset.comment = comment;
                 span.dataset.id = id;
@@ -235,7 +235,7 @@ export function AnalysisTextSelectionMenu({
                     >
                         <div className="bg-popover text-popover-foreground shadow-xl border rounded-lg p-3 w-72 text-sm animate-in fade-in zoom-in-95 duration-200">
                             <div className="flex justify-between items-start mb-2">
-                                <span className="font-medium text-[#58c4b5] text-xs uppercase tracking-wider">
+                                <span className="font-medium text-primary text-xs uppercase tracking-wider">
                                     {isEditing ? "Edit Comment" : "Comment"}
                                 </span>
                                 <div className="flex items-center gap-1">
@@ -264,14 +264,14 @@ export function AnalysisTextSelectionMenu({
                                     <Textarea
                                         value={editComment}
                                         onChange={(e) => setEditComment(e.target.value)}
-                                        className="min-h-[60px] text-sm resize-none focus-visible:ring-[#58c4b5]"
+                                        className="min-h-[60px] text-sm resize-none focus-visible:ring-primary"
                                         autoFocus
                                     />
                                     <div className="flex justify-end gap-2">
                                         <Button size="sm" variant="outline" className="h-7 text-xs" onClick={() => setIsEditing(false)}>
                                             Cancel
                                         </Button>
-                                        <Button size="sm" className="h-7 text-xs gap-1 bg-[#58c4b5] hover:bg-[#40b9a8] text-white" onClick={handleSaveEdit}>
+                                        <Button size="sm" className="h-7 text-xs gap-1 bg-primary hover:bg-primary/90 text-white" onClick={handleSaveEdit}>
                                             <Check className="h-3 w-3" /> Save
                                         </Button>
                                     </div>
@@ -305,7 +305,7 @@ export function AnalysisTextSelectionMenu({
                                 >
                                     <Button
                                         size="sm"
-                                        className="h-8 gap-2 bg-[#58c4b5] text-white hover:bg-[#40b9a8] shadow-lg rounded-full"
+                                        className="h-8 gap-2 bg-primary text-white hover:bg-primary/90 shadow-lg rounded-full"
                                         onClick={() => setIsPopoverOpen(true)}
                                     >
                                         <MessageSquarePlus className="h-4 w-4" />
@@ -336,7 +336,7 @@ export function AnalysisTextSelectionMenu({
 
                                     <Textarea
                                         placeholder="What would you like to ask or refine about this text?"
-                                        className="min-h-[80px] text-sm resize-none focus-visible:ring-[#58c4b5]"
+                                        className="min-h-[80px] text-sm resize-none focus-visible:ring-primary"
                                         value={comment}
                                         onChange={(e) => setComment(e.target.value)}
                                         autoFocus
@@ -347,7 +347,7 @@ export function AnalysisTextSelectionMenu({
                                             size="sm"
                                             onClick={handleSubmit}
                                             disabled={!comment.trim()}
-                                            className="gap-2 bg-[#58c4b5] hover:bg-[#40b9a8] text-white"
+                                            className="gap-2 bg-primary hover:bg-primary/90 text-white"
                                         >
                                             <Send className="h-3 w-3" />
                                             Add Comment

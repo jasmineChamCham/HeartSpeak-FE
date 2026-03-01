@@ -35,7 +35,7 @@ export function HowItWorksSection() {
                         className="flex items-center gap-3 text-black/60"
                     >
                         <div className="flex items-center justify-center w-6 h-6 rounded-full bg-[#E8E6E1]/50 shadow-sm border border-black/5">
-                            <div className="w-2.5 h-2.5 rounded-full bg-gradient-to-tr from-[#58c4b5] to-[#7bdad1]" />
+                            <div className="w-2.5 h-2.5 rounded-full bg-primary" />
                         </div>
                         <span className="text-xs uppercase tracking-[0.2em] text-[#2b647f] font-medium whitespace-nowrap underline decoration-1 underline-offset-4">
                             How It Works
@@ -93,7 +93,7 @@ export function HowItWorksSection() {
                 >
                     <Link
                         to="/contact"
-                        className="shimmer-button inline-flex items-center justify-center gap-2 rounded-full bg-[#58c4b5] px-8 py-3.5 text-sm font-medium text-white transition-all hover:bg-[#4ea89b] shadow-[0_0_20px_rgba(88,196,181,0.2)] hover:shadow-[0_0_30px_rgba(88,196,181,0.4)] hover:scale-[1.02]"
+                        className="shimmer-button inline-flex items-center justify-center gap-2 rounded-full bg-primary px-8 py-3.5 text-sm font-medium text-white transition-all hover:bg-primary/90 shadow-lg hover:scale-[1.02]"
                     >
                         Try It Now <ArrowUpRight className="w-4 h-4 opacity-90" />
                     </Link>

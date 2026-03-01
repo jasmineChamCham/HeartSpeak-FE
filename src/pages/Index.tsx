@@ -19,8 +19,8 @@ export default function Index() {
       <header className="absolute top-0 z-50 flex w-full items-center justify-between px-6 py-6 md:px-12 font-light">
         <div className="flex items-center">
           <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-            <img src="/logo-without-background.png" alt="HeartSpeak Logo" className="h-8 w-auto object-contain" />
-            <span className="font-display text-xl font-semibold text-[#58c4b5] tracking-tight">HeartSpeak</span>
+            <img src="/logo-primary-color-without-bg.png" alt="HeartSpeak Logo" className="h-8 w-auto object-contain" />
+            <span className="font-display text-xl font-semibold text-primary tracking-tight">HeartSpeak</span>
           </Link>
         </div>
 

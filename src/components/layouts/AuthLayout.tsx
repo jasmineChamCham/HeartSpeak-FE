@@ -1,5 +1,6 @@
 import * as React from "react";
 import { ChevronRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface AuthLayoutProps {
     children: React.ReactNode;
@@ -131,14 +132,14 @@ export function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
                 {/* UI overlay */}
                 <div className="absolute inset-0 z-10 flex flex-col justify-between p-10 text-white">
                     {/* Logo */}
-                    <div className="flex items-center gap-2">
+                    <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
                         <img
-                            src="/logo-without-background.png"
-                            alt="Logo"
-                            className="h-8 w-8 brightness-0 invert filter drop-shadow-lg"
+                            src="/logo-primary-color-without-bg.png"
+                            alt="HeartSpeak Logo"
+                            className="h-8 w-auto object-contain drop-shadow-lg"
                         />
-                        <span className="font-display text-xl font-medium drop-shadow-lg">HeartSpeak</span>
-                    </div>
+                        <span className="font-display text-xl font-semibold text-primary tracking-tight drop-shadow-lg">HeartSpeak</span>
+                    </Link>
 
                     <div />
 

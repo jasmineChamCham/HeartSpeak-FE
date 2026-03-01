@@ -106,7 +106,7 @@ export function HeroSection() {
                         <div className="flex flex-col sm:flex-row gap-4 mt-2">
                             <Link
                                 to="/login"
-                                className="inline-flex items-center justify-center gap-2 rounded-full bg-[#58c4b5] px-8 py-4 text-sm md:text-base font-medium text-white whitespace-nowrap transition-all hover:bg-[#4ea89b] shadow-lg"
+                                className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-8 py-4 text-sm md:text-base font-medium text-white whitespace-nowrap transition-all hover:bg-primary/90 shadow-lg"
                             >
                                 See what they really mean <ArrowUpRight className="w-4 h-4 opacity-90" />
                             </Link>

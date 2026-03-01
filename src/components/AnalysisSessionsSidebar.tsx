@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
     Search,
@@ -231,10 +232,10 @@ export function AnalysisSessionsSidebar({
             {/* Header */}
             <div className="border-b border-border/50 p-4">
                 <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center gap-2">
-                        <img src="/logo-without-background.png" alt="HeartSpeak" className="h-8 w-10" />
-                        <span className="font-display text-lg font-semibold">HeartSpeak</span>
-                    </div>
+                    <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+                        <img src="/logo-primary-color-without-bg.png" alt="HeartSpeak Logo" className="h-8 w-auto object-contain" />
+                        <span className="font-display text-xl font-semibold text-primary tracking-tight">HeartSpeak</span>
+                    </Link>
                     {onClose && (
                         <Button variant="ghost" size="icon" className="lg:hidden" onClick={onClose}>
                             <XCircle className="h-6 w-6" />
@@ -254,7 +255,7 @@ export function AnalysisSessionsSidebar({
                 </div>
 
                 <Button
-                    className="w-full justify-center gap-2 bg-[#58c4b5] text-white hover:bg-[#40b9a8] shadow-sm hover:shadow-md hover:scale-[1.02] transition-all duration-300 font-medium"
+                    className="w-full justify-center gap-2 bg-primary text-white hover:bg-primary/90 shadow-sm hover:shadow-md hover:scale-[1.02] transition-all duration-300 font-medium"
                     onClick={() => {
                         if (onNewAnalysisClick) onNewAnalysisClick();
                         if (onClose) onClose();

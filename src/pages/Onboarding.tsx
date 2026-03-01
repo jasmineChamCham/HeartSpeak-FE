@@ -91,7 +91,7 @@ export default function Onboarding() {
     setIsUpdating(true);
     try {
       await updateUser(currentUser.id, finalData);
-      
+
       // Update user in localStorage
       const storedUser = localStorage.getItem("user");
       if (storedUser) {
@@ -144,7 +144,7 @@ export default function Onboarding() {
         <div className="max-w-2xl mx-auto space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <img src="/logo-without-background.png" alt="Logo" className="h-6 w-6" />
+              <img src="/logo-primary-color-without-bg.png" alt="Logo" className="h-6 w-6" />
               <span className="font-display text-lg font-semibold text-primary">HeartSpeak</span>
             </div>
             <Button
