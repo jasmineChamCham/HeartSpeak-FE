@@ -92,7 +92,7 @@ export function AboutSection() {
                         {/* Image */}
                         <div className="w-full h-full relative overflow-hidden group shadow-[0_10px_40px_-15px_rgba(0,0,0,0.15)] bg-[#c9c8c4]">
                             <img
-                                src="public/landing-images/pexels-mizunokozuki-13931702.jpg"
+                                src="https://res.cloudinary.com/dyw50hhip/image/upload/v1772355787/landing-page-images/menuv41ra777batljc8a.jpg"
                                 alt="Mental wellness calming landscape"
                                 className="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
                             />
