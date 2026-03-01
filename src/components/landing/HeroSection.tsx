@@ -4,13 +4,9 @@ import { Link } from "react-router-dom";
 import { ArrowUpRight, Heart, User, Home } from "lucide-react";
 
 const VIDEOS = [
-    "https://res.cloudinary.com/dyw50hhip/video/upload/q_auto:best,vc_h264/v1772262685/landing-page-videos/myfp7cwj5mtltqy4w4xz.mp4",
+    "https://res.cloudinary.com/dyw50hhip/video/upload/q_auto:best,vc_h264/v1772367462/landing-page-videos/bebpsn7ufskijf7eavld.mp4",
     "https://res.cloudinary.com/dyw50hhip/video/upload/q_auto:best,vc_h264/v1772262683/landing-page-videos/xj1bgbpuxhoxsjnye5sj.mp4",
-    "https://res.cloudinary.com/dyw50hhip/video/upload/q_auto:best,vc_h264/v1772262698/landing-page-videos/rdoywyuon0mn1j1cztws.mp4",
     "https://res.cloudinary.com/dyw50hhip/video/upload/q_auto:best,vc_h264/v1772262682/landing-page-videos/jr4goup38qqvvzrgjpqu.mp4",
-    // "https://res.cloudinary.com/dyw50hhip/video/upload/q_auto:best,vc_h264/v1772262711/landing-page-videos/vtwqfx86s2jf7whlz588.mov",
-    "https://res.cloudinary.com/dyw50hhip/video/upload/q_auto:best,vc_h264/v1772262824/landing-page-videos/kocdcwnq1imeyyldmbbt.mp4",
-    "https://res.cloudinary.com/dyw50hhip/video/upload/q_auto:best,vc_h264/v1772262685/landing-page-videos/f8kprbuwfg4gomt2wfr6.mp4"
 ];
 
 export function HeroSection() {

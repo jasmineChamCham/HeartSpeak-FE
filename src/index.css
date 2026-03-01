@@ -9,8 +9,8 @@
 @layer base {
   :root {
     /* Soft sage greens and warm neutrals - calming therapy palette */
-    /* --background: 60 30% 98%; */
-    --background: 72 15.4% 93.5%; /* #F0F1EC */
+    --background: 60 30% 98%;
+    /* --background: 72 15.4% 93.5%; #F0F1EC */
     --foreground: 200 15% 20%;
 
     --card: 60 20% 99%;

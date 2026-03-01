@@ -7,8 +7,6 @@ import { HeroSection } from "@/components/landing/HeroSection";
 import { AboutSection } from "@/components/landing/AboutSection";
 import { ServiceSection } from "@/components/landing/ServiceSection";
 import { HowItWorksSection } from "@/components/landing/HowItWorksSection";
-import { DifferentiationSection } from "@/components/landing/DifferentiationSection";
-import { TrustSection } from "@/components/landing/TrustSection";
 import { FinalCtaSection } from "@/components/landing/FinalCtaSection";
 import { SiteFooter } from "@/components/landing/SiteFooter";
 
@@ -29,7 +27,8 @@ export default function Index() {
         <nav className="hidden md:flex items-center gap-10 text-sm text-white/90">
           <a href="#about" className="hover:text-white transition-colors">About</a>
           <a href="#service" className="hover:text-white transition-colors">Service</a>
-          <a href="#stories" className="hover:text-white transition-colors">Stories</a>
+          <a href="#how-it-works" className="hover:text-white transition-colors whitespace-nowrap">How it works</a>
+          <a href="#pricing" className="hover:text-white transition-colors">Pricing</a>
           <a href="#contact" className="hover:text-white transition-colors">Contact</a>
         </nav>
 
@@ -45,8 +44,6 @@ export default function Index() {
         <AboutSection />
         <ServiceSection />
         <HowItWorksSection />
-        <DifferentiationSection />
-        <TrustSection />
         <FinalCtaSection />
       </main>
 

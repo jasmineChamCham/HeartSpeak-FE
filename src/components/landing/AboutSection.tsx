@@ -22,7 +22,7 @@ export function AboutSection() {
                         <div className="flex items-center justify-center w-6 h-6 rounded-full bg-[#E8E6E1]/50 shadow-sm border border-black/5">
                             <div className="w-2.5 h-2.5 rounded-full bg-gradient-to-tr from-[#58c4b5] to-[#7bdad1]" />
                         </div>
-                        <span className="text-xs uppercase tracking-[0.2em] text-black/60 font-medium whitespace-nowrap">
+                        <span className="text-xs uppercase tracking-[0.2em] text-[#2b647f] font-medium whitespace-nowrap underline decoration-1 underline-offset-4">
                             About HeartSpeak
                         </span>
                     </motion.div>
