@@ -1,5 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+import { ArrowUpRight } from "lucide-react";
 
 export function AboutSection() {
     return (
@@ -42,7 +44,7 @@ export function AboutSection() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-                        className="text-[0.95rem] md:text-base text-black/70 font-light leading-[1.7] mb-16 max-w-[90%] space-y-4"
+                        className="text-[0.95rem] md:text-base text-black/70 font-light leading-[1.7] mb-10 max-w-[90%] space-y-4"
                     >
                         <p>
                             HeartSpeak gently analyzes your conversations to help you understand the emotions, intentions, and inner world of the people you love.
@@ -52,6 +54,20 @@ export function AboutSection() {
                             The quality of your life is shaped by the quality of your relationships.
                             And the quality of your relationships is shaped by how well you understand one another.
                         </p>
+                    </motion.div>
+
+                    <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+                    >
+                        <Link
+                            to="/register"
+                            className="shimmer-button inline-flex items-center justify-center gap-2 rounded-full bg-[#58c4b5] px-8 py-3.5 text-sm font-medium text-white transition-all hover:bg-[#4ea89b] shadow-[0_0_20px_rgba(88,196,181,0.2)] hover:shadow-[0_0_30px_rgba(88,196,181,0.4)] hover:scale-[1.02]"
+                        >
+                            Start free here <ArrowUpRight className="w-4 h-4 opacity-90" />
+                        </Link>
                     </motion.div>
                 </div>
 
