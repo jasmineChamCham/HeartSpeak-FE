@@ -5,13 +5,10 @@ import { ArrowUpRight } from "lucide-react";
 // Import landing sections
 import { HeroSection } from "@/components/landing/HeroSection";
 import { AboutSection } from "@/components/landing/AboutSection";
-import { ProblemSection } from "@/components/landing/ProblemSection";
-import { ShiftSection } from "@/components/landing/ShiftSection";
+import { ServiceSection } from "@/components/landing/ServiceSection";
 import { HowItWorksSection } from "@/components/landing/HowItWorksSection";
-import { UseCasesSection } from "@/components/landing/UseCasesSection";
 import { DifferentiationSection } from "@/components/landing/DifferentiationSection";
 import { TrustSection } from "@/components/landing/TrustSection";
-import { TestimonialSection } from "@/components/landing/TestimonialSection";
 import { FinalCtaSection } from "@/components/landing/FinalCtaSection";
 import { SiteFooter } from "@/components/landing/SiteFooter";
 
@@ -46,13 +43,10 @@ export default function Index() {
       <main className="flex-1">
         <HeroSection />
         <AboutSection />
-        <ProblemSection />
-        <ShiftSection />
+        <ServiceSection />
         <HowItWorksSection />
-        <UseCasesSection />
         <DifferentiationSection />
         <TrustSection />
-        <TestimonialSection />
         <FinalCtaSection />
       </main>
 
