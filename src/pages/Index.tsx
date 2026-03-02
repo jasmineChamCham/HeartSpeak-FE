@@ -8,7 +8,6 @@ import { AboutSection } from "@/components/landing/AboutSection";
 import { ServiceSection } from "@/components/landing/ServiceSection";
 import { HowItWorksSection } from "@/components/landing/HowItWorksSection";
 import { FaqSection } from "@/components/landing/FaqSection";
-import { ContactSection } from "@/components/landing/ContactSection";
 import { SiteFooter } from "@/components/landing/SiteFooter";
 
 export default function Index() {
@@ -30,7 +29,7 @@ export default function Index() {
           <a href="#service" className="hover:text-white transition-colors">Service</a>
           <a href="#how-it-works" className="hover:text-white transition-colors whitespace-nowrap">How it works</a>
           {/* <a href="#pricing" className="hover:text-white transition-colors">Pricing</a> */}
-          <a href="#contact" className="hover:text-white transition-colors">Contact</a>
+          <a href="#faq" className="hover:text-white transition-colors">FAQ</a>
         </nav>
 
         <div className="flex items-center gap-4">
@@ -45,9 +44,8 @@ export default function Index() {
         <AboutSection />
         <ServiceSection />
         <HowItWorksSection />
-        {/* <PricingSection />
+        {/* <PricingSection /> */}
         <FaqSection />
-        <ContactSection /> */}
       </main>
 
       <SiteFooter />
