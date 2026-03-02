@@ -4,20 +4,24 @@ import { ChevronDown } from "lucide-react";
 
 const faqs = [
     {
-        question: "How accurate is the analysis?",
-        answer: "Our AI is trained on vast psychological and linguistic datasets to understand nuance, subtext, and emotional tone. While it provides profound insights, we recommend using it as a tool for empathy rather than absolute truth."
+        question: "What is HeartSpeak?",
+        answer: "HeartSpeak is an AI tool that helps you understand what’s really happening beneath your conversations. It looks at tone, wording, and emotional patterns to reveal what might be implied but not clearly said. Instead of overthinking, you get calm, structured clarity."
     },
     {
         question: "Are my conversations private?",
-        answer: "Absolutely. We employ end-to-end encryption for all sessions. Your conversation data is never sold, and is only used to provide your analysis. You can delete your history at any time."
+        answer: "Yes, your conversations are handled securely and used only to generate your analysis. We don’t sell, share, or publicly store your messages. Your privacy and trust are always respected."
     },
     {
-        question: "Can it really tell what someone is thinking?",
-        answer: "It analyzes the underlying patterns in text—word choice, phrasing, hesitations, and context—to infer likely emotional states and unsaid intentions. It helps you see the emotional reality beneath the surface."
+        question: "How accurate is the analysis?",
+        answer: "HeartSpeak uses Gemini AI models to analyze your conversations, and you can choose which specific model is used for your analysis. Because communication is nuanced, you can comment on the analysis results if anything feels incomplete or slightly off. The system will then refine the results with your added context to provide deeper, more personalized insights."
     },
     {
-        question: "Does it work in languages other than English?",
-        answer: "Currently, our most accurate models are optimized for English, but we are actively working on supporting Spanish, French, and Mandarin in the near future."
+        question: "Can I ask follow-up questions after the analysis?",
+        answer: "Yes, you can continue the conversation after receiving your analysis. Our built-in chatbot lets you ask deeper questions, request clarification, or get help crafting a response. It’s designed to support you until you feel fully clear."
+    },
+    {
+        question: "Will this help me improve my communication skills?",
+        answer: "Yes, and that’s one of the biggest benefits. Over time, you’ll start recognizing emotional patterns and communication signals on your own. With practice, clarity turns into confidence and stronger real-life communication skills."
     }
 ];
 
@@ -25,11 +29,11 @@ export function FaqSection() {
     const [openIndex, setOpenIndex] = useState<number | null>(0);
 
     return (
-        <section id="faq" className="relative w-full overflow-hidden bg-background flex flex-col items-center py-20 px-6 md:px-12 text-foreground">
-            <div className="max-w-3xl w-full mx-auto flex flex-col items-center">
+        <section id="faq" className="relative w-full overflow-hidden bg-background min-h-screen flex items-center px-6 md:px-12 mt-12 text-foreground">
+            <div className="relative z-10 w-full max-w-7xl mx-auto flex flex-col justify-center gap-12 md:gap-16 py-12">
 
                 {/* Header Area */}
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-start gap-12 w-full mb-12">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-start gap-12 w-full">
                     <motion.div
                         initial={{ opacity: 0, x: -20 }}
                         whileInView={{ opacity: 1, x: 0 }}
@@ -41,24 +45,13 @@ export function FaqSection() {
                             <div className="w-2.5 h-2.5 rounded-full bg-primary" />
                         </div>
                         <span className="text-xs uppercase tracking-[0.2em] text-[#2b647f] font-medium whitespace-nowrap underline decoration-1 underline-offset-4">
-                            FAQ
+                            Frequently Asked Questions
                         </span>
                     </motion.div>
 
-                    <motion.div
-                        initial={{ opacity: 0, x: 20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.8 }}
-                        className="max-w-xl md:max-w-2xl text-left md:text-right"
-                    >
-                        <h2 className="text-[2rem] md:text-[2.75rem] font-medium leading-[1.1] tracking-tight text-[#18181A]">
-                            Frequently asked <span className="font-serif italic font-normal text-[#2b2b2d]">questions</span>
-                        </h2>
-                    </motion.div>
                 </div>
 
-                <div className="w-full space-y-4">
+                <div className="w-full max-w-3xl mx-auto space-y-4">
                     {faqs.map((faq, index) => (
                         <motion.div
                             key={index}
