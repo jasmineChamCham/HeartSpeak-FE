@@ -29,7 +29,7 @@ export default function Index() {
           <a href="#about" className="hover:text-white transition-colors">About</a>
           <a href="#service" className="hover:text-white transition-colors">Service</a>
           <a href="#how-it-works" className="hover:text-white transition-colors whitespace-nowrap">How it works</a>
-          <a href="#pricing" className="hover:text-white transition-colors">Pricing</a>
+          {/* <a href="#pricing" className="hover:text-white transition-colors">Pricing</a> */}
           <a href="#contact" className="hover:text-white transition-colors">Contact</a>
         </nav>
 
