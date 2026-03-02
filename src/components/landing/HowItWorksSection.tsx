@@ -92,7 +92,7 @@ export function HowItWorksSection() {
                     className="flex justify-center mt-4"
                 >
                     <Link
-                        to="/contact"
+                        to="/login"
                         className="shimmer-button inline-flex items-center justify-center gap-2 rounded-full bg-primary px-8 py-3.5 text-sm font-medium text-white transition-all hover:bg-primary/90 shadow-lg hover:scale-[1.02]"
                     >
                         Try It Now <ArrowUpRight className="w-4 h-4 opacity-90" />
