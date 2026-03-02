@@ -7,7 +7,8 @@ import { HeroSection } from "@/components/landing/HeroSection";
 import { AboutSection } from "@/components/landing/AboutSection";
 import { ServiceSection } from "@/components/landing/ServiceSection";
 import { HowItWorksSection } from "@/components/landing/HowItWorksSection";
-import { FinalCtaSection } from "@/components/landing/FinalCtaSection";
+import { FaqSection } from "@/components/landing/FaqSection";
+import { ContactSection } from "@/components/landing/ContactSection";
 import { SiteFooter } from "@/components/landing/SiteFooter";
 
 export default function Index() {
@@ -44,7 +45,9 @@ export default function Index() {
         <AboutSection />
         <ServiceSection />
         <HowItWorksSection />
-        <FinalCtaSection />
+        {/* <PricingSection />
+        <FaqSection />
+        <ContactSection /> */}
       </main>
 
       <SiteFooter />
