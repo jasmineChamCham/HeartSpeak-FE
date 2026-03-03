@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 export function HowItWorksSection() {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     const steps = [
         {
@@ -53,7 +53,7 @@ export function HowItWorksSection() {
                         className="max-w-xl md:max-w-2xl text-left md:text-right"
                     >
                         <h2 className="text-[2rem] md:text-[2.75rem] font-medium leading-[1.1] tracking-tight text-[#18181A]">
-                            {t('how_it_works.headline_part1')}<span className="font-serif italic font-normal text-[#2b2b2d]">{t('how_it_works.headline_part2')}</span>{t('how_it_works.headline_part3')}
+                            {t('how_it_works.headline_part1')}<span className={`text-[#2b2b2d] ${i18n.language === 'vi' ? 'font-normal' : 'font-serif italic font-normal'}`}>{t('how_it_works.headline_part2')}</span>{t('how_it_works.headline_part3')}
                         </h2>
                     </motion.div>
                 </div>
@@ -70,7 +70,7 @@ export function HowItWorksSection() {
                             className="group relative flex flex-col gap-4 rounded-[1.5rem] bg-white p-6 md:p-8 border border-black/5 transition-all duration-500 hover:shadow-lg hover:-translate-y-1 h-full min-h-[260px]"
                         >
                             <div>
-                                <span className="font-serif italic text-4xl md:text-5xl font-light text-black/80">
+                                <span className={`text-4xl md:text-5xl font-light text-black/80 ${i18n.language === 'vi' ? '' : 'font-serif italic'}`}>
                                     {step.num}
                                 </span>
                             </div>

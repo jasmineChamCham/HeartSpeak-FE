@@ -12,7 +12,7 @@ const VIDEOS = [
 ];
 
 export function HeroSection() {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
 
     useEffect(() => {
@@ -59,7 +59,7 @@ export function HeroSection() {
                     >
                         <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[5rem] font-medium leading-[1.1] tracking-tight text-white/95 mb-8 text-balance">
                             {t('hero.title_part1')} <br />
-                            <span className="font-serif italic font-normal opacity-90 text-[#e4ece4]">{t('hero.title_part2')}</span>
+                            <span className={`opacity-90 text-[#e4ece4] ${i18n.language === 'vi' ? 'font-normal' : 'font-serif italic font-normal'}`}>{t('hero.title_part2')}</span>
                         </h1>
                     </motion.div>
                 </div>

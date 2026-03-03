@@ -1,7 +1,9 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 export function PricingSection() {
+    const { i18n } = useTranslation();
     return (
         <section id="pricing" className="relative w-full overflow-hidden bg-background flex flex-col items-center py-20 px-6 md:px-12 text-foreground">
             <div className="max-w-7xl w-full mx-auto flex flex-col items-center">
@@ -31,7 +33,7 @@ export function PricingSection() {
                         className="max-w-xl md:max-w-2xl text-left md:text-right"
                     >
                         <h2 className="text-[2rem] md:text-[2.75rem] font-medium leading-[1.1] tracking-tight text-[#18181A]">
-                            Simple, transparent <span className="font-serif italic font-normal text-[#2b2b2d]">pricing</span>
+                            Simple, transparent <span className={`text-[#2b2b2d] ${i18n.language === 'vi' ? 'font-normal' : 'font-serif italic font-normal'}`}>pricing</span>
                         </h2>
                     </motion.div>
                 </div>

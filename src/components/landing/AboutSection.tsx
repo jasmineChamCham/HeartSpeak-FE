@@ -5,7 +5,7 @@ import { ArrowUpRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 export function AboutSection() {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     return (
         <section id="about" className="relative w-full overflow-hidden bg-background min-h-screen py-20 lg:h-screen lg:py-8 px-6 md:px-12 flex items-center text-foreground">
             <div className="max-w-7xl w-full mx-auto flex flex-col lg:flex-row gap-12 lg:gap-16 items-center lg:pl-0">
@@ -37,7 +37,7 @@ export function AboutSection() {
                         transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
                         className="text-[2rem] md:text-[2.75rem] font-medium leading-[1.1] tracking-tight mb-8 text-[#18181A]"
                     >
-                        {t('about.headline_part1')}<span className="font-serif italic font-normal tracking-normal pr-1 text-[#2b2b2d]">{t('about.headline_part2')}</span>
+                        {t('about.headline_part1')}<span className={`tracking-normal pr-1 text-[#2b2b2d] ${i18n.language === 'vi' ? 'font-normal' : 'font-serif italic font-normal'}`}>{t('about.headline_part2')}</span>
                     </motion.h2>
 
                     {/* Paragraph */}
