@@ -11,7 +11,7 @@ export function SiteFooter() {
             <div className="mx-auto max-w-6xl flex flex-col">
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-16">
                     {/* Left Column: Brand & Info */}
-                    <div className="md:col-span-4 flex flex-col items-start pr-4">
+                    <div className="md:col-span-4 flex flex-col items-center text-center md:items-start md:text-left md:pr-4">
                         <div className="flex items-center gap-3 mb-6">
                             <img src="/logo-primary-color-without-bg.png" alt="Encantta Logo" className="h-10 w-auto" />
                         </div>
@@ -24,7 +24,7 @@ export function SiteFooter() {
                     </div>
 
                     {/* Right Columns: Links */}
-                    <div className="md:col-span-8 grid grid-cols-1 sm:grid-cols-3 gap-8 pt-2">
+                    <div className="md:col-span-8 grid grid-cols-2 sm:grid-cols-3 gap-8 pt-2">
                         {/* Column 1 */}
                         <div className="flex flex-col gap-4">
                             <h4 className="font-bold text-white mb-2">Product</h4>
@@ -55,14 +55,14 @@ export function SiteFooter() {
                     </div>
                 </div>
 
-                <div className="mb-6">
+                <div className="mb-6 text-center md:text-left">
                     <p className="text-base font-medium text-gray-300">
                         Designed with empathy. Built for deeper connections.
                     </p>
                 </div>
 
                 {/* Bottom Row */}
-                <div className="border-t border-[#2a2a32] pt-8 flex flex-col md:flex-row items-center justify-between gap-6 w-full relative">
+                <div className="border-t border-[#2a2a32] pt-8 flex flex-col md:flex-row items-center justify-between gap-6 w-full relative text-center md:text-left">
                     <p className="text-sm font-light text-gray-400 md:flex-1">
                         © {new Date().getFullYear()} Encantta. All rights reserved.
                     </p>

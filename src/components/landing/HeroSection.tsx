@@ -54,7 +54,7 @@ export function HeroSection() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 1, ease: "easeOut" }}
                     >
-                        <h1 className="text-5xl md:text-6xl lg:text-[5rem] font-medium leading-[1.1] tracking-tight text-white/95 mb-8 text-balance">
+                        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[5rem] font-medium leading-[1.1] tracking-tight text-white/95 mb-8 text-balance">
                             Stop guessing <br />
                             <span className="font-serif italic font-normal opacity-90 text-[#e4ece4]">what they're really saying.</span>
                         </h1>

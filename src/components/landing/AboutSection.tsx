@@ -5,8 +5,8 @@ import { ArrowUpRight } from "lucide-react";
 
 export function AboutSection() {
     return (
-        <section id="about" className="relative w-full overflow-hidden bg-background h-screen flex items-center py-8 px-6 md:px-12 text-foreground">
-            <div className="max-w-7xl w-full mx-auto flex flex-col lg:flex-row gap-8 lg:gap-16 items-center pl-0">
+        <section id="about" className="relative w-full overflow-hidden bg-background min-h-screen py-20 lg:h-screen lg:py-8 px-6 md:px-12 flex items-center text-foreground">
+            <div className="max-w-7xl w-full mx-auto flex flex-col lg:flex-row gap-12 lg:gap-16 items-center lg:pl-0">
 
                 {/* Left Content Column */}
                 <div className="flex-1 w-full max-w-2xl lg:max-w-[45%] flex flex-col justify-center pt-4 lg:pt-0">

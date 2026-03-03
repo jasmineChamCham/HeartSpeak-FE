@@ -26,8 +26,8 @@ const services = [
 
 export function ServiceSection() {
     return (
-        <section id="service" className="relative w-full overflow-hidden bg-background h-screen flex items-center py-8 px-6 md:px-12 text-foreground">
-            <div className="max-w-7xl w-full mx-auto flex flex-col lg:flex-row gap-8 lg:gap-16 items-stretch">
+        <section id="service" className="relative w-full overflow-hidden bg-background min-h-screen py-20 lg:h-screen lg:py-8 flex items-center px-6 md:px-12 text-foreground">
+            <div className="max-w-7xl w-full mx-auto flex flex-col lg:flex-row gap-12 lg:gap-16 items-stretch">
 
                 {/* Left Column: Image Area */}
                 <div className="w-full lg:w-[45%] flex flex-col justify-between pt-4 lg:pt-0 relative">

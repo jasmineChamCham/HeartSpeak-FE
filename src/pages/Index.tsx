@@ -33,8 +33,10 @@ export default function Index() {
         </nav>
 
         <div className="flex items-center gap-4">
-          <Link to="/login" className="shimmer-button inline-flex items-center justify-center gap-2 rounded-full bg-[#4A6F57]/40 backdrop-blur-md px-6 py-2.5 text-sm font-medium text-white transition-all duration-300 hover:bg-[#4A6F57]/60 hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(74,111,87,0.4)] border border-[#4A6F57]/40 hover:border-[#4A6F57]/80">
-            Analyze your conversations<ArrowUpRight className="w-4 h-4 opacity-80" />
+          <Link to="/login" className="shimmer-button inline-flex items-center justify-center gap-1.5 md:gap-2 rounded-full bg-[#4A6F57]/40 backdrop-blur-md px-3 md:px-6 py-2 md:py-2.5 text-xs md:text-sm font-medium text-white transition-all duration-300 hover:bg-[#4A6F57]/60 hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(74,111,87,0.4)] border border-[#4A6F57]/40 hover:border-[#4A6F57]/80">
+            <span className="hidden sm:inline">Analyze your conversations</span>
+            <span className="inline sm:hidden">Analyze</span>
+            <ArrowUpRight className="w-3 h-3 md:w-4 md:h-4 opacity-80" />
           </Link>
         </div>
       </header>
