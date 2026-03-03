@@ -20,8 +20,8 @@ export function LegalPageLayout({ children, title, lastUpdated }: LegalPageLayou
             <header className="sticky top-0 z-50 flex w-full items-center px-6 py-4 md:px-12 bg-background/80 backdrop-blur-md border-b border-border">
                 <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
                     <ArrowLeft className="w-5 h-5 text-muted-foreground mr-2" />
-                    <img src="/logo-primary-color-without-bg.png" alt="HeartSpeak Logo" className="h-8 w-auto object-contain mt-1.5" />
-                    <span className="font-display text-xl font-semibold text-primary tracking-tight">HeartSpeak</span>
+                    <img src="/logo-primary-color-without-bg.png" alt="Encantta Logo" className="h-8 w-auto object-contain mt-1.5" />
+                    <span className="font-display text-xl font-semibold text-primary tracking-tight">Encantta</span>
                 </Link>
             </header>
 

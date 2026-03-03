@@ -73,7 +73,7 @@ export function PricingSection() {
                         className="bg-primary/5 border border-primary/20 rounded-3xl p-8 shadow-sm flex flex-col relative overflow-hidden"
                     >
                         <div className="absolute top-0 right-0 bg-primary text-white text-xs font-medium px-3 py-1 rounded-bl-xl">Popular</div>
-                        <h3 className="text-xl font-medium mb-2 text-primary">HeartSpeak Pro</h3>
+                        <h3 className="text-xl font-medium mb-2 text-primary">Encantta Pro</h3>
                         <div className="text-3xl font-semibold mb-6 text-primary">$12<span className="text-base opacity-70 font-normal">/month</span></div>
                         <p className="text-primary/80 mb-8 border-b border-primary/10 pb-8">Deep insights for those who want to truly understand.</p>
                         <ul className="space-y-4 mb-8 flex-1">

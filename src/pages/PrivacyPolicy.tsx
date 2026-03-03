@@ -6,7 +6,7 @@ export default function PrivacyPolicy() {
     return (
         <LegalPageLayout title="Privacy Policy" lastUpdated={effectiveDate}>
             <div className="text-lg font-medium text-gray-800 dark:text-gray-200 mb-10 border-l-4 border-primary bg-primary/5 dark:bg-primary/10 p-6 rounded-r-lg">
-                HeartSpeak is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information.
+                Encantta is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information.
             </div>
 
             <h2 className="text-2xl font-bold font-display tracking-tight text-gray-900 dark:text-white mt-10 mb-4">1. Information We Collect</h2>
@@ -52,7 +52,7 @@ export default function PrivacyPolicy() {
                 <li>Withdraw consent</li>
             </ul>
             <p>
-                To exercise your rights, contact: <a href="mailto:support@heartspeak.click">support@heartspeak.click</a>
+                To exercise your rights, contact: <a href="mailto:support@Encantta.click">support@Encantta.click</a>
             </p>
 
             <h2 className="text-2xl font-bold font-display tracking-tight text-gray-900 dark:text-white mt-10 mb-4">6. Security Measures</h2>

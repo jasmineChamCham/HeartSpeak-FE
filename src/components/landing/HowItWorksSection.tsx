@@ -12,7 +12,7 @@ export function HowItWorksSection() {
         {
             num: "02",
             title: "Decode the Emotion",
-            desc: "HeartSpeak analyzes the tone, context, and phrasing to reveal the true intentions behind the words.",
+            desc: "Encantta analyzes the tone, context, and phrasing to reveal the true intentions behind the words.",
         },
         {
             num: "03",

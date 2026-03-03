@@ -13,10 +13,7 @@ export function SiteFooter() {
                     {/* Left Column: Brand & Info */}
                     <div className="md:col-span-4 flex flex-col items-start pr-4">
                         <div className="flex items-center gap-3 mb-6">
-                            <img src="/logo-primary-color-without-bg.png" alt="HeartSpeak Logo" className="h-10 w-auto" />
-                            <span className="font-display text-xl tracking-wider text-white uppercase">
-                                HeartSpeak
-                            </span>
+                            <img src="/logo-primary-color-without-bg.png" alt="Encantta Logo" className="h-10 w-auto" />
                         </div>
                         <p className="text-sm font-light text-gray-400 mb-8 max-w-xs leading-relaxed">
                             Empowering your relationships with AI-driven empathy and understanding.
@@ -43,8 +40,8 @@ export function SiteFooter() {
                             {/* <a href="#" className="text-sm text-gray-400 hover:text-white transition-colors">Communication guide</a> */}
                             {/* <a href="#" className="text-sm text-gray-400 hover:text-white transition-colors">Blog</a> */}
                             <a href="#faq" className="text-sm text-gray-400 hover:text-white transition-colors">FAQ</a>
-                            <a href="mailto:support@heartspeak.click" className="text-sm text-gray-400 hover:text-white transition-colors">Support</a>
-                            <a href="mailto:contact@heartspeak.click" className="text-sm text-gray-400 hover:text-white transition-colors">Contact us</a>
+                            <a href="mailto:support@Encantta.click" className="text-sm text-gray-400 hover:text-white transition-colors">Support</a>
+                            <a href="mailto:contact@Encantta.click" className="text-sm text-gray-400 hover:text-white transition-colors">Contact us</a>
                         </div>
 
                         {/* Column 3 */}
@@ -67,7 +64,7 @@ export function SiteFooter() {
                 {/* Bottom Row */}
                 <div className="border-t border-[#2a2a32] pt-8 flex flex-col md:flex-row items-center justify-between gap-6 w-full relative">
                     <p className="text-sm font-light text-gray-400 md:flex-1">
-                        © {new Date().getFullYear()} HeartSpeak. All rights reserved.
+                        © {new Date().getFullYear()} Encantta. All rights reserved.
                     </p>
 
                     <div className="flex flex-col md:flex-row items-center gap-6 md:gap-12 md:pr-16">

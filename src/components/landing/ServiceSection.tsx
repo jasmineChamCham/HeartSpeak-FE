@@ -43,7 +43,7 @@ export function ServiceSection() {
                             <div className="w-2.5 h-2.5 rounded-full bg-primary" />
                         </div>
                         <span className="text-xs uppercase tracking-[0.2em] text-[#2b647f] font-medium whitespace-nowrap underline decoration-1 underline-offset-4">
-                            How HeartSpeak Helps You
+                            How Encantta Helps You
                         </span>
                     </motion.div>
 

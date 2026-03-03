@@ -23,7 +23,7 @@ export function AboutSection() {
                             <div className="w-2.5 h-2.5 rounded-full bg-primary" />
                         </div>
                         <span className="text-xs uppercase tracking-[0.2em] text-[#2b647f] font-medium whitespace-nowrap underline decoration-1 underline-offset-4">
-                            About HeartSpeak
+                            About Encantta
                         </span>
                     </motion.div>
 
@@ -47,7 +47,7 @@ export function AboutSection() {
                         className="text-[0.95rem] md:text-base text-black/70 font-light leading-[1.7] mb-10 max-w-[90%] space-y-4"
                     >
                         <p>
-                            HeartSpeak gently analyzes your conversations to help you understand the emotions, intentions, and inner world of the people you love.
+                            Encantta gently analyzes your conversations to help you understand the emotions, intentions, and inner world of the people you love.
                             Because when you understand how someone thinks and feels, you stop reacting — and start connecting.
                         </p>
                         <p>

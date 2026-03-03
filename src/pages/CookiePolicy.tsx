@@ -6,7 +6,7 @@ export default function CookiePolicy() {
     return (
         <LegalPageLayout title="Cookie Policy" lastUpdated={effectiveDate}>
             <p>
-                HeartSpeak uses cookies to enhance your experience.
+                Encantta uses cookies to enhance your experience.
             </p>
 
             <h2 className="text-2xl font-bold font-display tracking-tight text-gray-900 dark:text-white mt-10 mb-4">1. What Are Cookies?</h2>

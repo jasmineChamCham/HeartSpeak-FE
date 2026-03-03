@@ -135,10 +135,10 @@ export function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
                     <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
                         <img
                             src="/logo-primary-color-without-bg.png"
-                            alt="HeartSpeak Logo"
+                            alt="Encantta Logo"
                             className="h-8 w-auto object-contain drop-shadow-lg mt-1.5"
                         />
-                        <span className="font-display text-xl font-semibold text-primary tracking-tight drop-shadow-lg">HeartSpeak</span>
+                        <span className="font-display text-xl font-semibold text-primary tracking-tight drop-shadow-lg">Encantta</span>
                     </Link>
 
                     <div />
@@ -146,7 +146,7 @@ export function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
                     {/* Bottom row: copyright | dots + next */}
                     <div className="flex items-center justify-between">
                         <p className="text-sm text-white/70 drop-shadow-md">
-                            &copy; {new Date().getFullYear()} HeartSpeak. All rights reserved.
+                            &copy; {new Date().getFullYear()} Encantta. All rights reserved.
                         </p>
 
                         <div className="flex items-center gap-2">

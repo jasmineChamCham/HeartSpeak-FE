@@ -6,17 +6,17 @@ export default function TermsOfService() {
     return (
         <LegalPageLayout title="Terms of Service" lastUpdated={effectiveDate}>
             <p>
-                By accessing or using HeartSpeak, you agree to these Terms.
+                By accessing or using Encantta, you agree to these Terms.
             </p>
 
             <h2 className="text-2xl font-bold font-display tracking-tight text-gray-900 dark:text-white mt-10 mb-4">1. Description of Service</h2>
             <p>
-                HeartSpeak provides AI-powered emotional and communication analysis based on user-submitted text. The service is intended for informational and self-reflection purposes only.
+                Encantta provides AI-powered emotional and communication analysis based on user-submitted text. The service is intended for informational and self-reflection purposes only.
             </p>
 
             <h2 className="text-2xl font-bold font-display tracking-tight text-gray-900 dark:text-white mt-10 mb-4">2. No Professional Advice</h2>
             <p>
-                HeartSpeak does not provide medical, psychological, legal, or therapeutic advice. Users should seek professional assistance when necessary.
+                Encantta does not provide medical, psychological, legal, or therapeutic advice. Users should seek professional assistance when necessary.
             </p>
 
             <h2 className="text-2xl font-bold font-display tracking-tight text-gray-900 dark:text-white mt-10 mb-4">3. User Responsibilities</h2>
@@ -34,7 +34,7 @@ export default function TermsOfService() {
 
             <h2 className="text-2xl font-bold font-display tracking-tight text-gray-900 dark:text-white mt-10 mb-4">5. Limitation of Liability</h2>
             <p>
-                HeartSpeak is provided "as is" without warranties of any kind. We are not liable for decisions made based on AI-generated analysis.
+                Encantta is provided "as is" without warranties of any kind. We are not liable for decisions made based on AI-generated analysis.
             </p>
 
             <h2 className="text-2xl font-bold font-display tracking-tight text-gray-900 dark:text-white mt-10 mb-4">6. Termination</h2>

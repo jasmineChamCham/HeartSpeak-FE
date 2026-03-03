@@ -4,8 +4,8 @@ import { ChevronDown } from "lucide-react";
 
 const faqs = [
     {
-        question: "What is HeartSpeak?",
-        answer: "HeartSpeak is an AI tool that helps you understand what’s really happening beneath your conversations. It looks at tone, wording, and emotional patterns to reveal what might be implied but not clearly said. Instead of overthinking, you get calm, structured clarity."
+        question: "What is Encantta?",
+        answer: "Encantta is an AI tool that helps you understand what’s really happening beneath your conversations. It looks at tone, wording, and emotional patterns to reveal what might be implied but not clearly said. Instead of overthinking, you get calm, structured clarity."
     },
     {
         question: "Are my conversations private?",
@@ -13,7 +13,7 @@ const faqs = [
     },
     {
         question: "How accurate is the analysis?",
-        answer: "HeartSpeak uses Gemini AI models to analyze your conversations, and you can choose which specific model is used for your analysis. Because communication is nuanced, you can comment on the analysis results if anything feels incomplete or slightly off. The system will then refine the results with your added context to provide deeper, more personalized insights."
+        answer: "Encantta uses Gemini AI models to analyze your conversations, and you can choose which specific model is used for your analysis. Because communication is nuanced, you can comment on the analysis results if anything feels incomplete or slightly off. The system will then refine the results with your added context to provide deeper, more personalized insights."
     },
     {
         question: "Can I ask follow-up questions after the analysis?",
