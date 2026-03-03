@@ -1,6 +1,7 @@
 import * as React from "react";
 import { ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 interface AuthLayoutProps {
     children: React.ReactNode;
@@ -23,6 +24,8 @@ const CLIP_DURATION_MS = 5000;
 const FADE_MS = 700;
 
 export function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
+    const { t } = useTranslation();
+
     // Two permanent video slots — we alternate which one is visible.
     // No DOM remounting = no blink; CSS opacity does the crossfade.
     const [srcA, setSrcA] = React.useState(VIDEOS[0]);
@@ -104,7 +107,6 @@ export function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
         vid.muted = true;
         vid.currentTime = 0;
         vid.play().catch(() => { });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleNext = () => {
@@ -146,7 +148,7 @@ export function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
                     {/* Bottom row: copyright | dots + next */}
                     <div className="flex items-center justify-between">
                         <p className="text-sm text-white/70 drop-shadow-md">
-                            &copy; {new Date().getFullYear()} Encantta. All rights reserved.
+                            {t('auth.rights')}
                         </p>
 
                         <div className="flex items-center gap-2">

@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, ArrowUp, Twitter, Facebook, Instagram } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export function SiteFooter() {
+    const { t } = useTranslation();
     const scrollToTop = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
@@ -16,10 +18,10 @@ export function SiteFooter() {
                             <img src="/logo-primary-color-without-bg.png" alt="Encantta Logo" className="h-10 w-auto" />
                         </div>
                         <p className="text-sm font-light text-gray-400 mb-8 max-w-xs leading-relaxed">
-                            Empowering your relationships with AI-driven empathy and understanding.
+                            {t('footer.desc')}
                         </p>
                         <Link to="/login" className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary/90">
-                            Let's start <ArrowRight className="ml-2 h-4 w-4" />
+                            {t('footer.cta')} <ArrowRight className="ml-2 h-4 w-4" />
                         </Link>
                     </div>
 
@@ -27,44 +29,44 @@ export function SiteFooter() {
                     <div className="md:col-span-8 grid grid-cols-2 sm:grid-cols-3 gap-8 pt-2">
                         {/* Column 1 */}
                         <div className="flex flex-col gap-4">
-                            <h4 className="font-bold text-white mb-2">Product</h4>
-                            <a href="#how-it-works" className="text-sm text-gray-400 hover:text-white transition-colors">How it works</a>
-                            <a href="#service" className="text-sm text-gray-400 hover:text-white transition-colors">Features</a>
-                            <a href="#pricing" className="text-sm text-gray-400 hover:text-white transition-colors">Pricing</a>
-                            <Link to="/register" className="text-sm text-gray-400 hover:text-white transition-colors">Create account</Link>
+                            <h4 className="font-bold text-white mb-2">{t('footer.product')}</h4>
+                            <a href="#how-it-works" className="text-sm text-gray-400 hover:text-white transition-colors">{t('footer.how_it_works')}</a>
+                            <a href="#service" className="text-sm text-gray-400 hover:text-white transition-colors">{t('footer.features')}</a>
+                            <a href="#pricing" className="text-sm text-gray-400 hover:text-white transition-colors">{t('footer.pricing')}</a>
+                            <Link to="/register" className="text-sm text-gray-400 hover:text-white transition-colors">{t('footer.create_account')}</Link>
                         </div>
 
                         {/* Column 2 */}
                         <div className="flex flex-col gap-4">
-                            <h4 className="font-bold text-white mb-2">Resources</h4>
+                            <h4 className="font-bold text-white mb-2">{t('footer.resources')}</h4>
                             {/* <a href="#" className="text-sm text-gray-400 hover:text-white transition-colors">Communication guide</a> */}
                             {/* <a href="#" className="text-sm text-gray-400 hover:text-white transition-colors">Blog</a> */}
-                            <a href="#faq" className="text-sm text-gray-400 hover:text-white transition-colors">FAQ</a>
-                            <a href="mailto:support@Encantta.click" className="text-sm text-gray-400 hover:text-white transition-colors">Support</a>
-                            <a href="mailto:contact@Encantta.click" className="text-sm text-gray-400 hover:text-white transition-colors">Contact us</a>
+                            <a href="#faq" className="text-sm text-gray-400 hover:text-white transition-colors">{t('footer.faq')}</a>
+                            <a href="mailto:support@Encantta.click" className="text-sm text-gray-400 hover:text-white transition-colors">{t('footer.support')}</a>
+                            <a href="mailto:contact@Encantta.click" className="text-sm text-gray-400 hover:text-white transition-colors">{t('footer.contact')}</a>
                         </div>
 
                         {/* Column 3 */}
                         <div className="flex flex-col gap-4">
-                            <h4 className="font-bold text-white mb-2">Privacy & Trust</h4>
-                            <Link to="/data-security" className="text-sm text-gray-400 hover:text-white transition-colors">Data security</Link>
-                            <Link to="/privacy-policy" className="text-sm text-gray-400 hover:text-white transition-colors">Privacy policy</Link>
-                            <Link to="/terms-of-service" className="text-sm text-gray-400 hover:text-white transition-colors">Terms of service</Link>
-                            <Link to="/cookie-policy" className="text-sm text-gray-400 hover:text-white transition-colors">Cookie policy</Link>
+                            <h4 className="font-bold text-white mb-2">{t('footer.privacy_trust')}</h4>
+                            <Link to="/data-security" className="text-sm text-gray-400 hover:text-white transition-colors">{t('footer.data_security')}</Link>
+                            <Link to="/privacy-policy" className="text-sm text-gray-400 hover:text-white transition-colors">{t('footer.privacy_policy')}</Link>
+                            <Link to="/terms-of-service" className="text-sm text-gray-400 hover:text-white transition-colors">{t('footer.terms')}</Link>
+                            <Link to="/cookie-policy" className="text-sm text-gray-400 hover:text-white transition-colors">{t('footer.cookie')}</Link>
                         </div>
                     </div>
                 </div>
 
                 <div className="mb-6 text-center md:text-left">
                     <p className="text-base font-medium text-gray-300">
-                        Designed with empathy. Built for deeper connections.
+                        {t('footer.designed_with')}
                     </p>
                 </div>
 
                 {/* Bottom Row */}
                 <div className="border-t border-[#2a2a32] pt-8 flex flex-col md:flex-row items-center justify-between gap-6 w-full relative text-center md:text-left">
                     <p className="text-sm font-light text-gray-400 md:flex-1">
-                        © {new Date().getFullYear()} Encantta. All rights reserved.
+                        {t('footer.rights')}
                     </p>
 
                     <div className="flex flex-col md:flex-row items-center gap-6 md:gap-12 md:pr-16">

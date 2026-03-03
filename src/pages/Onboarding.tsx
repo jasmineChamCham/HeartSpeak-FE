@@ -13,8 +13,10 @@ import { updateUser } from "@/api/user/user.api";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { MAIN_PAGE } from "@/common/constant";
+import { useTranslation } from "react-i18next";
 
 export default function Onboarding() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { user } = useAuth();
   const [currentStep, setCurrentStep] = React.useState<OnboardingStep>(OnboardingStep.MBTI);
@@ -99,11 +101,11 @@ export default function Onboarding() {
         localStorage.setItem("user", JSON.stringify({ ...parsedUser, ...finalData }));
       }
 
-      toast.success("Profile completed! Let's get started!");
+      toast.success(t('onboarding.complete_success'));
       navigate(MAIN_PAGE);
     } catch (error) {
       console.error("Failed to complete onboarding:", error);
-      toast.error("Failed to save your preferences. Please try again.");
+      toast.error(t('onboarding.save_error'));
     } finally {
       setIsUpdating(false);
     }
@@ -131,7 +133,7 @@ export default function Onboarding() {
       <div className="flex min-h-screen items-center justify-center gradient-calm">
         <div className="text-center">
           <Loader2 className="h-8 w-8 animate-spin text-primary mx-auto mb-4" />
-          <p className="text-muted-foreground">Saving your preferences...</p>
+          <p className="text-muted-foreground">{t('onboarding.saving')}</p>
         </div>
       </div>
     );
@@ -145,19 +147,19 @@ export default function Onboarding() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <img src="/logo-primary-color-without-bg.png" alt="Logo" className="h-6 w-6 mt-1" />
-              <span className="font-display text-lg font-semibold text-primary">Encantta</span>
+              <span className="font-display text-lg font-semibold text-primary">{t('common.app_name')}</span>
             </div>
             <Button
               variant="ghost"
               size="sm"
               onClick={() => navigate(MAIN_PAGE)}
             >
-              Skip All
+              {t('onboarding.skip_all')}
             </Button>
           </div>
           <div className="space-y-2">
             <div className="flex justify-between text-sm text-muted-foreground">
-              <span>Complete Your Profile</span>
+              <span>{t('onboarding.complete_profile')}</span>
               <span>{getProgress()}%</span>
             </div>
             <Progress value={getProgress()} className="h-2" />

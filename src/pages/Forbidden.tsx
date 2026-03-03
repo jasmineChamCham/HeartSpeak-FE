@@ -1,19 +1,21 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const Forbidden = () => {
+    const { t } = useTranslation();
     return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
             <div className="text-center space-y-5">
                 <h1 className="text-9xl font-bold text-gray-900">403</h1>
                 <div className="space-y-2">
-                    <h2 className="text-2xl font-bold text-gray-800">Access Forbidden</h2>
+                    <h2 className="text-2xl font-bold text-gray-800">{t('forbidden.title')}</h2>
                     <p className="text-gray-600 max-w-md mx-auto">
-                        Sorry, you don't have permission to access this page. Please contact your administrator if you believe this is a mistake.
+                        {t('forbidden.message')}
                     </p>
                 </div>
                 <Button asChild className="mt-8">
-                    <Link to="/">Return Home</Link>
+                    <Link to="/">{t('not_found.return_home')}</Link>
                 </Button>
             </div>
         </div>

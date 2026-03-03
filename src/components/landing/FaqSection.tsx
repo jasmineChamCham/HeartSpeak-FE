@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const faqs = [
     {
@@ -26,7 +27,16 @@ const faqs = [
 ];
 
 export function FaqSection() {
+    const { t } = useTranslation();
     const [openIndex, setOpenIndex] = useState<number | null>(0);
+
+    const localizedFaqs = [
+        { question: t('faq.q1'), answer: t('faq.a1') },
+        { question: t('faq.q2'), answer: t('faq.a2') },
+        { question: t('faq.q3'), answer: t('faq.a3') },
+        { question: t('faq.q4'), answer: t('faq.a4') },
+        { question: t('faq.q5'), answer: t('faq.a5') },
+    ];
 
     return (
         <section id="faq" className="relative w-full overflow-hidden bg-background min-h-screen flex items-center px-6 md:px-12 mt-12 text-foreground">
@@ -45,14 +55,14 @@ export function FaqSection() {
                             <div className="w-2.5 h-2.5 rounded-full bg-primary" />
                         </div>
                         <span className="text-xs uppercase tracking-[0.2em] text-[#2b647f] font-medium whitespace-nowrap underline decoration-1 underline-offset-4">
-                            Frequently Asked Questions
+                            {t('faq.label')}
                         </span>
                     </motion.div>
 
                 </div>
 
                 <div className="w-full max-w-3xl mx-auto space-y-4">
-                    {faqs.map((faq, index) => (
+                    {localizedFaqs.map((faq, index) => (
                         <motion.div
                             key={index}
                             initial={{ opacity: 0, y: 10 }}

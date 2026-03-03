@@ -18,6 +18,7 @@ import { useQuery } from "@tanstack/react-query";
 import { uploadMultipleToCloudinary } from "@/lib/cloudinary";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 import {
   Select,
@@ -33,6 +34,7 @@ import type { AnalysisSession as AnalysisSessionType } from "@/types/analysis-se
 type Step = "upload" | "analyzing" | "results";
 
 export default function AnalysisSession() {
+  const { t } = useTranslation();
   const { user, isLoading: authLoading, signOut } = useAuth();
   const navigate = useNavigate();
   const [files, setFiles] = React.useState<File[]>([]);
@@ -59,7 +61,7 @@ export default function AnalysisSession() {
         console.log("Analysis complete, updating UI:", data);
         setAnalysisData(data);
         setStep("results");
-        toast.success("Analysis complete!");
+        toast.success(t('analysis_session.complete_msg'));
       } else {
         console.log("Ignoring analysis response - results already displayed");
       }
@@ -73,7 +75,7 @@ export default function AnalysisSession() {
       if (data.analysisResult) {
         setAnalysisData(data.analysisResult);
         setStep("results");
-        toast.success("Analysis complete!");
+        toast.success(t('analysis_session.complete_msg'));
 
         // Fetch updated session to get relationship type
         try {
@@ -133,7 +135,7 @@ export default function AnalysisSession() {
 
   const handleAnalyze = async () => {
     if (files.length === 0) {
-      toast.error("Please upload at least one screenshot");
+      toast.error(t('analysis_session.upload_error'));
       return;
     }
 
@@ -149,7 +151,7 @@ export default function AnalysisSession() {
       setIsUploading(false);
       setUploadProgress(100);
 
-      toast.info("Setting up an analysis session...");
+      toast.info(t('analysis_session.setup_msg'));
       const result = await createAnalysisSession(
         {
           contextMessage: context || undefined,
@@ -167,7 +169,7 @@ export default function AnalysisSession() {
       setCurrentSession(result);
     } catch (error) {
       console.error("Analysis error:", error);
-      toast.error(error instanceof Error ? error.message : "Failed to create analysis session");
+      toast.error(error instanceof Error ? error.message : t('analysis_session.create_error'));
       setStep("upload");
     } finally {
       setIsUploading(false);
@@ -188,7 +190,7 @@ export default function AnalysisSession() {
 
   const handleRefine = async () => {
     if (!sessionId || pendingRefinements.length === 0) {
-      toast.error("Please provide feedback or select text to refine.");
+      toast.error(t('analysis_session.refine_error1'));
       return;
     }
 
@@ -203,10 +205,10 @@ export default function AnalysisSession() {
 
       await refineAnalysisSession(sessionId, comments);
       setPendingRefinements([]);
-      toast.info("Refining analysis based on your feedback...");
+      toast.info(t('analysis_session.refine_msg'));
     } catch (error) {
       console.error("Refinement error:", error);
-      toast.error("Failed to submit refinement");
+      toast.error(t('analysis_session.refine_error2'));
       setStep("results");
     }
   };
@@ -218,7 +220,7 @@ export default function AnalysisSession() {
     const id = `refine-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`;
 
     setPendingRefinements(prev => [...prev, { id, selection, comment }]);
-    toast.success("Comment added! Click 'Refine Result' to apply changes.");
+    toast.success(t('analysis_session.comment_added'));
     return id;
   };
 
@@ -226,12 +228,12 @@ export default function AnalysisSession() {
     setPendingRefinements(prev => prev.map(ref =>
       ref.id === id ? { ...ref, comment: newComment } : ref
     ));
-    toast.success("Comment updated.");
+    toast.success(t('analysis_session.comment_updated'));
   };
 
   const handleDeleteRefinement = (id: string) => {
     setPendingRefinements(prev => prev.filter(ref => ref.id !== id));
-    toast.info("Comment removed.");
+    toast.info(t('analysis_session.comment_removed'));
   };
 
   const { data: fetchedSession, isLoading: isSessionLoading } = useQuery({
@@ -382,9 +384,9 @@ export default function AnalysisSession() {
                 className="mx-auto max-w-2xl space-y-4"
               >
                 <div className="text-center">
-                  <h1 className="font-display text-3xl font-bold">Analyze Your Conversation</h1>
+                  <h1 className="font-display text-3xl font-bold">{t('analysis_session.title')}</h1>
                   <p className="mt-2 text-muted-foreground">
-                    Upload screenshots of your chat to get personalized insights
+                    {t('analysis_session.subtitle')}
                   </p>
                 </div>
 
@@ -400,12 +402,12 @@ export default function AnalysisSession() {
 
                 <div className="space-y-2">
                   <label className="text-sm font-medium">
-                    Context (optional)
+                    {t('analysis_session.context_label')}
                   </label>
                   <Textarea
                     value={context}
                     onChange={(e) => setContext(e.target.value)}
-                    placeholder="e.g. 'This is a conversation with my partner' or 'We recently argued about X'"
+                    placeholder={t('analysis_session.context_placeholder')}
                     className="min-h-[80px] resize-none"
                   />
                 </div>
@@ -413,7 +415,7 @@ export default function AnalysisSession() {
                 <div className="flex items-center justify-end gap-4">
                   <Select value={model} onValueChange={(value) => setModel(value as GeminiModel)}>
                     <SelectTrigger className="w-[180px] h-11">
-                      <SelectValue placeholder="Select Model" />
+                      <SelectValue placeholder={t('analysis_session.select_model')} />
                     </SelectTrigger>
                     <SelectContent>
                       {Object.values(GeminiModel).map((modelValue) => (
@@ -430,7 +432,7 @@ export default function AnalysisSession() {
                     size="lg"
                   >
                     <Sparkles className="mr-2 h-5 w-5" />
-                    Analyze Conversation
+                    {t('analysis_session.btn_analyze')}
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </div>
@@ -452,8 +454,8 @@ export default function AnalysisSession() {
                 >
                   <Sparkles className="h-12 w-12 text-primary" />
                 </motion.div>
-                <h2 className="mt-6 font-display text-2xl font-semibold">Analyzing your conversation...</h2>
-                <p className="mt-2 text-muted-foreground">Our AI coaches are reviewing the emotional dynamics</p>
+                <h2 className="mt-6 font-display text-2xl font-semibold">{t('analysis_session.analyzing_title')}</h2>
+                <p className="mt-2 text-muted-foreground">{t('analysis_session.analyzing_subtitle')}</p>
               </motion.div>
             )}
 
@@ -468,7 +470,7 @@ export default function AnalysisSession() {
                 <div className="space-y-4 overflow-y-auto pr-2">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <h2 className="font-display text-2xl font-bold">Analysis Results</h2>
+                      <h2 className="font-display text-2xl font-bold">{t('analysis_session.results_title')}</h2>
                       {currentSession?.relationship?.relation && (
                         <Badge
                           variant="outline"
@@ -487,7 +489,7 @@ export default function AnalysisSession() {
                       disabled={pendingRefinements.length === 0}
                     >
                       <Sparkles className="mr-2 h-4 w-4" />
-                      Refine Result {pendingRefinements.length > 0 && `(${pendingRefinements.length})`}
+                      {t('analysis_session.btn_refine')} {pendingRefinements.length > 0 && `(${pendingRefinements.length})`}
                     </Button>
                   </div>
                   <AnalysisTextSelectionMenu
@@ -505,7 +507,7 @@ export default function AnalysisSession() {
                   <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-card">
                     <div className="flex items-center gap-2 border-b border-border bg-sage-light/50 px-4 py-3">
                       <MessageCircle className="h-5 w-5 text-primary" />
-                      <span className="font-display font-semibold">Chat with Your Coach</span>
+                      <span className="font-display font-semibold">{t('analysis_session.chat_coach')}</span>
                     </div>
                     <ChatCoach
                       sessionId={sessionId}

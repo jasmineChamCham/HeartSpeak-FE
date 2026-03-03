@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 const services = [
     {
@@ -25,6 +26,32 @@ const services = [
 ];
 
 export function ServiceSection() {
+    const { t } = useTranslation();
+
+    // Create services array inside component so we can use t()
+    const localizedServices = [
+        {
+            id: "decode",
+            title: t('services.item1_title'),
+            description: t('services.item1_desc'),
+        },
+        {
+            id: "reveal",
+            title: t('services.item2_title'),
+            description: t('services.item2_desc'),
+        },
+        {
+            id: "respond",
+            title: t('services.item3_title'),
+            description: t('services.item3_desc'),
+        },
+        {
+            id: "recognize",
+            title: t('services.item4_title'),
+            description: t('services.item4_desc'),
+        }
+    ];
+
     return (
         <section id="service" className="relative w-full overflow-hidden bg-background min-h-screen py-20 lg:h-screen lg:py-8 flex items-center px-6 md:px-12 text-foreground">
             <div className="max-w-7xl w-full mx-auto flex flex-col lg:flex-row gap-12 lg:gap-16 items-stretch">
@@ -43,7 +70,7 @@ export function ServiceSection() {
                             <div className="w-2.5 h-2.5 rounded-full bg-primary" />
                         </div>
                         <span className="text-xs uppercase tracking-[0.2em] text-[#2b647f] font-medium whitespace-nowrap underline decoration-1 underline-offset-4">
-                            How Encantta Helps You
+                            {t('services.label')}
                         </span>
                     </motion.div>
 
@@ -63,7 +90,7 @@ export function ServiceSection() {
                                 transition={{ duration: 0.8, ease: "easeOut" }}
                                 className="text-xl md:text-[1.35rem] font-medium mb-6 text-[#18181A]"
                             >
-                                Overthinking a Message?
+                                {t('services.headline')}
                             </motion.h3>
 
                             <div className="flex gap-6 items-end">
@@ -88,8 +115,8 @@ export function ServiceSection() {
                                     className="text-[0.95rem] text-black/60 max-w-[170px] leading-[1.6] pb-2 space-y-4"
                                 >
                                     <div className="space-y-1">
-                                        <p className="italic">“Did I say something wrong?”</p>
-                                        <p className="italic">“Do they still care?”</p>
+                                        <p className="italic">{t('services.quote1')}</p>
+                                        <p className="italic">{t('services.quote2')}</p>
                                     </div>
                                 </motion.div>
                             </div>
@@ -106,11 +133,11 @@ export function ServiceSection() {
                         transition={{ duration: 0.8, ease: "easeOut" }}
                         className="text-[2rem] md:text-[2.75rem] font-medium leading-[1.1] tracking-tight mb-12 text-[#18181A] max-w-none whitespace-nowrap"
                     >
-                        Support for every connection
+                        {t('services.support')}
                     </motion.h2>
 
                     <div className="flex flex-col">
-                        {services.map((service, index) => {
+                        {localizedServices.map((service, index) => {
                             return (
                                 <motion.div
                                     initial={{ opacity: 0, y: 15 }}

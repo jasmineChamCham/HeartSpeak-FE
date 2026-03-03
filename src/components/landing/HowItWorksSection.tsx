@@ -1,23 +1,26 @@
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export function HowItWorksSection() {
+    const { t } = useTranslation();
+
     const steps = [
         {
             num: "01",
-            title: "Share the Message",
-            desc: "Paste the text, email, or conversation that's leaving you confused or overthinking.",
+            title: t('how_it_works.step1_title'),
+            desc: t('how_it_works.step1_desc'),
         },
         {
             num: "02",
-            title: "Decode the Emotion",
-            desc: "Encantta analyzes the tone, context, and phrasing to reveal the true intentions behind the words.",
+            title: t('how_it_works.step2_title'),
+            desc: t('how_it_works.step2_desc'),
         },
         {
             num: "03",
-            title: "Respond with Confidence",
-            desc: "Get tailored suggestions to craft the perfect reply and build stronger, healthier connections.",
+            title: t('how_it_works.step3_title'),
+            desc: t('how_it_works.step3_desc'),
         },
     ];
 
@@ -38,7 +41,7 @@ export function HowItWorksSection() {
                             <div className="w-2.5 h-2.5 rounded-full bg-primary" />
                         </div>
                         <span className="text-xs uppercase tracking-[0.2em] text-[#2b647f] font-medium whitespace-nowrap underline decoration-1 underline-offset-4">
-                            How It Works
+                            {t('how_it_works.label')}
                         </span>
                     </motion.div>
 
@@ -50,7 +53,7 @@ export function HowItWorksSection() {
                         className="max-w-xl md:max-w-2xl text-left md:text-right"
                     >
                         <h2 className="text-[2rem] md:text-[2.75rem] font-medium leading-[1.1] tracking-tight text-[#18181A]">
-                            A clear, simple process designed to <span className="font-serif italic font-normal text-[#2b2b2d]">decode</span> the unspoken.
+                            {t('how_it_works.headline_part1')}<span className="font-serif italic font-normal text-[#2b2b2d]">{t('how_it_works.headline_part2')}</span>{t('how_it_works.headline_part3')}
                         </h2>
                     </motion.div>
                 </div>
@@ -95,7 +98,7 @@ export function HowItWorksSection() {
                         to="/login"
                         className="shimmer-button inline-flex items-center justify-center gap-2 rounded-full bg-primary px-8 py-3.5 text-sm font-medium text-white transition-all hover:bg-primary/90 shadow-lg hover:scale-[1.02]"
                     >
-                        Try It Now <ArrowUpRight className="w-4 h-4 opacity-90" />
+                        {t('how_it_works.cta')} <ArrowUpRight className="w-4 h-4 opacity-90" />
                     </Link>
                 </motion.div>
             </div>

@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { useAuth } from "@/hooks/useAuth";
 import { ErrorMessages } from "@/common/error_messages";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 interface LogInFormProps {
   onSuccess?: () => void;
@@ -23,6 +24,7 @@ const shakeAnimation = {
 };
 
 export function LogInForm({ onSuccess }: LogInFormProps) {
+  const { t } = useTranslation();
   const [isLoading, setIsLoading] = React.useState(false);
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -105,7 +107,7 @@ export function LogInForm({ onSuccess }: LogInFormProps) {
         >
           <div className="space-y-2">
             <Label htmlFor="email" className={error ? "text-red-600" : ""}>
-              Email
+              {t('auth.email_label')}
             </Label>
             <div className="relative">
               <Mail className={`absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transition-colors ${iconErrorClass}`} />
@@ -117,7 +119,7 @@ export function LogInForm({ onSuccess }: LogInFormProps) {
                   setEmail(e.target.value);
                   clearError();
                 }}
-                placeholder="you@example.com"
+                placeholder={t('auth.email_placeholder')}
                 className={`pl-10 transition-colors ${inputErrorClass}`}
                 required
               />
@@ -127,13 +129,13 @@ export function LogInForm({ onSuccess }: LogInFormProps) {
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <Label htmlFor="password" className={error ? "text-red-600" : ""}>
-                Password
+                {t('auth.password_label')}
               </Label>
               <Link
                 to="/forgot-password"
                 className="text-sm text-muted-foreground hover:text-primary transition-colors"
               >
-                Forgot your password?
+                {t('auth.forgot_password')}
               </Link>
             </div>
             <div className="relative">
@@ -146,7 +148,7 @@ export function LogInForm({ onSuccess }: LogInFormProps) {
                   setPassword(e.target.value);
                   clearError();
                 }}
-                placeholder="••••••••"
+                placeholder={t('auth.password_placeholder')}
                 className={`pl-10 transition-colors ${inputErrorClass}`}
                 required
                 minLength={6}
@@ -175,10 +177,10 @@ export function LogInForm({ onSuccess }: LogInFormProps) {
           {isLoading ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Signing in...
+              {t('auth.signing_in')}
             </>
           ) : (
-            <>Login</>
+            <>{t('auth.login_btn')}</>
           )}
         </Button>
       </form>
@@ -189,7 +191,7 @@ export function LogInForm({ onSuccess }: LogInFormProps) {
         </div>
         <div className="relative flex justify-center text-xs uppercase">
           <span className="bg-background px-2 text-muted-foreground">
-            Or continue with
+            {t('auth.or_continue')}
           </span>
         </div>
       </div>
@@ -222,7 +224,7 @@ export function LogInForm({ onSuccess }: LogInFormProps) {
             fill="#EA4335"
           />
         </svg>
-        Login with Google
+        {t('auth.login_google')}
       </Button>
 
       <div className="mt-6 text-center">
@@ -230,7 +232,7 @@ export function LogInForm({ onSuccess }: LogInFormProps) {
           to="/register"
           className="text-sm text-zinc-500 hover:text-zinc-900 transition-colors"
         >
-          Don't have an account? <span className="underline underline-offset-4">Sign up</span>
+          {t('auth.no_account')} <span className="underline underline-offset-4">{t('auth.signup_link')}</span>
         </Link>
       </div>
     </motion.div>

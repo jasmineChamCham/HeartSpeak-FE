@@ -2,8 +2,10 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export function AboutSection() {
+    const { t } = useTranslation();
     return (
         <section id="about" className="relative w-full overflow-hidden bg-background min-h-screen py-20 lg:h-screen lg:py-8 px-6 md:px-12 flex items-center text-foreground">
             <div className="max-w-7xl w-full mx-auto flex flex-col lg:flex-row gap-12 lg:gap-16 items-center lg:pl-0">
@@ -23,7 +25,7 @@ export function AboutSection() {
                             <div className="w-2.5 h-2.5 rounded-full bg-primary" />
                         </div>
                         <span className="text-xs uppercase tracking-[0.2em] text-[#2b647f] font-medium whitespace-nowrap underline decoration-1 underline-offset-4">
-                            About Encantta
+                            {t('about.label')}
                         </span>
                     </motion.div>
 
@@ -35,7 +37,7 @@ export function AboutSection() {
                         transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
                         className="text-[2rem] md:text-[2.75rem] font-medium leading-[1.1] tracking-tight mb-8 text-[#18181A]"
                     >
-                        Most relationships don't break from a lack of love. They fade from <span className="font-serif italic font-normal tracking-normal pr-1 text-[#2b2b2d]">lack of understanding.</span>
+                        {t('about.headline_part1')}<span className="font-serif italic font-normal tracking-normal pr-1 text-[#2b2b2d]">{t('about.headline_part2')}</span>
                     </motion.h2>
 
                     {/* Paragraph */}
@@ -47,12 +49,10 @@ export function AboutSection() {
                         className="text-[0.95rem] md:text-base text-black/70 font-light leading-[1.7] mb-10 max-w-[90%] space-y-4"
                     >
                         <p>
-                            Encantta gently analyzes your conversations to help you understand the emotions, intentions, and inner world of the people you love.
-                            Because when you understand how someone thinks and feels, you stop reacting — and start connecting.
+                            {t('about.p1')}
                         </p>
                         <p>
-                            The quality of your life is shaped by the quality of your relationships.
-                            And the quality of your relationships is shaped by how well you understand one another.
+                            {t('about.p2')}
                         </p>
                     </motion.div>
 
@@ -66,7 +66,7 @@ export function AboutSection() {
                             to="/register"
                             className="shimmer-button inline-flex items-center justify-center gap-2 rounded-full bg-primary px-8 py-3.5 text-sm font-medium text-white transition-all hover:bg-primary/90 shadow-lg hover:scale-[1.02]"
                         >
-                            Start free here <ArrowUpRight className="w-4 h-4 opacity-90" />
+                            {t('about.cta')} <ArrowUpRight className="w-4 h-4 opacity-90" />
                         </Link>
                     </motion.div>
                 </div>

@@ -10,6 +10,7 @@ import { ErrorMessages } from "@/common/error_messages";
 import { toast } from "sonner";
 import { Link, useNavigate } from "react-router-dom";
 import { uploadToCloudinary } from "@/lib/cloudinary";
+import { useTranslation } from "react-i18next";
 
 interface RegisterFormProps {
   onSuccess?: () => void;
@@ -25,6 +26,7 @@ const shakeAnimation = {
 };
 
 export function RegisterForm({ onSuccess }: RegisterFormProps) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = React.useState(false);
   const [email, setEmail] = React.useState("");
@@ -233,16 +235,16 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                 className="w-full"
               >
                 <Image className="mr-2 h-4 w-4" />
-                {avatarFile ? "Change Photo" : "Upload Photo"}
+                {avatarFile ? t('auth.change_photo') : t('auth.upload_photo')}
               </Button>
               <p className="text-xs text-muted-foreground mt-1">
-                Max 5MB, JPG, PNG, or GIF
+                {t('auth.photo_rules')}
               </p>
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="displayName">Display Name</Label>
+            <Label htmlFor="displayName">{t('auth.display_name_label')}</Label>
             <div className="relative">
               <User className={`absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 ${iconErrorClass}`} />
               <Input
@@ -252,7 +254,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                   setDisplayName(e.target.value);
                   clearError();
                 }}
-                placeholder="Your name"
+                placeholder={t('auth.display_name_placeholder')}
                 className={`pl-10 transition-colors ${inputErrorClass}`}
                 required
               />
@@ -261,7 +263,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
 
           <div className="space-y-2">
             <Label htmlFor="email" className={error ? "text-red-600" : ""}>
-              Email
+              {t('auth.email_label')}
             </Label>
             <div className="relative">
               <Mail className={`absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transition-colors ${iconErrorClass}`} />
@@ -273,7 +275,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                   setEmail(e.target.value);
                   clearError();
                 }}
-                placeholder="you@example.com"
+                placeholder={t('auth.email_placeholder')}
                 className={`pl-10 transition-colors ${inputErrorClass}`}
                 required
               />
@@ -282,7 +284,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
 
           <div className="space-y-2">
             <Label htmlFor="password" className={error ? "text-red-600" : ""}>
-              Password
+              {t('auth.password_label')}
             </Label>
             <div className="relative">
               <Lock className={`absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transition-colors ${iconErrorClass}`} />
@@ -294,7 +296,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                   setPassword(e.target.value);
                   clearError();
                 }}
-                placeholder="••••••••"
+                placeholder={t('auth.password_placeholder')}
                 className={`pl-10 transition-colors ${inputErrorClass}`}
                 required
                 minLength={6}
@@ -323,10 +325,10 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
           {isLoading ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Creating account...
+              {t('auth.creating_account')}
             </>
           ) : (
-            <>Create Account</>
+            <>{t('auth.signup_btn')}</>
           )}
         </Button>
       </form>
@@ -337,7 +339,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
         </div>
         <div className="relative flex justify-center text-xs uppercase">
           <span className="bg-background px-2 text-muted-foreground">
-            Or continue with
+            {t('auth.or_continue')}
           </span>
         </div>
       </div>
@@ -370,7 +372,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
             fill="#EA4335"
           />
         </svg>
-        Sign up with Google
+        {t('auth.signup_google')}
       </Button>
 
       <div className="mt-6 text-center">
@@ -378,7 +380,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
           to="/login"
           className="text-sm text-zinc-500 hover:text-zinc-900 transition-colors"
         >
-          Already have an account? <span className="underline underline-offset-4">Log in</span>
+          {t('auth.have_account')} <span className="underline underline-offset-4">{t('auth.login_link')}</span>
         </Link>
       </div>
 
@@ -401,7 +403,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
             <div className="space-y-4">
               {/* Modal Header */}
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold">Avatar Photo</h3>
+                <h3 className="text-lg font-semibold">{t('auth.avatar_title')}</h3>
                 <button
                   onClick={() => setShowAvatarPopup(false)}
                   className="text-muted-foreground hover:text-foreground transition-colors"
@@ -435,7 +437,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                   ) : (
                     <div className="text-center p-4">
                       <User className="w-20 h-20 text-muted-foreground mx-auto mb-2" />
-                      <p className="text-sm text-muted-foreground">No photo uploaded</p>
+                      <p className="text-sm text-muted-foreground">{t('auth.no_photo')}</p>
                     </div>
                   )}
                 </div>
@@ -452,7 +454,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                 className="w-full"
               >
                 <Image className="mr-2 h-4 w-4" />
-                {avatarFile ? "Change Photo" : "Upload Photo"}
+                {avatarFile ? t('auth.change_photo') : t('auth.upload_photo')}
               </Button>
 
               {avatarPreview && (
@@ -469,7 +471,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                   }}
                   className="w-full"
                 >
-                  Remove Photo
+                  {t('auth.remove_photo')}
                 </Button>
               )}
             </div>

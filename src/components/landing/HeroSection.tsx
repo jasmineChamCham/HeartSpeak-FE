@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowUpRight, Heart, User, Home } from "lucide-react";
+import { useTranslation } from "react-i18next";
+
 
 const VIDEOS = [
     "https://res.cloudinary.com/dyw50hhip/video/upload/q_auto:best,vc_h264/v1772367462/landing-page-videos/bebpsn7ufskijf7eavld.mp4",
@@ -10,6 +12,7 @@ const VIDEOS = [
 ];
 
 export function HeroSection() {
+    const { t } = useTranslation();
     const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
 
     useEffect(() => {
@@ -55,8 +58,8 @@ export function HeroSection() {
                         transition={{ duration: 1, ease: "easeOut" }}
                     >
                         <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[5rem] font-medium leading-[1.1] tracking-tight text-white/95 mb-8 text-balance">
-                            Stop guessing <br />
-                            <span className="font-serif italic font-normal opacity-90 text-[#e4ece4]">what they're really saying.</span>
+                            {t('hero.title_part1')} <br />
+                            <span className="font-serif italic font-normal opacity-90 text-[#e4ece4]">{t('hero.title_part2')}</span>
                         </h1>
                     </motion.div>
                 </div>
@@ -73,22 +76,22 @@ export function HeroSection() {
                         <div className="flex items-start gap-4">
                             <Heart className="w-5 h-5 mt-1 shrink-0 text-white stroke-[1.5]" />
                             <div>
-                                <h3 className="text-base font-normal mb-1">Emotional Clarity</h3>
-                                <p className="text-sm text-white/70 leading-relaxed font-light">See the feeling and intent behind the message.</p>
+                                <h3 className="text-base font-normal mb-1">{t('hero.feature1_title')}</h3>
+                                <p className="text-sm text-white/70 leading-relaxed font-light">{t('hero.feature1_desc')}</p>
                             </div>
                         </div>
                         <div className="flex items-start gap-4">
                             <User className="w-5 h-5 mt-1 shrink-0 text-white stroke-[1.5]" />
                             <div>
-                                <h3 className="text-base font-normal mb-1">Never Be Left Wondering</h3>
-                                <p className="text-sm text-white/70 leading-relaxed font-light">Get clear insight so you can respond with confidence.</p>
+                                <h3 className="text-base font-normal mb-1">{t('hero.feature2_title')}</h3>
+                                <p className="text-sm text-white/70 leading-relaxed font-light">{t('hero.feature2_desc')}</p>
                             </div>
                         </div>
                         <div className="flex items-start gap-4">
                             <Home className="w-5 h-5 mt-1 shrink-0 text-white stroke-[1.5]" />
                             <div>
-                                <h3 className="text-base font-normal mb-1">A Safe Space for Your Heart</h3>
-                                <p className="text-sm text-white/70 leading-relaxed font-light">Your most sensitive conversations stay private and secure.</p>
+                                <h3 className="text-base font-normal mb-1">{t('hero.feature3_title')}</h3>
+                                <p className="text-sm text-white/70 leading-relaxed font-light">{t('hero.feature3_desc')}</p>
                             </div>
                         </div>
                     </motion.div>
@@ -101,20 +104,20 @@ export function HeroSection() {
                         className="max-w-sm flex flex-col gap-6 lg:items-end lg:text-right"
                     >
                         <p className="text-base text-white/80 leading-relaxed font-light lg:ml-auto">
-                            Advanced AI analysis to help you respond with empathy and confidence.
+                            {t('hero.cta_desc')}
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4 mt-2">
                             <Link
                                 to="/login"
                                 className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-8 py-4 text-sm md:text-base font-medium text-white whitespace-nowrap transition-all hover:bg-primary/90 shadow-lg"
                             >
-                                See what they really mean <ArrowUpRight className="w-4 h-4 opacity-90" />
+                                {t('hero.cta_button_primary')} <ArrowUpRight className="w-4 h-4 opacity-90" />
                             </Link>
                             <Link
                                 to="/about"
                                 className="inline-flex items-center justify-center gap-2 rounded-full bg-transparent backdrop-blur-md px-8 py-3.5 text-sm font-medium text-white transition-all hover:bg-white/10 border border-white/30 shadow-lg"
                             >
-                                Contact <ArrowUpRight className="w-4 h-4 opacity-70" />
+                                {t('hero.cta_button_secondary')} <ArrowUpRight className="w-4 h-4 opacity-70" />
                             </Link>
                         </div>
                     </motion.div>

@@ -18,6 +18,7 @@ import { getMyProfile, updateMyProfile } from "@/api/user/user.api";
 import { uploadToCloudinary } from "@/lib/cloudinary";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { MBTI, ZodiacSign, LoveLanguage } from "@/common/enums";
 import type { User } from "@/types/user";
 
@@ -107,6 +108,7 @@ const loveLanguageOptions = [
 ];
 
 export default function Profile() {
+    const { t } = useTranslation();
     const { user: authUser, isLoading: authLoading, signOut, refreshUser } = useAuth();
     const navigate = useNavigate();
     const [profile, setProfile] = React.useState<User | null>(null);
@@ -158,14 +160,14 @@ export default function Profile() {
                 });
             } catch (error) {
                 console.error("Failed to fetch profile:", error);
-                toast.error("Failed to load profile data");
+                toast.error(t('profile.load_error'));
             } finally {
                 setIsLoading(false);
             }
         };
 
         fetchProfile();
-    }, [authUser]);
+    }, [authUser, t]);
 
     const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -222,7 +224,7 @@ export default function Profile() {
 
             // Only update if there are changes
             if (Object.keys(updateData).length === 0) {
-                toast.info("No changes to save");
+                toast.info(t('profile.no_changes'));
                 setIsEditing(false);
                 return;
             }
@@ -241,10 +243,10 @@ export default function Profile() {
                 refreshUser();
             }
 
-            toast.success("Profile updated successfully!");
+            toast.success(t('profile.update_success'));
         } catch (error) {
             console.error("Failed to update profile:", error);
-            toast.error(error instanceof Error ? error.message : "Failed to update profile");
+            toast.error(error instanceof Error ? error.message : t('profile.update_error'));
         } finally {
             setIsSaving(false);
         }
@@ -310,7 +312,7 @@ export default function Profile() {
                         className="gap-2 hover:bg-white/60 transition-colors"
                     >
                         <ArrowLeft className="h-4 w-4" />
-                        Back to Analysis Sessions
+                        {t('profile.back_btn')}
                     </Button>
                 </motion.div>
 
@@ -330,7 +332,7 @@ export default function Profile() {
                                     {!isEditing ? (
                                         <Button onClick={() => setIsEditing(true)} size="sm" variant="secondary" className="shadow-md">
                                             <Edit className="mr-1.5 h-3.5 w-3.5" />
-                                            Edit
+                                            {t('profile.btn_edit')}
                                         </Button>
                                     ) : (
                                         <div className="flex gap-2">
@@ -342,7 +344,7 @@ export default function Profile() {
                                                 className="bg-white/90"
                                             >
                                                 <X className="mr-1 h-3.5 w-3.5" />
-                                                Cancel
+                                                {t('profile.btn_cancel')}
                                             </Button>
                                             <Button onClick={handleSave} size="sm" disabled={isSaving}>
                                                 {isSaving ? (
@@ -350,7 +352,7 @@ export default function Profile() {
                                                 ) : (
                                                     <Save className="mr-1 h-3.5 w-3.5" />
                                                 )}
-                                                Save
+                                                {t('profile.btn_save')}
                                             </Button>
                                         </div>
                                     )}
@@ -396,19 +398,19 @@ export default function Profile() {
                                 <div className="mb-4">
                                     {isEditing ? (
                                         <div>
-                                            <Label className="text-xs text-muted-foreground mb-1.5 block">Display Name</Label>
+                                            <Label className="text-xs text-muted-foreground mb-1.5 block">{t('profile.display_name_label')}</Label>
                                             <Input
                                                 value={formData.displayName}
                                                 onChange={(e) =>
                                                     setFormData((prev) => ({ ...prev, displayName: e.target.value }))
                                                 }
-                                                placeholder="Enter your display name"
+                                                placeholder={t('profile.display_name_placeholder')}
                                                 className="text-lg font-semibold"
                                             />
                                         </div>
                                     ) : (
                                         <h2 className="text-2xl font-bold">
-                                            {profile.displayName || "None"}
+                                            {profile.displayName || t('profile.none')}
                                         </h2>
                                     )}
                                 </div>
@@ -430,7 +432,7 @@ export default function Profile() {
                                 <div className="pt-4 border-t border-border">
                                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                                         <Calendar className="h-4 w-4" />
-                                        <span>Joined {formatDate(profile.createdAt)}</span>
+                                        <span>{t('profile.joined')} {formatDate(profile.createdAt)}</span>
                                     </div>
                                 </div>
                             </div>
@@ -449,16 +451,16 @@ export default function Profile() {
                             <div className="bg-gradient-to-r from-primary/10 via-primary/5 to-transparent px-6 py-4 border-b border-border flex-shrink-0">
                                 <h3 className="text-lg font-semibold flex items-center gap-2">
                                     <Sparkles className="h-5 w-5 text-primary" />
-                                    About You
+                                    {t('profile.about_you')}
                                 </h3>
-                                <p className="text-xs text-muted-foreground mt-1">Your personality and preferences</p>
+                                <p className="text-xs text-muted-foreground mt-1">{t('profile.about_subtitle')}</p>
                             </div>
                             <div className="p-6 space-y-4 overflow-y-auto">
                                 {/* MBTI */}
                                 <div>
                                     <Label className="text-sm font-medium text-muted-foreground mb-3 flex items-center gap-2">
                                         <Star className="h-4 w-4" />
-                                        MBTI Personality Type
+                                        {t('profile.mbti_label')}
                                     </Label>
                                     {isEditing ? (
                                         <div
@@ -484,7 +486,7 @@ export default function Profile() {
                                                     )}
                                                 </>
                                             ) : (
-                                                <p className="text-muted-foreground text-sm">Click to select MBTI type</p>
+                                                <p className="text-muted-foreground text-sm">{t('profile.click_mbti')}</p>
                                             )}
                                         </div>
                                     ) : profile.mbti ? (
@@ -506,7 +508,7 @@ export default function Profile() {
                                             )}
                                         </div>
                                     ) : (
-                                        <p className="text-muted-foreground text-sm">None</p>
+                                        <p className="text-muted-foreground text-sm">{t('profile.none')}</p>
                                     )}
                                 </div>
 
@@ -514,7 +516,7 @@ export default function Profile() {
                                 <div>
                                     <Label className="text-sm font-medium text-muted-foreground mb-3 flex items-center gap-2">
                                         <Sparkles className="h-4 w-4" />
-                                        Zodiac Sign
+                                        {t('profile.zodiac_label')}
                                     </Label>
                                     {isEditing ? (
                                         <div
@@ -534,7 +536,7 @@ export default function Profile() {
                                                     </div>
                                                 </>
                                             ) : (
-                                                <p className="text-muted-foreground text-sm">Click to select zodiac sign</p>
+                                                <p className="text-muted-foreground text-sm">{t('profile.click_zodiac')}</p>
                                             )}
                                         </div>
                                     ) : profile.zodiacSign ? (
@@ -550,7 +552,7 @@ export default function Profile() {
                                             </div>
                                         </div>
                                     ) : (
-                                        <p className="text-muted-foreground text-sm">None</p>
+                                        <p className="text-muted-foreground text-sm">{t('profile.none')}</p>
                                     )}
                                 </div>
 
@@ -558,7 +560,7 @@ export default function Profile() {
                                 <div>
                                     <Label className="text-sm font-medium text-muted-foreground mb-3 flex items-center gap-2">
                                         <Heart className="h-4 w-4" />
-                                        Love Languages
+                                        {t('profile.love_label')}
                                     </Label>
                                     {isEditing ? (
                                         <div
@@ -582,7 +584,7 @@ export default function Profile() {
                                                     })}
                                                 </div>
                                             ) : (
-                                                <p className="text-muted-foreground text-sm">Click to select love languages</p>
+                                                <p className="text-muted-foreground text-sm">{t('profile.click_love')}</p>
                                             )}
                                         </div>
                                     ) : (
@@ -606,7 +608,7 @@ export default function Profile() {
                                                     );
                                                 })
                                             ) : (
-                                                <p className="text-muted-foreground text-sm">None</p>
+                                                <p className="text-muted-foreground text-sm">{t('profile.none')}</p>
                                             )}
                                         </div>
                                     )}
@@ -624,17 +626,16 @@ export default function Profile() {
                             <div className="bg-gradient-to-r from-primary/10 via-primary/5 to-transparent px-6 py-4 border-b border-border">
                                 <h3 className="text-lg font-semibold flex items-center gap-2">
                                     <BrainCog className="h-5 w-5 text-primary" />
-                                    Analysis Settings
+                                    {t('profile.settings_title')}
                                 </h3>
-                                <p className="text-xs text-muted-foreground mt-1">Control how AI uses your personal data</p>
+                                <p className="text-xs text-muted-foreground mt-1">{t('profile.settings_subtitle')}</p>
                             </div>
                             <div className="p-6">
                                 <div className="flex items-start justify-between gap-4">
                                     <div className="flex-1">
-                                        <p className="text-sm font-medium">Use my profile in analysis</p>
+                                        <p className="text-sm font-medium">{t('profile.use_profile')}</p>
                                         <p className="text-xs text-muted-foreground mt-1">
-                                            When enabled, the AI will consider your Zodiac sign, MBTI type, and love
-                                            languages when analyzing conversations and responding in chat.
+                                            {t('profile.use_profile_desc')}
                                         </p>
                                     </div>
                                     <div className="flex flex-col items-center gap-1.5 flex-shrink-0">
@@ -662,10 +663,10 @@ export default function Profile() {
                         <DialogHeader>
                             <DialogTitle className="flex items-center gap-2">
                                 <Star className="h-5 w-5 text-primary" />
-                                Select Your MBTI Personality Type
+                                {t('profile.mbti_modal_title')}
                             </DialogTitle>
                             <DialogDescription>
-                                Click on your personality type. Click again to deselect.
+                                {t('profile.mbti_modal_desc')}
                             </DialogDescription>
                         </DialogHeader>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4">
@@ -715,10 +716,10 @@ export default function Profile() {
                         <DialogHeader>
                             <DialogTitle className="flex items-center gap-2">
                                 <Sparkles className="h-5 w-5 text-primary" />
-                                Select Your Zodiac Sign
+                                {t('profile.zodiac_modal_title')}
                             </DialogTitle>
                             <DialogDescription>
-                                Click on your zodiac sign. Click again to deselect.
+                                {t('profile.zodiac_modal_desc')}
                             </DialogDescription>
                         </DialogHeader>
                         <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 mt-4">
@@ -759,10 +760,10 @@ export default function Profile() {
                         <DialogHeader>
                             <DialogTitle className="flex items-center gap-2">
                                 <Heart className="h-5 w-5 text-pink-600" />
-                                Select Your Love Languages
+                                {t('profile.love_modal_title')}
                             </DialogTitle>
                             <DialogDescription>
-                                Select up to 2 ways you prefer to give and receive love. Click again to deselect.
+                                {t('profile.love_modal_desc')}
                             </DialogDescription>
                         </DialogHeader>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">

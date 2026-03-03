@@ -3,12 +3,14 @@ import { motion } from "framer-motion";
 import { LogInForm } from "@/components/LogInForm";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Loader2 } from "lucide-react";
 import { AuthLayout } from "@/components/layouts/AuthLayout";
 import { MAIN_PAGE } from "@/common/constant";
 import { toast } from "sonner";
 
 export default function LogIn() {
+  const { t } = useTranslation();
   const { user, isLoading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -51,8 +53,8 @@ export default function LogIn() {
 
   return (
     <AuthLayout
-      title="Login to your account"
-      subtitle="Enter your email below to login to your account"
+      title={t('auth.login_title')}
+      subtitle={t('auth.login_subtitle')}
     >
       <LogInForm onSuccess={handleLogInSuccess} />
     </AuthLayout>

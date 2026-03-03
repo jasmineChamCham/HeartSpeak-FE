@@ -4,10 +4,12 @@ import { RegisterForm } from "@/components/RegisterForm";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { AuthLayout } from "@/components/layouts/AuthLayout";
 import { MAIN_PAGE } from "@/common/constant";
 
 export default function Register() {
+  const { t } = useTranslation();
   const { user, isLoading } = useAuth();
   const navigate = useNavigate();
 
@@ -34,8 +36,8 @@ export default function Register() {
 
   return (
     <AuthLayout
-      title="Create Account"
-      subtitle="Start improving your communication today"
+      title={t('auth.register_title')}
+      subtitle={t('auth.register_subtitle')}
     >
       <RegisterForm />
     </AuthLayout>
