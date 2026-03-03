@@ -12,9 +12,18 @@ export async function signIn(
   payload: SignInPayload,
 ): Promise<{ user: LoginUserDto; token: Token }> {
   try {
+    const headers: Record<string, string> = {};
+    const latitude = localStorage.getItem("latitude");
+    const longitude = localStorage.getItem("longitude");
+    if (latitude && longitude) {
+      headers["x-latitude"] = latitude;
+      headers["x-longitude"] = longitude;
+    }
+
     const response = await axios.post<AuthResponse>(
       `${API_URL}/login/local`,
       payload,
+      { headers },
     );
     const { user, access_token, refresh_token } = response.data;
 

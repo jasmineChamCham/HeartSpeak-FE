@@ -24,6 +24,15 @@ apiClient.interceptors.request.use(
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
 
+    // Attach location headers if available in localStorage
+    const latitude = localStorage.getItem("latitude");
+    const longitude = localStorage.getItem("longitude");
+
+    if (latitude && longitude) {
+      config.headers["x-latitude"] = latitude;
+      config.headers["x-longitude"] = longitude;
+    }
+
     return config;
   },
   (error) => {

@@ -34,6 +34,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setIsLoading(false);
     });
 
+    // Fetch and store geolocation for API requests
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          {
+            localStorage.setItem("latitude", position.coords.latitude.toString());
+            localStorage.setItem("longitude", position.coords.longitude.toString());
+          }
+        },
+        (error) => {
+          console.warn("Geolocation permission denied or unavailable:", error);
+        }
+      );
+    }
+
     return () => subscription.unsubscribe();
   }, []);
 
