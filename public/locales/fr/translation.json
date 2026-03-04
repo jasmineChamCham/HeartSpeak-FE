@@ -87,7 +87,27 @@
     "how_it_works": "Comment ça marche",
     "faq": "FAQ",
     "analyze_long": "Analysez vos conversations",
-    "analyze_short": "Analyser"
+    "analyze_short": "Analyser",
+    "profile": "Profil",
+    "view_settings": "Voir les Paramètres",
+    "sign_out": "Déconnexion"
+  },
+  "sidebar": {
+    "search": "Rechercher des sessions...",
+    "new_analysis": "Nouvelle Analyse",
+    "no_sessions": "Aucune session trouvée",
+    "clear_filters": "Effacer les filtres",
+    "untitled_session": "Session sans titre",
+    "unknown": "Inconnu"
+  },
+  "relationship": {
+    "partner": "Partenaire",
+    "romantic": "Romance",
+    "friend": "Amitié",
+    "family": "Famille",
+    "colleague": "Collègue",
+    "acquaintance": "Connaissance",
+    "other": "Autre"
   },
   "auth": {
     "login_title": "Connectez-vous à votre compte",
@@ -200,6 +220,12 @@
     "taking_onboarding": "Tout est prêt. Nous vous emmenons à votre intégration...",
     "failed": "Échec de la vérification",
     "back_signup": "Retour à l'Inscription"
+  },
+  "file_upload": {
+    "title": "Déposez vos captures d'écran de discussion ici",
+    "subtitle": "ou cliquez pour parcourir • Prend en charge les images et les vidéos",
+    "files_uploaded": "{{count}}/{{max}} fichiers téléchargés",
+    "preparing": "Préparation ... {{progress}}%"
   },
   "common": {
     "app_name": "Encantta"

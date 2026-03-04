@@ -87,7 +87,27 @@
     "how_it_works": "Cách hoạt động",
     "faq": "Câu hỏi thường gặp",
     "analyze_long": "Phân tích cuộc trò chuyện",
-    "analyze_short": "Phân tích"
+    "analyze_short": "Phân tích",
+    "profile": "Hồ sơ",
+    "view_settings": "Xem Cài đặt",
+    "sign_out": "Đăng xuất"
+  },
+  "sidebar": {
+    "search": "Tìm kiếm phiên trò chuyện...",
+    "new_analysis": "Tạo Phân Tích Mới",
+    "no_sessions": "Không tìm thấy phiên nào",
+    "clear_filters": "Xóa bộ lọc",
+    "untitled_session": "Phiên trò chuyện chưa đặt tên",
+    "unknown": "Không xác định"
+  },
+  "relationship": {
+    "partner": "Người bạn đồng hành",
+    "romantic": "Người yêu",
+    "friend": "Bạn bè",
+    "family": "Gia đình",
+    "colleague": "Đồng nghiệp",
+    "acquaintance": "Người quen",
+    "other": "Khác"
   },
   "auth": {
     "login_title": "Đăng nhập vào tài khoản của bạn",
@@ -200,6 +220,12 @@
     "taking_onboarding": "Mọi thứ đã sẵn sàng. Đưa bạn đến phần giới thiệu…",
     "failed": "Xác minh thất bại",
     "back_signup": "Quay lại Đăng ký"
+  },
+  "file_upload": {
+    "title": "Thả ảnh chụp màn hình trò chuyện của bạn vào đây",
+    "subtitle": "hoặc nhấp để duyệt • Hỗ trợ hình ảnh và video",
+    "files_uploaded": "Đã tải lên {{count}}/{{max}} tệp",
+    "preparing": "Đang chuẩn bị ... {{progress}}%"
   },
   "common": {
     "app_name": "Encantta"

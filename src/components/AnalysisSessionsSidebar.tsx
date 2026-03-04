@@ -22,6 +22,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
+import { useTranslation } from "react-i18next";
 import { getMyAnalysisSessions } from "@/api/analysis-session/analysis-session.api";
 import { AnalysisSession } from "@/types/analysis-session";
 import { AnalysisStatus, RelationshipType } from "@/common/enums";
@@ -48,6 +49,7 @@ export function AnalysisSessionsSidebar({
     onClose,
     onNewAnalysisClick,
 }: AnalysisSessionsSidebarProps) {
+    const { t } = useTranslation();
     const [sessions, setSessions] = React.useState<AnalysisSession[]>([]);
     const [isLoading, setIsLoading] = React.useState(true);
     const [searchQuery, setSearchQuery] = React.useState("");
@@ -203,8 +205,8 @@ export function AnalysisSessionsSidebar({
     };
 
     const formatRelationshipType = (type?: RelationshipType) => {
-        if (!type) return "Unknown";
-        return type.charAt(0).toUpperCase() + type.slice(1);
+        if (!type) return t('sidebar.unknown');
+        return t(`relationship.${type.toLowerCase()}`);
     };
 
     const formatDate = (dateString: string) => {
@@ -247,7 +249,7 @@ export function AnalysisSessionsSidebar({
                 <div className="relative mb-2">
                     <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                     <Input
-                        placeholder="Search sessions..."
+                        placeholder={t('sidebar.search')}
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         className="pl-9 h-9 bg-background/50"
@@ -261,7 +263,7 @@ export function AnalysisSessionsSidebar({
                         if (onClose) onClose();
                     }}
                 >
-                    New Analysis
+                    {t('sidebar.new_analysis')}
                 </Button>
             </div>
 
@@ -275,7 +277,7 @@ export function AnalysisSessionsSidebar({
                     ) : sessions.length === 0 ? (
                         <div className="flex flex-col items-center justify-center py-12 text-center">
                             <MessageSquare className="h-12 w-12 text-muted-foreground/50 mb-3" />
-                            <p className="text-sm text-muted-foreground">No sessions found</p>
+                            <p className="text-sm text-muted-foreground">{t('sidebar.no_sessions')}</p>
                             {(searchQuery || statusFilter !== "all") && (
                                 <Button
                                     variant="ghost"
@@ -286,7 +288,7 @@ export function AnalysisSessionsSidebar({
                                         setStatusFilter("all");
                                     }}
                                 >
-                                    Clear filters
+                                    {t('sidebar.clear_filters')}
                                 </Button>
                             )}
                         </div>
@@ -327,7 +329,7 @@ export function AnalysisSessionsSidebar({
 
                                         {/* Title */}
                                         <h3 className="font-medium text-sm mb-1 line-clamp-2 group-hover:text-primary transition-colors">
-                                            {session.title || "Untitled Session"}
+                                            {session.title || t('sidebar.untitled_session')}
                                         </h3>
 
                                         {/* Context Preview */}

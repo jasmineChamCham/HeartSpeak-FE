@@ -87,7 +87,27 @@
     "how_it_works": "Cómo funciona",
     "faq": "FAQ",
     "analyze_long": "Analiza tus conversaciones",
-    "analyze_short": "Analizar"
+    "analyze_short": "Analizar",
+    "profile": "Perfil",
+    "view_settings": "Ver Ajustes",
+    "sign_out": "Cerrar sesión"
+  },
+  "sidebar": {
+    "search": "Buscar sesiones...",
+    "new_analysis": "Nuevo Análisis",
+    "no_sessions": "No se encontraron sesiones",
+    "clear_filters": "Borrar filtros",
+    "untitled_session": "Sesión sin título",
+    "unknown": "Desconocido"
+  },
+  "relationship": {
+    "partner": "Pareja",
+    "romantic": "Romance",
+    "friend": "Amistad",
+    "family": "Familia",
+    "colleague": "Colega",
+    "acquaintance": "Contacto",
+    "other": "Otro"
   },
   "auth": {
     "login_title": "Inicia sesión en tu cuenta",
@@ -200,6 +220,12 @@
     "taking_onboarding": "Estás listo. Llevándote a tu incorporación...",
     "failed": "Verificación fallida",
     "back_signup": "Volver a Registrarse"
+  },
+  "file_upload": {
+    "title": "Suelta tus capturas de pantalla de chat aquí",
+    "subtitle": "o haz clic para buscar • Admite imágenes y videos",
+    "files_uploaded": "{{count}}/{{max}} archivos subidos",
+    "preparing": "Preparando ... {{progress}}%"
   },
   "common": {
     "app_name": "Encantta"

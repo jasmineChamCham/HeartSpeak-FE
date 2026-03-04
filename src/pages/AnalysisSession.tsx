@@ -129,8 +129,8 @@ export default function AnalysisSession() {
   };
 
   const formatRelationshipType = (type?: string) => {
-    if (!type) return "Unknown";
-    return type.charAt(0).toUpperCase() + type.slice(1);
+    if (!type) return t('sidebar.unknown');
+    return t(`relationship.${type.toLowerCase()}`);
   };
 
   const handleAnalyze = async () => {

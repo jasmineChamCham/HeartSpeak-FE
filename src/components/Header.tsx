@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import { LogOut, UserCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { LoginUserDto } from "@/types/auth";
+import { useTranslation } from "react-i18next";
+import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
 
 interface SessionHeaderProps {
     user: LoginUserDto;
@@ -9,6 +11,8 @@ interface SessionHeaderProps {
 }
 
 export function Header({ user, onSignOut }: SessionHeaderProps) {
+    const { t } = useTranslation();
+
     return (
         <header className="border-b border-border/50 bg-card/50 backdrop-blur-sm sticky top-0 z-20">
             <div className="container flex items-center justify-between py-4">
@@ -45,15 +49,18 @@ export function Header({ user, onSignOut }: SessionHeaderProps) {
                     </div>
                     <div className="text-left hidden sm:block">
                         <div className="text-sm font-medium">
-                            {user.displayName || "Profile"}
+                            {user.displayName || t('header.profile')}
                         </div>
-                        <div className="text-xs text-muted-foreground">View Settings</div>
+                        <div className="text-xs text-muted-foreground">{t('header.view_settings')}</div>
                     </div>
                 </Link>
-                <Button variant="ghost" size="sm" onClick={onSignOut}>
-                    <LogOut className="mr-2 h-4 w-4" />
-                    Sign Out
-                </Button>
+                <div className="flex items-center gap-2">
+                    <LanguageSwitcher variant="app" />
+                    <Button variant="ghost" size="sm" onClick={onSignOut}>
+                        <LogOut className="mr-2 h-4 w-4" />
+                        {t('header.sign_out')}
+                    </Button>
+                </div>
             </div>
         </header>
     );

@@ -2,6 +2,7 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Upload, X, Image, Film } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 interface FileUploadProps {
   files: File[];
@@ -79,6 +80,7 @@ export function FileUpload({
   accept = "image/*,video/*",
   className,
 }: FileUploadProps) {
+  const { t } = useTranslation();
   const [isDragging, setIsDragging] = React.useState(false);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
@@ -153,13 +155,13 @@ export function FileUpload({
 
           <div className="space-y-2">
             <p className="font-display text-lg font-medium text-foreground">
-              Drop your chat screenshots here
+              {t('file_upload.title')}
             </p>
             <p className="text-sm text-muted-foreground">
-              or click to browse • Supports images and videos
+              {t('file_upload.subtitle')}
             </p>
             <p className="text-xs text-muted-foreground">
-              {files.length}/{maxFiles} files uploaded
+              {t('file_upload.files_uploaded', { count: files.length, max: maxFiles })}
             </p>
             {isUploading && (
               <div className="space-y-1">
@@ -170,7 +172,7 @@ export function FileUpload({
                   />
                 </div>
                 <p className="text-xs text-primary font-medium">
-                  Preparing ... {Math.round(uploadProgress)}%
+                  {t('file_upload.preparing', { progress: Math.round(uploadProgress) })}
                 </p>
               </div>
             )}
