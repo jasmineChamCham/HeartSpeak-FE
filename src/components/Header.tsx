@@ -18,7 +18,7 @@ export function Header({ user, onSignOut }: SessionHeaderProps) {
             <div className="container flex items-center justify-between py-4">
                 <Link
                     to="/profile"
-                    className="flex items-center gap-3 rounded-lg px-3 py-2 hover:bg-background/50 transition-colors group"
+                    className="flex items-center gap-3 rounded-lg px-3 py-2 hover:bg-background/50 dark:hover:bg-background/20 transition-colors group"
                 >
                     <div className="relative">
                         {user.avatarUrl ? (
@@ -48,7 +48,7 @@ export function Header({ user, onSignOut }: SessionHeaderProps) {
                         )}
                     </div>
                     <div className="text-left hidden sm:block">
-                        <div className="text-sm font-medium">
+                        <div className="text-sm font-medium text-foreground">
                             {user.displayName || t('header.profile')}
                         </div>
                         <div className="text-xs text-muted-foreground">{t('header.view_settings')}</div>

@@ -54,7 +54,7 @@ export function FaqSection() {
                         <div className="flex items-center justify-center w-6 h-6 rounded-full bg-[#E8E6E1]/50 shadow-sm border border-black/5">
                             <div className="w-2.5 h-2.5 rounded-full bg-primary" />
                         </div>
-                        <span className="text-xs uppercase tracking-[0.2em] text-[#2b647f] font-medium whitespace-nowrap underline decoration-1 underline-offset-4">
+                        <span className="text-xs uppercase tracking-[0.2em] text-[#2b647f] dark:text-[#6cb2d1] font-medium whitespace-nowrap underline decoration-1 underline-offset-4">
                             {t('faq.label')}
                         </span>
                     </motion.div>
@@ -69,13 +69,13 @@ export function FaqSection() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5, delay: 0.1 * index }}
-                            className="border border-gray-200 rounded-2xl overflow-hidden bg-white/40"
+                            className="border border-gray-200 dark:border-white/10 rounded-2xl overflow-hidden bg-white/40 dark:bg-white/5"
                         >
                             <button
                                 onClick={() => setOpenIndex(openIndex === index ? null : index)}
                                 className="w-full flex items-center justify-between p-6 text-left"
                             >
-                                <span className="font-medium text-[#18181A] text-lg">{faq.question}</span>
+                                <span className="font-medium text-[#18181A] dark:text-gray-100 text-lg">{faq.question}</span>
                                 <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${openIndex === index ? 'rotate-180' : ''}`} />
                             </button>
                             <AnimatePresence>
@@ -87,7 +87,7 @@ export function FaqSection() {
                                         transition={{ duration: 0.3 }}
                                         className="overflow-hidden"
                                     >
-                                        <div className="p-6 pt-0 text-gray-600 font-light leading-relaxed">
+                                        <div className="p-6 pt-0 text-gray-600 dark:text-gray-300 font-light leading-relaxed">
                                             {faq.answer}
                                         </div>
                                     </motion.div>

@@ -20,7 +20,7 @@ export function PricingSection() {
                         <div className="flex items-center justify-center w-6 h-6 rounded-full bg-[#E8E6E1]/50 shadow-sm border border-black/5">
                             <div className="w-2.5 h-2.5 rounded-full bg-primary" />
                         </div>
-                        <span className="text-xs uppercase tracking-[0.2em] text-[#2b647f] font-medium whitespace-nowrap underline decoration-1 underline-offset-4">
+                        <span className="text-xs uppercase tracking-[0.2em] text-[#2b647f] dark:text-[#6cb2d1] font-medium whitespace-nowrap underline decoration-1 underline-offset-4">
                             Pricing
                         </span>
                     </motion.div>
@@ -32,8 +32,8 @@ export function PricingSection() {
                         transition={{ duration: 0.8 }}
                         className="max-w-xl md:max-w-2xl text-left md:text-right"
                     >
-                        <h2 className="text-[2rem] md:text-[2.75rem] font-medium leading-[1.1] tracking-tight text-[#18181A]">
-                            Simple, transparent <span className={`text-[#2b2b2d] ${i18n.language === 'vi' ? 'font-normal' : 'font-serif italic font-normal'}`}>pricing</span>
+                        <h2 className="text-[2rem] md:text-[2.75rem] font-medium leading-[1.1] tracking-tight text-[#18181A] dark:text-gray-100">
+                            Simple, transparent <span className={`text-[#2b2b2d] dark:text-gray-300 ${i18n.language === 'vi' ? 'font-normal' : 'font-serif italic font-normal'}`}>pricing</span>
                         </h2>
                     </motion.div>
                 </div>
@@ -45,19 +45,19 @@ export function PricingSection() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-                        className="bg-white/50 backdrop-blur-sm border border-gray-200 rounded-3xl p-8 shadow-sm flex flex-col"
+                        className="bg-white/50 dark:bg-white/5 backdrop-blur-sm border border-gray-200 dark:border-white/10 rounded-3xl p-8 shadow-sm flex flex-col"
                     >
-                        <h3 className="text-xl font-medium mb-2">Basic</h3>
-                        <div className="text-3xl font-semibold mb-6">$0<span className="text-base text-gray-500 font-normal">/month</span></div>
-                        <p className="text-gray-600 mb-8 border-b border-gray-100 pb-8">Perfect for getting started and exploring the magic.</p>
+                        <h3 className="text-xl font-medium mb-2 text-[#18181A] dark:text-gray-100">Basic</h3>
+                        <div className="text-3xl font-semibold mb-6 text-[#18181A] dark:text-gray-100">$0<span className="text-base text-gray-500 dark:text-gray-400 font-normal">/month</span></div>
+                        <p className="text-gray-600 dark:text-gray-300 mb-8 border-b border-gray-100 dark:border-white/10 pb-8">Perfect for getting started and exploring the magic.</p>
                         <ul className="space-y-4 mb-8 flex-1">
-                            <li className="flex items-center gap-3 text-sm text-gray-700">
+                            <li className="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300">
                                 <span className="w-1.5 h-1.5 rounded-full bg-[#4EA89B]" /> 5 analysis sessions per month
                             </li>
-                            <li className="flex items-center gap-3 text-sm text-gray-700">
+                            <li className="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300">
                                 <span className="w-1.5 h-1.5 rounded-full bg-[#4EA89B]" /> Basic emotion detection
                             </li>
-                            <li className="flex items-center gap-3 text-sm text-gray-700">
+                            <li className="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300">
                                 <span className="w-1.5 h-1.5 rounded-full bg-[#4EA89B]" /> Standard tone analysis
                             </li>
                         </ul>
@@ -72,7 +72,7 @@ export function PricingSection() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-                        className="bg-primary/5 border border-primary/20 rounded-3xl p-8 shadow-sm flex flex-col relative overflow-hidden"
+                        className="bg-primary/5 dark:bg-primary/10 border border-primary/20 dark:border-primary/30 rounded-3xl p-8 shadow-sm flex flex-col relative overflow-hidden"
                     >
                         <div className="absolute top-0 right-0 bg-primary text-white text-xs font-medium px-3 py-1 rounded-bl-xl">Popular</div>
                         <h3 className="text-xl font-medium mb-2 text-primary">Encantta Pro</h3>

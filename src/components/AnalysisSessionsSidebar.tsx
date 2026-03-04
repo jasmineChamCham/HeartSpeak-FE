@@ -230,7 +230,7 @@ export function AnalysisSessionsSidebar({
     }
 
     return (
-        <div className="flex h-full w-80 flex-col border-r border-border/50 bg-card/30 backdrop-blur-sm">
+        <div className="flex h-full w-80 flex-col border-r border-border/50 bg-card/30 dark:bg-card/20 backdrop-blur-sm">
             {/* Header */}
             <div className="border-b border-border/50 p-4">
                 <div className="flex items-center justify-between mb-4">
@@ -252,7 +252,7 @@ export function AnalysisSessionsSidebar({
                         placeholder={t('sidebar.search')}
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="pl-9 h-9 bg-background/50"
+                        className="pl-9 h-9 bg-background/50 dark:bg-background/20"
                     />
                 </div>
 
@@ -310,8 +310,8 @@ export function AnalysisSessionsSidebar({
                                         className={cn(
                                             "group relative w-full rounded-lg border p-3 mb-2 text-left transition-all hover:shadow-md",
                                             currentSessionId === session.id
-                                                ? "border-primary/50 bg-primary/5 shadow-sm"
-                                                : "border-border/50 bg-background/50 hover:border-primary/30 hover:bg-background/80"
+                                                ? "border-primary/50 bg-primary/5 dark:bg-primary/10 shadow-sm"
+                                                : "border-border/50 bg-background/50 hover:border-primary/30 hover:bg-background/80 dark:bg-background/20 dark:hover:bg-background/40"
                                         )}
                                     >
                                         {/* Relationship Type Badge */}
@@ -328,7 +328,7 @@ export function AnalysisSessionsSidebar({
                                         </div>
 
                                         {/* Title */}
-                                        <h3 className="font-medium text-sm mb-1 line-clamp-2 group-hover:text-primary transition-colors">
+                                        <h3 className="font-medium text-sm mb-1 line-clamp-2 group-hover:text-primary transition-colors text-foreground">
                                             {session.title || t('sidebar.untitled_session')}
                                         </h3>
 

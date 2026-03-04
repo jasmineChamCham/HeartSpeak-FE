@@ -24,7 +24,7 @@ export function AboutSection() {
                         <div className="flex items-center justify-center w-6 h-6 rounded-full bg-[#E8E6E1]/50 shadow-sm border border-black/5">
                             <div className="w-2.5 h-2.5 rounded-full bg-primary" />
                         </div>
-                        <span className="text-xs uppercase tracking-[0.2em] text-[#2b647f] font-medium whitespace-nowrap underline decoration-1 underline-offset-4">
+                        <span className="text-xs uppercase tracking-[0.2em] text-[#2b647f] dark:text-[#6cb2d1] font-medium whitespace-nowrap underline decoration-1 underline-offset-4">
                             {t('about.label')}
                         </span>
                     </motion.div>
@@ -35,9 +35,9 @@ export function AboutSection() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
-                        className={`${i18n.language === 'en' ? 'text-[2rem] md:text-[2.75rem]' : 'text-[1.75rem] md:text-[2.25rem]'} font-medium leading-[1.1] tracking-tight mb-8 text-[#18181A]`}
+                        className={`${i18n.language === 'en' ? 'text-[2rem] md:text-[2.75rem]' : 'text-[1.75rem] md:text-[2.25rem]'} font-medium leading-[1.1] tracking-tight mb-8 text-[#18181A] dark:text-gray-100`}
                     >
-                        {t('about.headline_part1')}<span className={`tracking-normal pr-1 text-[#2b2b2d] ${i18n.language === 'vi' ? 'font-normal' : 'font-serif italic font-normal'}`}>{t('about.headline_part2')}</span>
+                        {t('about.headline_part1')}<span className={`tracking-normal pr-1 text-[#2b2b2d] dark:text-gray-300 ${i18n.language === 'vi' ? 'font-normal' : 'font-serif italic font-normal'}`}>{t('about.headline_part2')}</span>
                     </motion.h2>
 
                     {/* Paragraph */}
@@ -46,7 +46,7 @@ export function AboutSection() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-                        className="text-[0.95rem] md:text-base text-black/70 font-light leading-[1.7] mb-10 max-w-[90%] space-y-4"
+                        className="text-[0.95rem] md:text-base text-black/70 dark:text-white/70 font-light leading-[1.7] mb-10 max-w-[90%] space-y-4"
                     >
                         <p>
                             {t('about.p1')}
@@ -79,7 +79,7 @@ export function AboutSection() {
                     transition={{ duration: 1, ease: "easeOut" }}
                     className="flex-1 w-full min-h-[300px] lg:min-h-[450px] relative mt-10 lg:mt-0"
                 >
-                    <div className="absolute inset-0 p-4 lg:p-6 bg-[#EDEBDF]/40 rounded-sm">
+                    <div className="absolute inset-0 p-4 lg:p-6 bg-[#EDEBDF]/40 dark:bg-white/5 rounded-sm">
                         {/* Corner Ornaments (Custom SVG approximation) */}
                         <svg className="absolute top-8 left-8 w-12 h-12 text-white/60 mix-blend-overlay z-20 pointer-events-none" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M1 30V1H30" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" />

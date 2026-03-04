@@ -156,7 +156,7 @@ export default function AnalysisSession() {
         {
           contextMessage: context || undefined,
           model,
-          language: i18n?.language,
+          language: i18n.language,
         },
         urls
       );
@@ -309,7 +309,7 @@ export default function AnalysisSession() {
   }
 
   return (
-    <div className="flex h-screen overflow-hidden gradient-calm">
+    <div className="flex h-screen overflow-hidden bg-background gradient-calm">
       {/* Sidebar */}
       <AnimatePresence mode="wait">
         {isSidebarOpen && (
@@ -385,7 +385,7 @@ export default function AnalysisSession() {
                 className="mx-auto max-w-2xl space-y-4"
               >
                 <div className="text-center">
-                  <h1 className="font-display text-3xl font-bold">{t('analysis_session.title')}</h1>
+                  <h1 className="font-display text-3xl font-bold text-foreground">{t('analysis_session.title')}</h1>
                   <p className="mt-2 text-muted-foreground">
                     {t('analysis_session.subtitle')}
                   </p>
@@ -453,9 +453,9 @@ export default function AnalysisSession() {
                   transition={{ duration: 2, repeat: Infinity }}
                   className="rounded-full bg-sage-light p-6"
                 >
-                  <Sparkles className="h-12 w-12 text-primary" />
+                  <Sparkles className="h-12 w-12 text-primary dark:text-primary" />
                 </motion.div>
-                <h2 className="mt-6 font-display text-2xl font-semibold">{t('analysis_session.analyzing_title')}</h2>
+                <h2 className="mt-6 font-display text-2xl font-semibold text-foreground">{t('analysis_session.analyzing_title')}</h2>
                 <p className="mt-2 text-muted-foreground">{t('analysis_session.analyzing_subtitle')}</p>
               </motion.div>
             )}
@@ -471,7 +471,7 @@ export default function AnalysisSession() {
                 <div className="space-y-4 overflow-y-auto pr-2">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <h2 className="font-display text-2xl font-bold">{t('analysis_session.results_title')}</h2>
+                      <h2 className="font-display text-2xl font-bold text-foreground">{t('analysis_session.results_title')}</h2>
                       {currentSession?.relationship?.relation && (
                         <Badge
                           variant="outline"
@@ -506,9 +506,9 @@ export default function AnalysisSession() {
 
                 <div className="h-[600px] lg:h-full overflow-hidden">
                   <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-card">
-                    <div className="flex items-center gap-2 border-b border-border bg-sage-light/50 px-4 py-3">
+                    <div className="flex items-center gap-2 border-b border-border bg-sage-light/50 dark:bg-sage-light/10 px-4 py-3">
                       <MessageCircle className="h-5 w-5 text-primary" />
-                      <span className="font-display font-semibold">{t('analysis_session.chat_coach')}</span>
+                      <span className="font-display font-semibold text-foreground">{t('analysis_session.chat_coach')}</span>
                     </div>
                     <ChatCoach
                       sessionId={sessionId}

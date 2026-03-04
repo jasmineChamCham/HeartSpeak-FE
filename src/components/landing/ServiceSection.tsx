@@ -69,7 +69,7 @@ export function ServiceSection() {
                         <div className="flex items-center justify-center w-6 h-6 rounded-full bg-[#E8E6E1]/50 shadow-sm border border-black/5">
                             <div className="w-2.5 h-2.5 rounded-full bg-primary" />
                         </div>
-                        <span className="text-xs uppercase tracking-[0.2em] text-[#2b647f] font-medium whitespace-nowrap underline decoration-1 underline-offset-4">
+                        <span className="text-xs uppercase tracking-[0.2em] text-[#2b647f] dark:text-[#6cb2d1] font-medium whitespace-nowrap underline decoration-1 underline-offset-4">
                             {t('services.label')}
                         </span>
                     </motion.div>
@@ -88,14 +88,14 @@ export function ServiceSection() {
                                 whileInView={{ opacity: 1 }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.8, ease: "easeOut" }}
-                                className={`${i18n.language === 'en' ? 'text-xl md:text-[1.35rem]' : 'text-lg md:text-xl'} font-medium mb-6 text-[#18181A]`}
+                                className={`${i18n.language === 'en' ? 'text-xl md:text-[1.35rem]' : 'text-lg md:text-xl'} font-medium mb-6 text-[#18181A] dark:text-gray-100`}
                             >
                                 {t('services.headline')}
                             </motion.h3>
 
                             <div className="flex gap-6 items-end">
                                 {/* Image with subtle zoom-out (breathing) */}
-                                <div className="w-40 h-48 md:w-48 md:h-56 overflow-hidden shadow-sm bg-black/5 shrink-0">
+                                <div className="w-40 h-48 md:w-48 md:h-56 overflow-hidden shadow-sm bg-black/5 dark:bg-white/5 shrink-0">
                                     <motion.img
                                         src="landing-images/sad-teen-girl-using-phone-while-sitting-sofa.jpg"
                                         initial={{ scale: 1.05 }}
@@ -112,7 +112,7 @@ export function ServiceSection() {
                                     whileInView={{ opacity: 1 }}
                                     viewport={{ once: true }}
                                     transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-                                    className="text-[0.95rem] text-black/60 max-w-[170px] leading-[1.6] pb-2 space-y-4"
+                                    className="text-[0.95rem] text-black/60 dark:text-white/60 max-w-[170px] leading-[1.6] pb-2 space-y-4"
                                 >
                                     <div className="space-y-1">
                                         <p className="italic">{t('services.quote1')}</p>
@@ -131,7 +131,7 @@ export function ServiceSection() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.8, ease: "easeOut" }}
-                        className={`${i18n.language === 'en' ? 'text-[2rem] md:text-[2.75rem]' : 'text-[1.75rem] md:text-[2.25rem]'} font-medium leading-[1.1] tracking-tight mb-12 text-[#18181A] max-w-none whitespace-nowrap`}
+                        className={`${i18n.language === 'en' ? 'text-[2rem] md:text-[2.75rem]' : 'text-[1.75rem] md:text-[2.25rem]'} font-medium leading-[1.1] tracking-tight mb-12 text-[#18181A] dark:text-gray-100 max-w-none whitespace-nowrap`}
                     >
                         {t('services.support')}
                     </motion.h2>
@@ -145,18 +145,18 @@ export function ServiceSection() {
                                     viewport={{ once: true }}
                                     transition={{ duration: 0.6, delay: 0.2 + (index * 0.1), ease: "easeOut" }}
                                     key={service.id}
-                                    className="group flex flex-col md:flex-row md:items-start py-8 border-t border-black/10 transition-colors duration-300 hover:bg-black/[0.02] -mx-4 px-4 rounded-xl cursor-default"
+                                    className="group flex flex-col md:flex-row md:items-start py-8 border-t border-black/10 dark:border-white/10 transition-colors duration-300 hover:bg-black/[0.02] dark:hover:bg-white/[0.02] -mx-4 px-4 rounded-xl cursor-default"
                                 >
-                                    <h4 className="text-lg md:text-xl text-[#18181A] font-medium w-full md:w-[45%] mb-2 md:mb-0">
+                                    <h4 className="text-lg md:text-xl text-[#18181A] dark:text-gray-100 font-medium w-full md:w-[45%] mb-2 md:mb-0">
                                         {service.title}
                                     </h4>
-                                    <p className="text-[0.95rem] md:text-base text-black/70 w-full md:w-[55%] leading-relaxed pl-0 md:pl-4">
+                                    <p className="text-[0.95rem] md:text-base text-black/70 dark:text-white/70 w-full md:w-[55%] leading-relaxed pl-0 md:pl-4">
                                         {service.description}
                                     </p>
                                 </motion.div>
                             );
                         })}
-                        <div className="border-t border-black/10 w-full" />
+                        <div className="border-t border-black/10 dark:border-white/10 w-full" />
                     </div>
                 </div>
 
