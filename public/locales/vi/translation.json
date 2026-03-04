@@ -227,6 +227,24 @@
     "files_uploaded": "Đã tải lên {{count}}/{{max}} tệp",
     "preparing": "Đang chuẩn bị ... {{progress}}%"
   },
+  "analysis_results": {
+    "hide_details": "Ẩn chi tiết",
+    "show_details": "Hiện chi tiết",
+    "no_emotions": "Không phát hiện cảm xúc cụ thể nào.",
+    "your_emotions": "Cảm xúc của bạn",
+    "partner_emotions": "Cảm xúc của đối phương",
+    "overall_tone": "Sắc Thái Chung:",
+    "emotional_analysis": "Phân Tích Cảm Xúc",
+    "no_results": "Không có kết quả phân tích.",
+    "analysis_summary": "Tóm Tắt Phân Tích",
+    "intent_analysis": "Phân Tích Ý Định",
+    "your_intent": "Ý định của bạn",
+    "partner_intent": "Ý định của đối phương",
+    "relationship_insights": "Thông Tin Chi Tiết Mối Quan Hệ",
+    "red_flags": "Dấu Hiệu Cảnh Báo",
+    "communication_advice": "Lời Khuyên Giao Tiếp",
+    "healthy_responses": "Phản Hồi Lành Mạnh"
+  },
   "common": {
     "app_name": "Encantta"
   }

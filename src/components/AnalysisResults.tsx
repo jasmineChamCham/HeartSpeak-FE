@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Heart,
   MessageCircle,
@@ -52,6 +53,7 @@ interface EmotionSectionProps {
 }
 
 function EmotionSection({ title, emotionData }: EmotionSectionProps) {
+  const { t } = useTranslation();
   const [showDetails, setShowDetails] = useState(false);
 
   // Sort emotions by intensity (highest first)
@@ -73,12 +75,12 @@ function EmotionSection({ title, emotionData }: EmotionSectionProps) {
           {showDetails ? (
             <>
               <ChevronUp className="h-3 w-3 mr-1" />
-              Hide Details
+              {t("analysis_results.hide_details")}
             </>
           ) : (
             <>
               <ChevronDown className="h-3 w-3 mr-1" />
-              Show Details
+              {t("analysis_results.show_details")}
             </>
           )}
         </Button>
@@ -95,7 +97,7 @@ function EmotionSection({ title, emotionData }: EmotionSectionProps) {
             />
           ))
         ) : (
-          <p className="text-sm text-muted-foreground italic">No specific emotions detected.</p>
+          <p className="text-sm text-muted-foreground italic">{t("analysis_results.no_emotions")}</p>
         )}
       </div>
 
@@ -121,26 +123,27 @@ function EmotionSection({ title, emotionData }: EmotionSectionProps) {
 }
 
 function EmotionalAnalysisCard({ emotionAnalysis }: { emotionAnalysis: AnalysisResponse["emotionAnalysis"] }) {
+  const { t } = useTranslation();
   return (
     <motion.div variants={itemVariants}>
       <Card className="glass-card">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 font-display text-lg">
             <Heart className="h-5 w-5 text-peach" />
-            Emotional Analysis
+            {t("analysis_results.emotional_analysis")}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
           {emotionAnalysis.user && (
             <EmotionSection
-              title="Your Emotions"
+              title={t("analysis_results.your_emotions")}
               emotionData={emotionAnalysis.user}
             />
           )}
 
           {emotionAnalysis.partner && (
             <EmotionSection
-              title="Partner's Emotions"
+              title={t("analysis_results.partner_emotions")}
               emotionData={emotionAnalysis.partner}
             />
           )}
@@ -148,7 +151,7 @@ function EmotionalAnalysisCard({ emotionAnalysis }: { emotionAnalysis: AnalysisR
           {emotionAnalysis.overallTone && (
             <div className="rounded-lg bg-muted/50 p-3">
               <div className="text-sm">
-                <span className="font-medium">Overall Tone: </span>
+                <span className="font-medium">{t("analysis_results.overall_tone")} </span>
                 <MarkdownRenderer content={extractAnalysisText(emotionAnalysis.overallTone)} className="inline-block" />
               </div>
             </div>
@@ -173,10 +176,12 @@ const getRelationshipIcon = (type: string) => {
 };
 
 export function AnalysisResults({ data }: AnalysisResultsProps) {
+  const { t } = useTranslation();
+
   if (!data) {
     return (
       <div className="flex items-center justify-center p-8">
-        <p className="text-muted-foreground">No analysis results available.</p>
+        <p className="text-muted-foreground">{t("analysis_results.no_results")}</p>
       </div>
     );
   }
@@ -195,13 +200,13 @@ export function AnalysisResults({ data }: AnalysisResultsProps) {
             <div className="flex items-center justify-between">
               <CardTitle className="flex items-center gap-2 font-display text-xl">
                 <Sparkles className="h-5 w-5 text-primary" />
-                Analysis Summary
+                {t("analysis_results.analysis_summary")}
               </CardTitle>
               {data.relationshipType && (
                 <div className="flex items-center gap-2">
                   {getRelationshipIcon(data.relationshipType)}
                   <Badge variant="outline" className="capitalize">
-                    {data.relationshipType}
+                    {t(`relationship.${data.relationshipType.toLowerCase()}`, { defaultValue: data.relationshipType })}
                   </Badge>
                 </div>
               )}
@@ -231,13 +236,13 @@ export function AnalysisResults({ data }: AnalysisResultsProps) {
             <CardHeader>
               <CardTitle className="flex items-center gap-2 font-display text-lg">
                 <Target className="h-5 w-5 text-lavender" />
-                Intent Analysis
+                {t("analysis_results.intent_analysis")}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               {data.intentAnalysis.user && (
                 <div className="space-y-2">
-                  <p className="text-sm font-medium text-muted-foreground">Your Intent</p>
+                  <p className="text-sm font-medium text-muted-foreground">{t("analysis_results.your_intent")}</p>
                   <div className="rounded-lg border border-border bg-card/50 p-3">
                     <div className="text-sm leading-relaxed">
                       <MarkdownRenderer content={extractAnalysisText(data.intentAnalysis.user)} />
@@ -248,7 +253,7 @@ export function AnalysisResults({ data }: AnalysisResultsProps) {
 
               {data.intentAnalysis.partner && (
                 <div className="space-y-2">
-                  <p className="text-sm font-medium text-muted-foreground">Partner's Intent</p>
+                  <p className="text-sm font-medium text-muted-foreground">{t("analysis_results.partner_intent")}</p>
                   <div className="rounded-lg border border-border bg-card/50 p-3">
                     <div className="text-sm leading-relaxed">
                       <MarkdownRenderer content={extractAnalysisText(data.intentAnalysis.partner)} />
@@ -268,7 +273,7 @@ export function AnalysisResults({ data }: AnalysisResultsProps) {
             <CardHeader>
               <CardTitle className="flex items-center gap-2 font-display text-lg">
                 <TrendingUp className="h-5 w-5 text-primary" />
-                Relationship Insights
+                {t("analysis_results.relationship_insights")}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -287,7 +292,7 @@ export function AnalysisResults({ data }: AnalysisResultsProps) {
             <CardHeader>
               <CardTitle className="flex items-center gap-2 font-display text-lg">
                 <AlertTriangle className="h-5 w-5 text-destructive" />
-                Red Flags
+                {t("analysis_results.red_flags")}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -313,7 +318,7 @@ export function AnalysisResults({ data }: AnalysisResultsProps) {
             <CardHeader>
               <CardTitle className="flex items-center gap-2 font-display text-lg">
                 <MessageCircle className="h-5 w-5 text-primary" />
-                Communication Advice
+                {t("analysis_results.communication_advice")}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -332,7 +337,7 @@ export function AnalysisResults({ data }: AnalysisResultsProps) {
             <CardHeader>
               <CardTitle className="flex items-center gap-2 font-display text-lg">
                 <Lightbulb className="h-5 w-5 text-primary" />
-                Healthy Responses
+                {t("analysis_results.healthy_responses")}
               </CardTitle>
             </CardHeader>
             <CardContent>

@@ -227,6 +227,24 @@
     "files_uploaded": "{{count}}/{{max}} fichiers téléchargés",
     "preparing": "Préparation ... {{progress}}%"
   },
+  "analysis_results": {
+    "hide_details": "Masquer les détails",
+    "show_details": "Afficher les détails",
+    "no_emotions": "Aucune émotion spécifique détectée.",
+    "your_emotions": "Vos Émotions",
+    "partner_emotions": "Les Émotions du Partenaire",
+    "overall_tone": "Ton Général :",
+    "emotional_analysis": "Analyse Émotionnelle",
+    "no_results": "Aucun résultat d'analyse disponible.",
+    "analysis_summary": "Résumé de l'Analyse",
+    "intent_analysis": "Analyse des Intentions",
+    "your_intent": "Votre Intention",
+    "partner_intent": "L'Intention du Partenaire",
+    "relationship_insights": "Aperçus de la Relation",
+    "red_flags": "Signaux d'Alarme",
+    "communication_advice": "Conseils de Communication",
+    "healthy_responses": "Réponses Saines"
+  },
   "common": {
     "app_name": "Encantta"
   }
