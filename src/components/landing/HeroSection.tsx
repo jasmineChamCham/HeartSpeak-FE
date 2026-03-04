@@ -57,7 +57,7 @@ export function HeroSection() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 1, ease: "easeOut" }}
                     >
-                        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[5rem] font-medium leading-[1.1] tracking-tight text-white/95 mb-8 text-balance">
+                        <h1 className={`${i18n.language === 'en' ? 'text-4xl sm:text-5xl md:text-6xl lg:text-[5rem]' : 'text-3xl sm:text-4xl md:text-5xl lg:text-[4rem]'} font-medium leading-[1.1] tracking-tight text-white/95 mb-8 text-balance`}>
                             {t('hero.title_part1')} <br />
                             <span className={`opacity-90 text-[#e4ece4] ${i18n.language === 'vi' ? 'font-normal' : 'font-serif italic font-normal'}`}>{t('hero.title_part2')}</span>
                         </h1>

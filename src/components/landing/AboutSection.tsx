@@ -35,7 +35,7 @@ export function AboutSection() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
-                        className="text-[2rem] md:text-[2.75rem] font-medium leading-[1.1] tracking-tight mb-8 text-[#18181A]"
+                        className={`${i18n.language === 'en' ? 'text-[2rem] md:text-[2.75rem]' : 'text-[1.75rem] md:text-[2.25rem]'} font-medium leading-[1.1] tracking-tight mb-8 text-[#18181A]`}
                     >
                         {t('about.headline_part1')}<span className={`tracking-normal pr-1 text-[#2b2b2d] ${i18n.language === 'vi' ? 'font-normal' : 'font-serif italic font-normal'}`}>{t('about.headline_part2')}</span>
                     </motion.h2>

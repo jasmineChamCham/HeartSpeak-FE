@@ -52,7 +52,7 @@ export function HowItWorksSection() {
                         transition={{ duration: 0.8 }}
                         className="max-w-xl md:max-w-2xl text-left md:text-right"
                     >
-                        <h2 className="text-[2rem] md:text-[2.75rem] font-medium leading-[1.1] tracking-tight text-[#18181A]">
+                        <h2 className={`${i18n.language === 'en' ? 'text-[2rem] md:text-[2.75rem]' : 'text-[1.75rem] md:text-[2.25rem]'} font-medium leading-[1.1] tracking-tight text-[#18181A]`}>
                             {t('how_it_works.headline_part1')}<span className={`text-[#2b2b2d] ${i18n.language === 'vi' ? 'font-normal' : 'font-serif italic font-normal'}`}>{t('how_it_works.headline_part2')}</span>{t('how_it_works.headline_part3')}
                         </h2>
                     </motion.div>

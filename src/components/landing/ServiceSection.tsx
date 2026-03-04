@@ -26,7 +26,7 @@ const services = [
 ];
 
 export function ServiceSection() {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     // Create services array inside component so we can use t()
     const localizedServices = [
@@ -88,7 +88,7 @@ export function ServiceSection() {
                                 whileInView={{ opacity: 1 }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.8, ease: "easeOut" }}
-                                className="text-xl md:text-[1.35rem] font-medium mb-6 text-[#18181A]"
+                                className={`${i18n.language === 'en' ? 'text-xl md:text-[1.35rem]' : 'text-lg md:text-xl'} font-medium mb-6 text-[#18181A]`}
                             >
                                 {t('services.headline')}
                             </motion.h3>
@@ -131,7 +131,7 @@ export function ServiceSection() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.8, ease: "easeOut" }}
-                        className="text-[2rem] md:text-[2.75rem] font-medium leading-[1.1] tracking-tight mb-12 text-[#18181A] max-w-none whitespace-nowrap"
+                        className={`${i18n.language === 'en' ? 'text-[2rem] md:text-[2.75rem]' : 'text-[1.75rem] md:text-[2.25rem]'} font-medium leading-[1.1] tracking-tight mb-12 text-[#18181A] max-w-none whitespace-nowrap`}
                     >
                         {t('services.support')}
                     </motion.h2>
