@@ -34,7 +34,7 @@ import type { AnalysisSession as AnalysisSessionType } from "@/types/analysis-se
 type Step = "upload" | "analyzing" | "results";
 
 export default function AnalysisSession() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { user, isLoading: authLoading, signOut } = useAuth();
   const navigate = useNavigate();
   const [files, setFiles] = React.useState<File[]>([]);
@@ -156,6 +156,7 @@ export default function AnalysisSession() {
         {
           contextMessage: context || undefined,
           model,
+          language: i18n?.language,
         },
         urls
       );

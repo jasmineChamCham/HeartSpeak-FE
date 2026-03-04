@@ -8,6 +8,7 @@ export interface CreateAnalysisSessionRequestBody {
   contextMessage?: string;
   mediaUrls?: string[];
   model?: GeminiModel;
+  language?: string;
 }
 
 export interface AnalysisSession {

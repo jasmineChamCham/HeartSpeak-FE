@@ -16,6 +16,7 @@ export async function createAnalysisSession(
     contextMessage: body.contextMessage,
     mediaUrls,
     model: body.model,
+    language: body.language,
   });
 
   return response.data;
