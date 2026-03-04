@@ -247,5 +247,14 @@
   },
   "common": {
     "app_name": "Encantta"
+  },
+  "analysis_menu": {
+    "add_comment": "Ajouter un commentaire",
+    "edit_comment": "Modifier le commentaire",
+    "comment": "Commentaire",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "add_refinement": "Ajouter un commentaire de raffinement",
+    "placeholder": "Que souhaitez-vous demander ou raffiner à propos de ce texte ?"
   }
 }

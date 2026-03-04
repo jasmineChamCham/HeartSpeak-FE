@@ -8,6 +8,7 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 interface AnalysisTextSelectionMenuProps {
     children: React.ReactNode;
@@ -22,6 +23,7 @@ export function AnalysisTextSelectionMenu({
     onDelete,
     onEdit,
 }: AnalysisTextSelectionMenuProps) {
+    const { t } = useTranslation();
     const containerRef = useRef<HTMLDivElement>(null);
     const [selection, setSelection] = useState<string>("");
     const [popoverPosition, setPopoverPosition] = useState<{ top: number; left: number } | null>(null);
@@ -236,7 +238,7 @@ export function AnalysisTextSelectionMenu({
                         <div className="bg-popover text-popover-foreground shadow-xl border rounded-lg p-3 w-72 text-sm animate-in fade-in zoom-in-95 duration-200">
                             <div className="flex justify-between items-start mb-2">
                                 <span className="font-medium text-primary text-xs uppercase tracking-wider">
-                                    {isEditing ? "Edit Comment" : "Comment"}
+                                    {isEditing ? t("analysis_menu.edit_comment") : t("analysis_menu.comment")}
                                 </span>
                                 <div className="flex items-center gap-1">
                                     {!isEditing && (
@@ -269,10 +271,10 @@ export function AnalysisTextSelectionMenu({
                                     />
                                     <div className="flex justify-end gap-2">
                                         <Button size="sm" variant="outline" className="h-7 text-xs" onClick={() => setIsEditing(false)}>
-                                            Cancel
+                                            {t("analysis_menu.cancel")}
                                         </Button>
                                         <Button size="sm" className="h-7 text-xs gap-1 bg-primary hover:bg-primary/90 text-white" onClick={handleSaveEdit}>
-                                            <Check className="h-3 w-3" /> Save
+                                            <Check className="h-3 w-3" /> {t("analysis_menu.save")}
                                         </Button>
                                     </div>
                                 </div>
@@ -309,7 +311,7 @@ export function AnalysisTextSelectionMenu({
                                         onClick={() => setIsPopoverOpen(true)}
                                     >
                                         <MessageSquarePlus className="h-4 w-4" />
-                                        Add Comment
+                                        {t("analysis_menu.add_comment")}
                                     </Button>
                                 </motion.div>
                             </PopoverTrigger>
@@ -322,7 +324,7 @@ export function AnalysisTextSelectionMenu({
                                 <div className="space-y-3">
                                     <div className="flex items-start justify-between">
                                         <h4 className="font-medium text-sm text-foreground">
-                                            Add Refinement Comment
+                                            {t("analysis_menu.add_refinement")}
                                         </h4>
                                         <Button
                                             variant="ghost"
@@ -335,7 +337,7 @@ export function AnalysisTextSelectionMenu({
                                     </div>
 
                                     <Textarea
-                                        placeholder="What would you like to ask or refine about this text?"
+                                        placeholder={t("analysis_menu.placeholder")}
                                         className="min-h-[80px] text-sm resize-none focus-visible:ring-primary"
                                         value={comment}
                                         onChange={(e) => setComment(e.target.value)}
@@ -350,7 +352,7 @@ export function AnalysisTextSelectionMenu({
                                             className="gap-2 bg-primary hover:bg-primary/90 text-white"
                                         >
                                             <Send className="h-3 w-3" />
-                                            Add Comment
+                                            {t("analysis_menu.add_comment")}
                                         </Button>
                                     </div>
                                 </div>
