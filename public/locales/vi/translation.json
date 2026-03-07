@@ -161,7 +161,15 @@
     "analyzing_subtitle": "Các chuyên gia AI đang đánh giá mạch cảm xúc",
     "results_title": "Kết Quả Phân Tích",
     "btn_refine": "Tinh Chỉnh",
-    "chat_coach": "Trò Chuyện Cùng Chuyên Gia"
+    "chat_coach": "Trò Chuyện Cùng Chuyên Gia",
+    "status_pending": "Đang chờ",
+    "status_processing": "Đang phân tích",
+    "status_completed": "Hoàn tất",
+    "status_failed": "Thất bại",
+    "failed_title": "Phân tích thất bại",
+    "failed_subtitle": "Chúng tôi không thể hoàn thành phân tích cho phiên này.",
+    "fail_reason_prefix": "Lý do:",
+    "btn_analyze_again": "Phân tích lại"
   },
   "profile": {
     "load_error": "Không thể tải hồ sơ",

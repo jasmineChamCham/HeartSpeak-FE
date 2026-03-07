@@ -1,6 +1,6 @@
 import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, MessageCircle, ArrowRight, Loader2, PanelLeftOpen } from "lucide-react";
+import { Sparkles, MessageCircle, ArrowRight, Loader2, PanelLeftOpen, XCircle, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { FileUpload } from "@/components/ui/file-upload";
@@ -13,7 +13,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useWebSocket } from "@/hooks/useWebSocket";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
-import { createAnalysisSession, getAnalysisSession, refineAnalysisSession } from "@/api/analysis-session/analysis-session.api";
+import { createAnalysisSession, getAnalysisSession, refineAnalysisSession, retryAnalysisSession } from "@/api/analysis-session/analysis-session.api";
 import { useQuery } from "@tanstack/react-query";
 import { uploadMultipleToCloudinary } from "@/lib/cloudinary";
 import { Badge } from "@/components/ui/badge";
@@ -31,7 +31,7 @@ import {
 import { AnalysisStatus, GeminiModel, RelationshipType } from "@/common/enums";
 import type { AnalysisSession as AnalysisSessionType } from "@/types/analysis-session";
 
-type Step = "upload" | "analyzing" | "results";
+type Step = "upload" | "analyzing" | "results" | "failed";
 
 export default function AnalysisSession() {
   const { t, i18n } = useTranslation();
@@ -183,10 +183,43 @@ export default function AnalysisSession() {
     setContext("");
     setAnalysisData(null);
     setUploadProgress(0);
-    setUploadProgress(0);
     setSessionId(null);
     setCurrentSession(null);
     setStep("upload");
+  };
+
+  const handleRetryAnalysis = async () => {
+    if (!currentSession) {
+      toast.error(t('analysis_session.upload_error'));
+      resetAnalysis();
+      return;
+    }
+
+    setIsUploading(true);
+    setAnalysisData(null);
+    setStep("analyzing");
+
+    try {
+      toast.info(t('analysis_session.setup_msg'));
+      const result = await retryAnalysisSession(currentSession.id, {
+        model,
+        language: i18n.language,
+      });
+
+      setSessionId(result.id);
+      setCurrentSession(result);
+
+      if (sidebarActions) {
+        sidebarActions.upsertSession({ ...result, status: AnalysisStatus.PROCESSING });
+        sidebarActions.refreshSessions();
+      }
+    } catch (error) {
+      console.error("Analysis error:", error);
+      toast.error(error instanceof Error ? error.message : t('analysis_session.create_error'));
+      setStep("failed");
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   const handleRefine = async () => {
@@ -249,6 +282,8 @@ export default function AnalysisSession() {
       if (fetchedSession.status === AnalysisStatus.COMPLETED && fetchedSession.result) {
         setAnalysisData(fetchedSession.result);
         setStep("results");
+      } else if (fetchedSession.status === AnalysisStatus.FAILED) {
+        setStep("failed");
       } else if (fetchedSession.status === AnalysisStatus.PROCESSING || fetchedSession.status === AnalysisStatus.PENDING) {
         setStep("analyzing");
       }
@@ -291,6 +326,8 @@ export default function AnalysisSession() {
     if (session.status === AnalysisStatus.COMPLETED && session.result) {
       setAnalysisData(session.result);
       setStep("results");
+    } else if (session.status === AnalysisStatus.FAILED) {
+      setStep("failed");
     } else if (session.status === AnalysisStatus.PROCESSING || session.status === AnalysisStatus.PENDING) {
       setStep("analyzing");
     }
@@ -457,6 +494,35 @@ export default function AnalysisSession() {
                 </motion.div>
                 <h2 className="mt-6 font-display text-2xl font-semibold text-foreground">{t('analysis_session.analyzing_title')}</h2>
                 <p className="mt-2 text-muted-foreground">{t('analysis_session.analyzing_subtitle')}</p>
+              </motion.div>
+            )}
+
+            {step === "failed" && (
+              <motion.div
+                key="failed"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="flex min-h-[60vh] flex-col items-center justify-center text-center"
+              >
+                <div className="rounded-full bg-red-500/10 p-6 mb-6">
+                  <XCircle className="h-12 w-12 text-red-500" />
+                </div>
+                <h2 className="font-display text-2xl font-semibold text-foreground mb-2">
+                  {t('analysis_session.failed_title')}
+                </h2>
+                <p className="text-muted-foreground mb-6 max-w-md">
+                  {t('analysis_session.failed_subtitle')}
+                </p>
+                {currentSession?.failReason && (
+                  <div className="bg-destructive/10 text-destructive text-sm rounded-lg p-4 max-w-md text-left w-full mb-6">
+                    <span className="font-semibold block mb-1">{t('analysis_session.fail_reason_prefix')}</span>
+                    {currentSession.failReason}
+                  </div>
+                )}
+                <Button onClick={handleRetryAnalysis}>
+                  {t('analysis_session.btn_analyze_again')}
+                </Button>
               </motion.div>
             )}
 

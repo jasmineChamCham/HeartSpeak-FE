@@ -161,7 +161,15 @@
     "analyzing_subtitle": "Nos coachs IA examinent la dynamique émotionnelle",
     "results_title": "Résultats d'analyse",
     "btn_refine": "Affiner le résultat",
-    "chat_coach": "Discutez avec votre coach"
+    "chat_coach": "Discutez avec votre coach",
+    "status_pending": "En attente",
+    "status_processing": "Analyse en cours",
+    "status_completed": "Terminé",
+    "status_failed": "Échoué",
+    "failed_title": "L'analyse a échoué",
+    "failed_subtitle": "Nous n'avons pas pu terminer l'analyse pour cette session.",
+    "fail_reason_prefix": "Raison :",
+    "btn_analyze_again": "Analyser à nouveau"
   },
   "profile": {
     "load_error": "Impossible de charger le profil",

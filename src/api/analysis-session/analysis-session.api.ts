@@ -22,12 +22,25 @@ export async function createAnalysisSession(
   return response.data;
 }
 
+export async function retryAnalysisSession(
+  sessionId: string,
+  body: { model?: string; language?: string },
+): Promise<AnalysisSession> {
+  const response = await apiClient.post<AnalysisSession>(
+    `/analysis-sessions/${sessionId}/retry`,
+    {
+      model: body.model,
+      language: body.language,
+    },
+  );
+
+  return response.data;
+}
+
 export async function getMyAnalysisSessions(
   query: GetMyAnalysisSessionsQuery = {},
 ): Promise<PaginatedAnalysisSessions> {
   const params = new URLSearchParams();
-
-  params.append("status", AnalysisStatus.COMPLETED);
 
   if (query.page !== undefined) params.append("page", query.page.toString());
   if (query.perPage !== undefined)

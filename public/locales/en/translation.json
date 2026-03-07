@@ -161,7 +161,15 @@
     "analyzing_subtitle": "Our AI coaches are reviewing the emotional dynamics",
     "results_title": "Analysis Results",
     "btn_refine": "Refine Result",
-    "chat_coach": "Chat with Your Coach"
+    "chat_coach": "Chat with Your Coach",
+    "status_pending": "Pending",
+    "status_processing": "Analyzing",
+    "status_completed": "Completed",
+    "status_failed": "Failed",
+    "failed_title": "Analysis Failed",
+    "failed_subtitle": "We couldn't complete the analysis for this session.",
+    "fail_reason_prefix": "Reason:",
+    "btn_analyze_again": "Analyze Again"
   },
   "profile": {
     "load_error": "Failed to load profile data",

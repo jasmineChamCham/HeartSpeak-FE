@@ -315,14 +315,23 @@ export function AnalysisSessionsSidebar({
                                         )}
                                     >
                                         {/* Relationship Type Badge */}
-                                        <div className="flex items-center justify-between mb-2">
-                                            <Badge
-                                                variant="outline"
-                                                className={cn("text-xs font-medium", getRelationshipColor((session as any).relationship?.relation.toLowerCase()))}
-                                            >
-                                                {formatRelationshipType((session as any).relationship?.relation)}
-                                            </Badge>
-                                            <span className="text-xs text-muted-foreground ml-auto">
+                                        <div className="flex items-center justify-between mb-2 gap-2">
+                                            <div className="flex gap-1.5 flex-wrap flex-1">
+                                                <Badge
+                                                    variant="outline"
+                                                    className={cn("text-xs font-medium", getRelationshipColor((session as any).relationship?.relation.toLowerCase()))}
+                                                >
+                                                    {formatRelationshipType((session as any).relationship?.relation)}
+                                                </Badge>
+                                                {session.status !== AnalysisStatus.COMPLETED && <Badge
+                                                    variant="outline"
+                                                    className={cn("text-xs font-medium flex items-center gap-1", getStatusColor(session.status))}
+                                                >
+                                                    {getStatusIcon(session.status)}
+                                                    <span>{t(`analysis_session.status_${session.status}`)}</span>
+                                                </Badge>}
+                                            </div>
+                                            <span className="text-xs text-muted-foreground whitespace-nowrap ml-1">
                                                 {formatDate(session.createdAt)}
                                             </span>
                                         </div>

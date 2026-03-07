@@ -17,6 +17,7 @@ export interface AnalysisSession {
   title?: string;
   contextMessage?: string;
   status: AnalysisStatus;
+  failReason?: string;
   createdAt: string;
   updatedAt: string;
   uploads?: Upload[];

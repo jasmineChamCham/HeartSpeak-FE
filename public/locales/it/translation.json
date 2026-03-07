@@ -161,7 +161,15 @@
     "analyzing_subtitle": "I nostri coach di intelligenza artificiale stanno riesaminando la dinamica",
     "results_title": "Risultati dell'analisi",
     "btn_refine": "Affina risultato",
-    "chat_coach": "Chatta con il tuo coach"
+    "chat_coach": "Chatta con il tuo coach",
+    "status_pending": "In attesa",
+    "status_processing": "Analisi in corso",
+    "status_completed": "Completato",
+    "status_failed": "Fallito",
+    "failed_title": "Analisi fallita",
+    "failed_subtitle": "Non siamo riusciti a completare l'analisi per questa sessione.",
+    "fail_reason_prefix": "Motivo:",
+    "btn_analyze_again": "Analizza di nuovo"
   },
   "profile": {
     "load_error": "Impossibile caricare il profilo",

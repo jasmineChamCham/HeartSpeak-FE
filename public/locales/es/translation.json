@@ -161,7 +161,15 @@
     "analyzing_subtitle": "Nuestros entrenadores de IA están revisando la dinámica",
     "results_title": "Resultados del análisis",
     "btn_refine": "Refinar resultado",
-    "chat_coach": "Chatea con tu entrenador"
+    "chat_coach": "Chatea con tu entrenador",
+    "status_pending": "Pendiente",
+    "status_processing": "Analizando",
+    "status_completed": "Completado",
+    "status_failed": "Fallido",
+    "failed_title": "Análisis fallido",
+    "failed_subtitle": "No pudimos completar el análisis para esta sesión.",
+    "fail_reason_prefix": "Motivo:",
+    "btn_analyze_again": "Analizar de nuevo"
   },
   "profile": {
     "load_error": "No se pudo cargar el perfil",
